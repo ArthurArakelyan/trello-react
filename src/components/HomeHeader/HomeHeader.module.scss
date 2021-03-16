@@ -1,0 +1,143 @@
+.home__header {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+.home__header_actions {
+  width: 50%;
+  display: flex;
+  padding: 0 6px;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.home__actions_section {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.divider {
+  height: 14px;
+  width: 1px;
+  background-color: hsla(0,0%,100%,.24);
+  align-self: center;
+  margin: 0 7px;
+}
+
+.home__header_board_type {
+  &_img {
+    width: 16px;
+    height: 16px;
+  }
+
+  span {
+    margin: 0 5px;
+  }
+
+  &_dropdown {
+    width: 12px;
+    height: 14px;
+  }
+}
+.board__name {
+  color: white;
+  cursor: pointer;
+  margin: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background-color: hsla(0,0%,100%,.3);
+  padding: 0 12px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 32px;
+  transition: background-color .3s ease-in-out;
+
+  &:hover {
+    background-color: hsla(0,0%,100%,.2);
+  }
+
+  &:active {
+    background-color: hsla(0,0%,100%,.4);
+  }
+}
+.header__action_star {
+  i {
+    font-size: 14px;
+  }
+}
+
+.subscribe__type {
+  margin-left: 5px;
+  font-size: 12px;
+  background: hsla(0,0%,100%,.2);
+  border-radius: 12px;
+  font-weight: 500;
+  padding: 2px 6px;
+}
+
+.home__header__action_board_type {
+  padding: 0 10px;
+
+  i {
+    font-size: 12px;
+  }
+
+  span {
+    margin-left: 8px;
+    font-size: 14px;
+  }
+}
+
+.home__header_action_avatar {
+  padding: 0;
+  background-color: transparent;
+  margin-right: 6px;
+
+  &:hover {
+    background-color: transparent;
+  }
+
+  img {
+    width: 28px;
+    cursor: pointer;
+    height: 28px;
+    align-self: center;
+    transition: filter .3s ease-in-out;
+
+    &:hover {
+      filter: opacity(0.9);
+    }
+  }
+}
+
+.home__header_menu {
+  width: 50%;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  padding: 0 8px;
+}
+.home__header_menu_butler {
+  margin-right: 6px;
+
+  img {
+    width: 15px;
+    height: 15px;
+  }
+
+  span {
+    margin-left: 14px;
+    font-size: 14px;
+    padding-right: 5px;
+  }
+}
+.home__header_menu_menu {
+  span {
+    margin-left: 14px;
+    font-size: 14px;
+    padding-right: 5px;
+  }
+}

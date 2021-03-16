@@ -1,0 +1,57 @@
+.header {
+  background-color:hsla(0,0%,0%,.15);
+  padding: 4px;
+}
+.header__content {
+  width: 100%;
+  color: white;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+}
+.header__section {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.header__section_logo {
+  width: 20%;
+}
+.header__logo {
+  margin-top: 1px;
+
+  img {
+    width: 80px;
+    height: 30px;
+    opacity: 0.5;
+  }
+}
+
+.header__section_links {
+  width: 40%;
+  justify-content: flex-start;
+
+  button:not(:last-child) {
+    margin-right: 5px;
+  }
+}
+.header__links_boards {
+  margin-left: 10px;
+  font-weight: 700;
+}
+
+.header__section_account {
+  width: 40%;
+  justify-content: flex-end;
+
+  button:nth-child(2n) {
+    margin: 0 5px;
+  }
+}
+.header__avatar {
+  width: 32px;
+  height: 32px;
+  margin-left: 5px;
+  cursor: pointer;
+}

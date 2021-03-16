@@ -1,0 +1,15 @@
+.home__columns {
+  width: 100%;
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: calc(100vh - 89px);
+  margin-top: 5px;
+}
+.home__columns_content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 5px;
+  width: fit-content;
+  position: relative;
+}

@@ -1,0 +1,79 @@
+import React, {useState, useRef, useEffect} from 'react';
+import {useDispatch} from "react-redux";
+
+import {addColumnAction} from '../../store/columns/actions';
+
+import useFormCollapse from "../../hooks/useFormCollapse";
+
+import Button from "../common/Button";
+
+import styles from './ColumnAdd.module.scss';
+
+const ColumnAdd = () => {
+  const dispatch = useDispatch();
+  const formCollapse = useFormCollapse();
+
+  const [formCollapsed, setFormCollapsed] = useState(false);
+  const [value, setValue] = useState('');
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if(inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [formCollapsed]);
+
+  const formSubmit = (e) => {
+    e.preventDefault();
+
+    if(value.trim()) {
+      dispatch(addColumnAction(value));
+      formCollapse(setFormCollapsed, setValue);
+    }
+  }
+
+  if(formCollapsed) {
+    return (
+      <div className={styles.column__add}>
+        <form className={styles.column__add_form} onSubmit={formSubmit}>
+          <input
+            type="text"
+            className={styles.column__add_input}
+            placeholder='Ввести загаловок списка'
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            ref={inputRef}
+          />
+          <div className={styles.column__add_buttons}>
+            <button className={styles.column__add_submit}>
+              Добавить список
+            </button>
+
+            <button
+              onClick={() => formCollapse(setFormCollapsed, setValue)}
+              className={styles.column__add_close}
+              type='button'
+            >
+              <i className='fas fa-times' />
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.column__add}>
+      <Button
+        onClick={() => formCollapse(setFormCollapsed, setValue)}
+        className={`button ${styles.column__add_button}`}
+      >
+        <i className="fas fa-plus" />
+        <span>Добавить ещё одну колонку</span>
+      </Button>
+    </div>
+  );
+}
+
+export default ColumnAdd;

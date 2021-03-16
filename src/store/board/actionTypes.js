@@ -1,0 +1,1 @@
+export const BOARD_LIKE = 'BOARD_LIKE';

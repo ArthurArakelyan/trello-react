@@ -1,0 +1,22 @@
+.button {
+  cursor: pointer;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  background-color: hsla(0,0%,100%,.24);
+  color: white;
+  padding: 0 7px;
+  transition: background-color .3s ease-in-out;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: hsla(0,0%,100%,.32);
+  }
+
+  &:active {
+    background-color: hsla(0,0%,100%,.4);
+  }
+}
