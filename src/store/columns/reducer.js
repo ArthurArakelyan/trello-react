@@ -1,4 +1,5 @@
 import {nanoid} from "nanoid";
+import moment from 'moment';
 
 import {
   ADD_COLUMN,
@@ -6,7 +7,9 @@ import {
   CHANGE_COLUMN_NAME,
   CHANGE_CARD_NAME,
   EDITING_COLUMN,
-  CHANGE_CARD_DESCRIPTION
+  CHANGE_CARD_DESCRIPTION,
+  ADD_COMMENT,
+  DELETE_COMMENT
 } from './actionTypes';
 
 const initialState = {
@@ -40,7 +43,8 @@ const columnsReducer = (state = initialState, action = {}) => {
               cardsArray: [...column.cardsArray, {
                 value: action.payload.value,
                 id: nanoid(),
-                description: ''
+                description: '',
+                comments: []
               }]
             }
           }
@@ -123,6 +127,44 @@ const columnsReducer = (state = initialState, action = {}) => {
                   return {
                     ...card,
                     description: action.payload.value
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case ADD_COMMENT: {
+      const newComment = {
+        id: nanoid(),
+        value: action.payload.value,
+        time: moment().format('MMMM Do YYYY, h:mm a'),
+        fullTime: moment().format()
+      }
+
+      return {
+        ...state,
+        editingColumn: {
+          ...state.editingColumn,
+          card: {
+            ...state.editingColumn.card,
+            comments: [...state.editingColumn.card.comments, newComment]
+          }
+        },
+        columns: state.columns.map(column => {
+          if(column.id === action.payload.columnId) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === action.payload.cardId) {
+                  return {
+                    ...card,
+                    comments: [...card.comments, newComment]
                   }
                 }
 

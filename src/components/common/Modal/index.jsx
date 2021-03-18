@@ -1,8 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
 import ReactModal from 'react-modal';
 import {useDispatch, useSelector} from "react-redux";
+import moment from "moment";
 
-import {changeCardNameAction, changeCardDescriptionAction} from '../../../store/columns/actions';
+import {
+  changeCardNameAction,
+  changeCardDescriptionAction,
+  addCommentAction
+} from '../../../store/columns/actions';
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
 
@@ -27,14 +32,20 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const [descriptionFormCollapse, setDescriptionFormCollapse] = useState(false);
   const [descriptionValue, setDescriptionValue] = useState(card?.description);
 
+  const [commentFormCollapse, setCommentFormCollapse] = useState(false);
+  const [commentValue, setCommentValue] = useState('');
+
   useEffect(() => {
     if(cardNameRef.current) {
       cardNameRef.current.focus();
     }
+  }, [cardNameFormCollapse]);
+
+  useEffect(() => {
     if(descriptionRef.current) {
       descriptionRef.current.focus();
     }
-  }, [cardNameFormCollapse, descriptionFormCollapse]);
+  }, [descriptionFormCollapse]);
 
   const cardNameFormSubmit = (e) => {
     e.preventDefault();
@@ -63,18 +74,18 @@ const Modal = ({modalIsOpen, modalClose}) => {
             width: '750px',
             borderRadius: '3px',
             height: 'fit-content',
-            margin: '0 auto',
+            margin: '0 auto 80px auto',
             padding: '20px 10px',
             border: 'none',
             backgroundColor: '#EBECF0',
-            marginBottom: '80px',
             zIndex: '1000',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between'
           },
           overlay: {
-            zIndex: '1000'
+            zIndex: '1000',
+            overflow: 'auto'
           }
         }
       }
@@ -141,7 +152,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
                   value={descriptionValue}
                   onChange={(e) => setDescriptionValue(e.target.value)}
                   ref={descriptionRef}
-                >{descriptionValue}</textarea>
+                />
                 <div className={styles.modal__card_info_details_add_actions}>
                   <button className={styles.modal__card_info_details_add_actions_save}>
                     Сохранить
@@ -156,11 +167,6 @@ const Modal = ({modalIsOpen, modalClose}) => {
                 </div>
               </form>
             }
-
-
-
-
-
           </div>
         </div>
 
@@ -181,15 +187,53 @@ const Modal = ({modalIsOpen, modalClose}) => {
                 alt="Avatar"
               />
             </div>
-            <div className={`${styles.modal__card_info_actions_comment_container} ${styles.hide}`}>
+            <div className={`${styles.modal__card_info_actions_comment_container} ${!commentFormCollapse ? styles.hide : ''}`}
+            >
               <textarea
                 placeholder='Напишите комментарий...'
+                value={commentValue}
+                onClick={() => (setCommentFormCollapse(true))}
+                onChange={(e) => setCommentValue(e.target.value)}
               />
-              <button>
+              <button
+                className={`${styles.modal__card_info_actions_comment_save} ${!commentValue.trim() ? styles.disabled : ''}`}
+                onClick={() => {
+                  dispatch(addCommentAction(card?.id, column?.id, commentValue));
+                  formCollapse(setCommentFormCollapse, setCommentValue, '');
+                }}
+              >
                 Сохранить
               </button>
             </div>
           </div>
+          {card?.comments.map(comment => {
+            const {time, fullTime, value} = comment;
+            return (
+              <div className={styles.modal__card_info_actions_comment_comment} key={comment.id}>
+                <div className={styles.modal__card_info_actions_comment_comment_avatar_section}>
+                  <img src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png" alt="Avatar"/>
+                </div>
+                <div className={styles.modal__card_info_actions_comment_comment_info_section}>
+                  <div className={styles.modal__card_comment_time}>
+                    <p className={styles.modal__card_comment_time_username}>
+                      user
+                    </p>
+                    <div title={time} className={styles.modal__card_comment_created_time}>
+                      <span>{moment(fullTime).fromNow()}</span>
+                    </div>
+                  </div>
+                  <p className={styles.modal__card_comment_value}>
+                    {value}
+                  </p>
+                  <div className={styles.modal__card_comment_actions}>
+                    <button>Изменить</button>
+                    <span>-</span>
+                    <button>Удалить</button>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 
