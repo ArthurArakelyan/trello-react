@@ -85,7 +85,7 @@ const Column = ({column, modalOpen}) => {
               <button
                 key={card.id}
                 className={styles.column__card}
-                onClick={() => modalOpen(column, card)}
+                onClick={() => modalOpen(column.id, card.id)}
               >
                 <span>{card.value}</span>
               </button>

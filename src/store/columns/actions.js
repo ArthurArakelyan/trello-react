@@ -36,17 +36,6 @@ export function changeColumnNameAction(id, value) {
   }
 }
 
-export function changeCardNameAction(cardId, columnId, value) {
-  return {
-    type: CHANGE_CARD_NAME,
-    payload: {
-      cardId,
-      columnId,
-      value
-    }
-  }
-}
-
 export function editingColumnAction(column, card) {
   return {
     type: EDITING_COLUMN,
@@ -57,31 +46,30 @@ export function editingColumnAction(column, card) {
   }
 }
 
-export function changeCardDescriptionAction(cardId, columnId, value) {
+export function changeCardNameAction(value) {
+  return {
+    type: CHANGE_CARD_NAME,
+    payload: value
+  }
+}
+
+export function changeCardDescriptionAction(value) {
   return {
     type: CHANGE_CARD_DESCRIPTION,
-    payload: {
-      value,
-      cardId,
-      columnId
-    }
+    payload: value
   }
 }
 
-export function addCommentAction(cardId, columnId, value) {
+export function addCommentAction(value) {
   return {
     type: ADD_COMMENT,
-    payload: {
-      cardId,
-      columnId,
-      value
-    }
+    payload: value
   }
 }
 
-export function deleteCommentAction(cardId) {
+export function deleteCommentAction(comment) {
   return {
     type: DELETE_COMMENT,
-    payload: cardId
+    payload: comment
   }
 }

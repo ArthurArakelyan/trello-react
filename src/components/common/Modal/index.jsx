@@ -6,7 +6,8 @@ import moment from "moment";
 import {
   changeCardNameAction,
   changeCardDescriptionAction,
-  addCommentAction
+  addCommentAction,
+  deleteCommentAction
 } from '../../../store/columns/actions';
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
@@ -20,8 +21,9 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
-  const editingColumn = useSelector(state => state.columnsReducer.editingColumn);
-  const {column, card} = editingColumn;
+  const {columns, editingColumn} = useSelector(state => state.columnsReducer);
+  const column = columns.find(column => column.id === editingColumn.column);
+  const card = column?.cardsArray.find(card => card.id === editingColumn.card);
 
   const cardNameRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -51,14 +53,14 @@ const Modal = ({modalIsOpen, modalClose}) => {
     e.preventDefault();
 
     if(cardNameValue.trim()) {
-      dispatch(changeCardNameAction(card?.id, column?.id, cardNameValue));
+      dispatch(changeCardNameAction(cardNameValue));
       formCollapse(setCardNameFormCollapse, setCardNameValue, card?.value);
     }
   }
 
   const cardDescriptionFormSubmit = (e) => {
     e.preventDefault();
-    dispatch(changeCardDescriptionAction(card?.id, column?.id, descriptionValue));
+    dispatch(changeCardDescriptionAction(descriptionValue));
     formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description)
   }
 
@@ -198,7 +200,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
               <button
                 className={`${styles.modal__card_info_actions_comment_save} ${!commentValue.trim() ? styles.disabled : ''}`}
                 onClick={() => {
-                  dispatch(addCommentAction(card?.id, column?.id, commentValue));
+                  dispatch(addCommentAction(commentValue));
                   formCollapse(setCommentFormCollapse, setCommentValue, '');
                 }}
               >
@@ -228,7 +230,11 @@ const Modal = ({modalIsOpen, modalClose}) => {
                   <div className={styles.modal__card_comment_actions}>
                     <button>Изменить</button>
                     <span>-</span>
-                    <button>Удалить</button>
+                    <button
+                      onClick={() => dispatch(deleteCommentAction(comment.id))}
+                    >
+                      Удалить
+                    </button>
                   </div>
                 </div>
               </div>

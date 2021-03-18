@@ -18,7 +18,10 @@ const initialState = {
     { value: 'Doing', id: nanoid(), cardsArray: [] },
     { value: 'Done', id: nanoid(), cardsArray: [] }
   ],
-  editingColumn: {}
+  editingColumn: {
+    column: null,
+    card: null
+  }
 }
 
 const columnsReducer = (state = initialState, action = {}) => {
@@ -68,25 +71,27 @@ const columnsReducer = (state = initialState, action = {}) => {
         })
       }
     }
-    case CHANGE_CARD_NAME: {
+    case EDITING_COLUMN: {
       return {
         ...state,
         editingColumn: {
-          ...state.editingColumn,
-          card: {
-            ...state.editingColumn.card,
-            value: action.payload.value
-          }
-        },
+          column: action.payload.column,
+          card: action.payload.card
+        }
+      }
+    }
+    case CHANGE_CARD_NAME: {
+      return {
+        ...state,
         columns: state.columns.map(column => {
-          if(column.id === action.payload.columnId) {
+          if(column.id === state.editingColumn.column) {
             return {
               ...column,
               cardsArray: column.cardsArray.map(card => {
-                if(card.id === action.payload.cardId) {
+                if(card.id === state.editingColumn.card) {
                   return {
                     ...card,
-                    value: action.payload.value
+                    value: action.payload
                   }
                 }
 
@@ -99,34 +104,18 @@ const columnsReducer = (state = initialState, action = {}) => {
         })
       }
     }
-    case EDITING_COLUMN: {
-      return {
-        ...state,
-        editingColumn: {
-          column: action.payload.column,
-          card: action.payload.card
-        }
-      }
-    }
     case CHANGE_CARD_DESCRIPTION: {
       return {
         ...state,
-        editingColumn: {
-          ...state.editingColumn,
-          card: {
-            ...state.editingColumn.card,
-            description: action.payload.value
-          }
-        },
         columns: state.columns.map(column => {
-          if(column.id === action.payload.columnId) {
+          if(column.id === state.editingColumn.column) {
             return {
               ...column,
               cardsArray: column.cardsArray.map(card => {
-                if(card.id === action.payload.cardId) {
+                if(card.id === state.editingColumn.card) {
                   return {
                     ...card,
-                    description: action.payload.value
+                    description: action.payload
                   }
                 }
 
@@ -140,31 +129,46 @@ const columnsReducer = (state = initialState, action = {}) => {
       }
     }
     case ADD_COMMENT: {
-      const newComment = {
-        id: nanoid(),
-        value: action.payload.value,
-        time: moment().format('MMMM Do YYYY, h:mm a'),
-        fullTime: moment().format()
-      }
-
       return {
         ...state,
-        editingColumn: {
-          ...state.editingColumn,
-          card: {
-            ...state.editingColumn.card,
-            comments: [...state.editingColumn.card.comments, newComment]
-          }
-        },
         columns: state.columns.map(column => {
-          if(column.id === action.payload.columnId) {
+          if(column.id === state.editingColumn.column) {
             return {
               ...column,
               cardsArray: column.cardsArray.map(card => {
-                if(card.id === action.payload.cardId) {
+                if(card.id === state.editingColumn.card) {
                   return {
                     ...card,
-                    comments: [...card.comments, newComment]
+                    comments: [...card.comments, {
+                      id: nanoid(),
+                      value: action.payload,
+                      time: moment().format('MMMM Do YYYY, h:mm a'),
+                      fullTime: moment().format()
+                    }]
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case DELETE_COMMENT: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    comments: card.comments.filter(comment => comment.id !== action.payload)
                   }
                 }
 
