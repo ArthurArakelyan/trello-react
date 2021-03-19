@@ -1,7 +1,12 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
-import {addCardAction, changeColumnNameAction} from '../../store/columns/actions';
+import {
+  addCardAction,
+  changeColumnNameAction,
+  dropColumnAction,
+  columnDragStartAction
+} from '../../store/columns/actions';
 
 import useFormCollapse from "../../hooks/useFormCollapse";
 
@@ -10,6 +15,8 @@ import styles from './Column.module.scss';
 const Column = ({column, modalOpen}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
+
+  const columns = useSelector(state => state.columnsReducer.columns);
 
   const textareaRef = useRef(null);
   const inputRef = useRef(null);
@@ -51,7 +58,23 @@ const Column = ({column, modalOpen}) => {
   }
 
   return (
-    <div className={styles.column}>
+    <div
+      className={styles.column}
+      draggable={true}
+      onDragStart={function() {
+        const droppedColumn = columns.findIndex(col => col.id === column.id);
+        dispatch(columnDragStartAction(droppedColumn));
+      }}
+      onDragOver={function(e) {
+        e.preventDefault();
+      }}
+      onDrop={function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const droppedColumn = columns.findIndex(col => col.id === column.id);
+        dispatch(dropColumnAction(droppedColumn));
+      }}
+    >
       <div className={styles.column__header}>
         {nameFormCollapse ?
           <form className={styles.column__header_form} onSubmit={nameFormSubmit}>
@@ -88,6 +111,23 @@ const Column = ({column, modalOpen}) => {
                 onClick={() => modalOpen(column.id, card.id)}
               >
                 <span>{card.value}</span>
+
+                {card.description || card.comments.length ?
+                  <div className={styles.column__card_badges}>
+                    {card.description &&
+                      <span title="Эта карточка с описанием." className={styles.column__card_badge}>
+                        <i className="fas fa-align-left" />
+                      </span>
+                    }
+                    {!!card.comments.length &&
+                      <span title="Комментарии" className={styles.column__card_badge}>
+                        <i className="far fa-comment" />
+                        <span style={{marginLeft: '4px'}}>{card.comments.length}</span>
+                      </span>
+                    }
+                  </div>
+                  : null
+                }
               </button>
             )
           })}

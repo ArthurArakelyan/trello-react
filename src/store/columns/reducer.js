@@ -9,7 +9,9 @@ import {
   EDITING_COLUMN,
   CHANGE_CARD_DESCRIPTION,
   ADD_COMMENT,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  DROP_COLUMN,
+  COLUMN_DRAG_START
 } from './actionTypes';
 
 const initialState = {
@@ -179,6 +181,28 @@ const columnsReducer = (state = initialState, action = {}) => {
 
           return column;
         })
+      }
+    }
+    case COLUMN_DRAG_START: {
+      return {
+        ...state,
+        draggedColumn: action.payload
+      }
+    }
+    case DROP_COLUMN: {
+      const move = (array, oldIndex, newIndex) => {
+        if(newIndex >= array.length) {
+          newIndex = array.length - 1;
+        }
+        array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+        return array;
+      }
+
+      const newColumns = move(state.columns, state.draggedColumn, action.payload).map(col => col);
+
+      return {
+        ...state,
+        columns: newColumns
       }
     }
     default: {

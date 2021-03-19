@@ -73,6 +73,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
       style={
         {
           content: {
+            position: 'relative',
             width: '750px',
             borderRadius: '3px',
             height: 'fit-content',
@@ -200,8 +201,10 @@ const Modal = ({modalIsOpen, modalClose}) => {
               <button
                 className={`${styles.modal__card_info_actions_comment_save} ${!commentValue.trim() ? styles.disabled : ''}`}
                 onClick={() => {
-                  dispatch(addCommentAction(commentValue));
-                  formCollapse(setCommentFormCollapse, setCommentValue, '');
+                  if(commentValue.trim()) {
+                    dispatch(addCommentAction(commentValue));
+                    formCollapse(setCommentFormCollapse, setCommentValue, '');
+                  }
                 }}
               >
                 Сохранить

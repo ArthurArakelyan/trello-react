@@ -6,7 +6,9 @@ import {
   EDITING_COLUMN,
   CHANGE_CARD_DESCRIPTION,
   ADD_COMMENT,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  DROP_COLUMN,
+  COLUMN_DRAG_START
 } from './actionTypes';
 
 export function addColumnAction(value) {
@@ -71,5 +73,19 @@ export function deleteCommentAction(comment) {
   return {
     type: DELETE_COMMENT,
     payload: comment
+  }
+}
+
+export function columnDragStartAction(index) {
+  return {
+    type: COLUMN_DRAG_START,
+    payload: index
+  }
+}
+
+export function dropColumnAction(index) {
+  return {
+    type: DROP_COLUMN,
+    payload: index
   }
 }
