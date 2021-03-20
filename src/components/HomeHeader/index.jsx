@@ -7,7 +7,7 @@ import Button from "../common/Button";
 
 import styles from './HomeHeader.module.scss';
 
-const HomeHeader = () => {
+const HomeHeader = ({menuCollapse}) => {
   const dispatch = useDispatch();
   const board = useSelector(state => state.boardReducer);
 
@@ -69,7 +69,10 @@ const HomeHeader = () => {
           <span>Butler</span>
         </Button>
 
-        <Button className={`button ${styles.home__header_menu_menu}`}>
+        <Button
+          className={`button ${styles.home__header_menu_menu}`}
+          onClick={menuCollapse}
+        >
           <i className="fas fa-ellipsis-h" />
 
           <span>Меню</span>

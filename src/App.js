@@ -1,11 +1,14 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 
 import Header from './components/Header';
 import Home from "./components/Home";
 
 const App = () => {
+  const color = useSelector(state => state.boardReducer.color);
+
   return (
-    <div className="App">
+    <div className="App" style={{backgroundColor: color}}>
       <Header />
 
       <main>
