@@ -1,14 +1,14 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import {useDispatch, useSelector} from "react-redux";
-import moment from "moment";
 
 import {
   changeCardNameAction,
   changeCardDescriptionAction,
-  addCommentAction,
-  deleteCommentAction
+  addCommentAction
 } from '../../../store/columns/actions';
+
+import Comment from "./Comment";
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
 
@@ -25,9 +25,6 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const column = columns.find(column => column.id === editingColumn.column);
   const card = column?.cardsArray.find(card => card.id === editingColumn.card);
 
-  const cardNameRef = useRef(null);
-  const descriptionRef = useRef(null);
-
   const [cardNameFormCollapse, setCardNameFormCollapse] = useState(false);
   const [cardNameValue, setCardNameValue] = useState(card?.value);
 
@@ -36,18 +33,6 @@ const Modal = ({modalIsOpen, modalClose}) => {
 
   const [commentFormCollapse, setCommentFormCollapse] = useState(false);
   const [commentValue, setCommentValue] = useState('');
-
-  useEffect(() => {
-    if(cardNameRef.current) {
-      cardNameRef.current.focus();
-    }
-  }, [cardNameFormCollapse]);
-
-  useEffect(() => {
-    if(descriptionRef.current) {
-      descriptionRef.current.focus();
-    }
-  }, [descriptionFormCollapse]);
 
   const cardNameFormSubmit = (e) => {
     e.preventDefault();
@@ -108,7 +93,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
                   type='text'
                   value={cardNameValue}
                   onChange={(e) => setCardNameValue(e.target.value)}
-                  ref={cardNameRef}
+                  autoFocus
                 />
               </form>
               :
@@ -154,7 +139,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
                   placeholder='Добавить более подробное описание...'
                   value={descriptionValue}
                   onChange={(e) => setDescriptionValue(e.target.value)}
-                  ref={descriptionRef}
+                  autoFocus
                 />
                 <div className={styles.modal__card_info_details_add_actions}>
                   <button className={styles.modal__card_info_details_add_actions_save}>
@@ -212,36 +197,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
             </div>
           </div>
           {card?.comments.map(comment => {
-            const {time, fullTime, value} = comment;
-            return (
-              <div className={styles.modal__card_info_actions_comment_comment} key={comment.id}>
-                <div className={styles.modal__card_info_actions_comment_comment_avatar_section}>
-                  <img src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png" alt="Avatar"/>
-                </div>
-                <div className={styles.modal__card_info_actions_comment_comment_info_section}>
-                  <div className={styles.modal__card_comment_time}>
-                    <p className={styles.modal__card_comment_time_username}>
-                      user
-                    </p>
-                    <div title={time} className={styles.modal__card_comment_created_time}>
-                      <span>{moment(fullTime).fromNow()}</span>
-                    </div>
-                  </div>
-                  <p className={styles.modal__card_comment_value}>
-                    {value}
-                  </p>
-                  <div className={styles.modal__card_comment_actions}>
-                    <button>Изменить</button>
-                    <span>-</span>
-                    <button
-                      onClick={() => dispatch(deleteCommentAction(comment.id))}
-                    >
-                      Удалить
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )
+            return <Comment comment={comment} />
           })}
         </div>
       </div>

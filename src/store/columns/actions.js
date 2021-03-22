@@ -8,7 +8,8 @@ import {
   ADD_COMMENT,
   DELETE_COMMENT,
   DROP_COLUMN,
-  COLUMN_DRAG_START
+  COLUMN_DRAG_START,
+  EDIT_COMMENT
 } from './actionTypes';
 
 export function addColumnAction(value) {
@@ -87,5 +88,15 @@ export function dropColumnAction(index) {
   return {
     type: DROP_COLUMN,
     payload: index
+  }
+}
+
+export function editCommentAction(id, value) {
+  return {
+    type: EDIT_COMMENT,
+    payload: {
+      id,
+      value
+    }
   }
 }

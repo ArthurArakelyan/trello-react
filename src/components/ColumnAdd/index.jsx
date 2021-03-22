@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 
 import {addColumnAction} from '../../store/columns/actions';
@@ -15,14 +15,6 @@ const ColumnAdd = () => {
 
   const [formCollapsed, setFormCollapsed] = useState(false);
   const [value, setValue] = useState('');
-
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if(inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [formCollapsed]);
 
   const formSubmit = (e) => {
     e.preventDefault();
@@ -43,7 +35,7 @@ const ColumnAdd = () => {
             placeholder='Ввести загаловок списка'
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            ref={inputRef}
+            autoFocus
           />
           <div className={styles.column__add_buttons}>
             <button className={styles.column__add_submit}>

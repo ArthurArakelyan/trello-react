@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
 import {
@@ -18,26 +18,11 @@ const Column = ({column, modalOpen}) => {
 
   const columns = useSelector(state => state.columnsReducer.columns);
 
-  const textareaRef = useRef(null);
-  const inputRef = useRef(null);
-
   const [nameFormCollapse, setNameFormCollapse] = useState(false);
   const [nameValue, setNameValue] = useState(column.value);
 
   const [cardFormCollapse, setCardFormCollapse] = useState(false);
   const [cardValue, setCardValue] = useState('');
-
-  useEffect(() => {
-    if(textareaRef.current) {
-      textareaRef.current.focus();
-    }
-  }, [cardFormCollapse]);
-
-  useEffect(() => {
-    if(inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [nameFormCollapse]);
 
   const cardFormSubmit = (e) => {
     e.preventDefault();
@@ -82,7 +67,7 @@ const Column = ({column, modalOpen}) => {
               type="text"
               value={nameValue}
               onChange={(e) => setNameValue(e.target.value)}
-              ref={inputRef}
+              autoFocus
             />
           </form>
           :
@@ -141,7 +126,7 @@ const Column = ({column, modalOpen}) => {
               value={cardValue}
               onChange={(e) => setCardValue(e.target.value)}
               placeholder="Ввести заголовок для этой карточки"
-              ref={textareaRef}
+              autoFocus
             />
             <div className={styles.column__cards_buttons}>
               <button className={styles.column__cards_submit}>

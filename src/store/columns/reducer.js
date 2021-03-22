@@ -11,7 +11,8 @@ import {
   ADD_COMMENT,
   DELETE_COMMENT,
   DROP_COLUMN,
-  COLUMN_DRAG_START
+  COLUMN_DRAG_START,
+  EDIT_COMMENT
 } from './actionTypes';
 
 const initialState = {
@@ -203,6 +204,39 @@ const columnsReducer = (state = initialState, action = {}) => {
       return {
         ...state,
         columns: newColumns
+      }
+    }
+    case EDIT_COMMENT: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    comments: card.comments.map(comment => {
+                      if(comment.id === action.payload.id) {
+                        return {
+                          ...comment,
+                          value: action.payload.value
+                        }
+                      }
+
+                      return comment;
+                    })
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
       }
     }
     default: {

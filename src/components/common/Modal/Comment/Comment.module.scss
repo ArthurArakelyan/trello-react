@@ -1,0 +1,128 @@
+.modal__card_info_actions_comment_comment {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+.modal__card_info_actions_comment_comment_avatar_section {
+  width: 8%;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal__card_info_actions_comment_comment_info_section {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 92%;
+  margin-top: 2px;
+  line-break: anywhere;
+}
+.modal__card_comment_time {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.modal__card_comment_time_username {
+  color: #172b4d;
+  font-weight: 700;
+}
+.modal__card_comment_created_time {
+  font-size: 12px;
+  margin-left: 5px;
+  font-weight: 500;
+  color: #5e6c84;
+}
+.modal__card_comment_value {
+  padding: 12px;
+  box-shadow: inset 0 0 0 2px #dfe1e6;
+  background-color: #fff;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+.modal__card_comment_actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-top: 10px;
+
+  button {
+    font-size: 12px;
+    font-weight: 500;
+    background-color: transparent;
+    text-decoration: underline;
+    color: #5e6c84;
+
+    &:hover {
+      background-color: transparent;
+      color: #172b4d;
+    }
+  }
+
+  span {
+    color: #5e6c84;
+  }
+}
+.modal__card_comment_edit {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 8px 12px;
+  margin-top: 5px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 4px 8px -2px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
+
+  textarea {
+    width: 100%;
+    min-height: 20px;
+    font-size: 14px;
+    resize: none;
+    border: none;
+    outline: none;
+    padding: 0;
+  }
+}
+.modal__card_comment_edit_actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 13px;
+}
+.modal__card_comment_edit_save {
+  background-color: #5bac44;
+  padding: 8px 10px;
+  margin-top: auto;
+  margin-left: 1px;
+  color: white;
+
+  &:hover {
+    background-color: #5bac44d2;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    user-select: none;
+    background-color: rgba(9,30,66,.04);
+    color: #a5adba;
+
+    &:hover {
+      background-color: rgba(9,30,66,.04);
+    }
+  }
+}
+.modal__card_comment_edit_close {
+  color: #42526e;
+  font-size: 20px;
+  margin-left: 5px;
+
+  &:hover {
+    color: #172b4d;
+  }
+}
