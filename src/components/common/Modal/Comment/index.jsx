@@ -10,7 +10,7 @@ import useFormCollapse from "../../../../hooks/useFormCollapse";
 import styles from './Comment.module.scss';
 
 const Comment = ({comment}) => {
-  const {time, fullTime, value} = comment;
+  const {time, fullTime, value, changed, changedTime} = comment;
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
@@ -36,6 +36,9 @@ const Comment = ({comment}) => {
           </p>
           <div title={time} className={styles.modal__card_comment_created_time}>
             <span>{moment(fullTime).fromNow()}</span>
+            {changed &&
+            <span title={changedTime ? moment(changedTime).fromNow() : ''}>(изменён)</span>
+            }
           </div>
         </div>
 
@@ -56,7 +59,7 @@ const Comment = ({comment}) => {
                 Сохранить
               </button>
               <button
-                onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, commentValue)}
+                onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}
                 className={styles.modal__card_comment_edit_close}
               >
                 <i className="fas fa-times" />
@@ -66,7 +69,7 @@ const Comment = ({comment}) => {
           :
           <div className={styles.modal__card_comment_actions}>
             <button
-              onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, commentValue)}
+              onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}
             >
               Изменить
             </button>

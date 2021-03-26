@@ -1,14 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ReactModal from 'react-modal';
 import {useDispatch, useSelector} from "react-redux";
+import {nanoid} from "nanoid";
 
 import {
   changeCardNameAction,
   changeCardDescriptionAction,
-  addCommentAction
+  addCommentAction,
+  changeLabelAction,
+  deleteLabelAction,
+  createLabelAction
 } from '../../../store/columns/actions';
 
 import Comment from "./Comment";
+import Popover from "../Popover";
+import Label from "./Label";
+
+import labelColors from "../../../constants/labelColors";
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
 
@@ -21,7 +29,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
-  const {columns, editingColumn} = useSelector(state => state.columnsReducer);
+  const {columns, editingColumn, labels} = useSelector(state => state.columnsReducer);
   const column = columns.find(column => column.id === editingColumn.column);
   const card = column?.cardsArray.find(card => card.id === editingColumn.card);
 
@@ -33,6 +41,26 @@ const Modal = ({modalIsOpen, modalClose}) => {
 
   const [commentFormCollapse, setCommentFormCollapse] = useState(false);
   const [commentValue, setCommentValue] = useState('');
+
+  const [popoverType, setPopoverType] = useState(null);
+
+  const [editingLabel, setEditingLabel] = useState({
+    id: null,
+    value: '',
+    color: ''
+  });
+
+  const [newLabel, setNewLabel] = useState({
+    id: nanoid(),
+    value: '',
+    color: '#61bd4f'
+  });
+
+  useEffect(() => {
+    if(!modalIsOpen) {
+      setPopoverType(null);
+    }
+  }, [modalIsOpen]);
 
   const cardNameFormSubmit = (e) => {
     e.preventDefault();
@@ -46,7 +74,172 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const cardDescriptionFormSubmit = (e) => {
     e.preventDefault();
     dispatch(changeCardDescriptionAction(descriptionValue));
-    formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description)
+    formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+  }
+
+  const popover = () => {
+    const closePopover = () => setPopoverType(null);
+
+    switch(popoverType) {
+      case 'label': {
+        return (
+          <Popover
+            heading="Метки"
+            close={closePopover}
+          >
+            <h4 className={styles.popover__label_heading}>Метки</h4>
+            <ul className={styles.popover__labels}>
+              {labels.map(label => {
+                return <Label
+                  key={label.id}
+                  label={label}
+                  card={card}
+                  onEdit={(label) => {
+                    setPopoverType('editingLabel');
+                    setEditingLabel(label);
+                  }}
+                />;
+              })}
+            </ul>
+            <button
+              className={styles.popover__label_create_button}
+              onClick={() => setPopoverType('creatingLabel')}
+            >
+              Создать новую метку
+            </button>
+          </Popover>
+        );
+      }
+      case 'editingLabel': {
+        return (
+          <Popover
+            heading="Изменение метки"
+            close={closePopover}
+            back={() => setPopoverType('label')}
+          >
+            <div className={styles.popover__label_editing_name_section}>
+              <h4>Название</h4>
+              <input
+                type="text"
+                value={editingLabel.value}
+                onChange={(e) => setEditingLabel(label => ({
+                  ...label,
+                  value: e.target.value
+                }))}
+              />
+            </div>
+
+            <div className={styles.popover__label_editing_color_section}>
+              <h5>Цвета</h5>
+              <div className={styles.popover__label_editing_colors}>
+                {labelColors.map(color => {
+                  return (
+                    <div
+                      key={color}
+                      className={styles.popover__label_editing_color}
+                      style={{backgroundColor: color}}
+                      onClick={() => setEditingLabel(label => ({
+                        ...label,
+                        color
+                      }))}
+                    >
+                      {editingLabel.color === color &&
+                      <span className={styles.popover__label_editing_color_active}>
+                        <i className="fas fa-check" />
+                      </span>
+                      }
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className={styles.popover__label_editing_actions}>
+              <button
+                className={styles.popover__label_editing_actions_save}
+                onClick={() => {
+                  dispatch(changeLabelAction(editingLabel));
+                  setPopoverType('label');
+                }}
+              >
+                Сохранить
+              </button>
+
+              <button
+                className={styles.popover__label_editing_actions_delete}
+                onClick={() => {
+                  dispatch(deleteLabelAction(editingLabel.id));
+                  setPopoverType('label');
+                }}
+              >
+                Удалить
+              </button>
+            </div>
+          </Popover>
+        );
+      }
+      case 'creatingLabel': {
+        return (
+          <Popover
+            heading="Создание метки"
+            close={closePopover}
+            back={() => setPopoverType('label')}
+          >
+            <div className={styles.popover__label_editing_name_section}>
+              <h4>Название</h4>
+              <input
+                type="text"
+                value={newLabel.value}
+                onChange={(e) => setNewLabel(label => ({
+                  ...label,
+                  value: e.target.value
+                }))}
+              />
+            </div>
+
+            <div className={styles.popover__label_editing_color_section}>
+              <h5>Цвета</h5>
+              <div className={styles.popover__label_editing_colors}>
+                {labelColors.map(color => {
+                  return (
+                    <div
+                      key={color}
+                      className={styles.popover__label_editing_color}
+                      style={{backgroundColor: color}}
+                      onClick={() => setNewLabel(label => ({
+                        ...label,
+                        color
+                      }))}
+                    >
+                      {newLabel.color === color &&
+                      <span className={styles.popover__label_editing_color_active}>
+                        <i className="fas fa-check" />
+                      </span>
+                      }
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div className={styles.popover__label_editing_actions}>
+              <button
+                className={styles.popover__label_editing_actions_save}
+                onClick={() => {
+                  dispatch(createLabelAction(newLabel));
+                  setPopoverType('label');
+                }}
+              >
+                Создать
+              </button>
+            </div>
+          </Popover>
+        );
+      }
+      default: {
+        return null;
+      }
+    }
   }
 
   return (
@@ -67,6 +260,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
             border: 'none',
             backgroundColor: '#EBECF0',
             zIndex: '1000',
+            overflow: 'none',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between'
@@ -106,6 +300,32 @@ const Modal = ({modalIsOpen, modalClose}) => {
             }
 
             <span>в колонке {column?.value}</span>
+
+            {!!card?.labels.length &&
+            <div className={styles.modal__card_info_details_labels}>
+              <h5 className={styles.modal__card_info_details_labels_heading}>
+                МЕТКИ
+              </h5>
+              <div className={styles.modal__card_info_details_labels_container}>
+                {card?.labels.map(label => {
+                  return (
+                    <div
+                      key={label.id}
+                      className={styles.modal__card_info_details_labels_label}
+                      style={{backgroundColor: label.color}}
+                      title={label.value}
+                    >
+                      {label.value &&
+                      <p className={styles.modal__card_info_details_labels_label_value}>
+                        {label.value.length > 42 ? `${label.value.slice(0, 42)}...` : label.value}
+                      </p>
+                      }
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+            }
           </div>
         </div>
 
@@ -197,7 +417,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
             </div>
           </div>
           {card?.comments.map(comment => {
-            return <Comment comment={comment} />
+            return <Comment key={comment.id} comment={comment} />
           })}
         </div>
       </div>
@@ -209,7 +429,10 @@ const Modal = ({modalIsOpen, modalClose}) => {
             <i className="far fa-user" />
             <p>Участники</p>
           </button>
-          <button className={styles.modal__card_upgrade_button}>
+          <button
+            onClick={() => setPopoverType('label')}
+            className={styles.modal__card_upgrade_button}
+          >
             <i className="fas fa-tag" />
             <p>Метки</p>
           </button>
@@ -230,6 +453,8 @@ const Modal = ({modalIsOpen, modalClose}) => {
             <p>Обложка</p>
           </button>
         </div>
+
+        {popover()}
       </div>
     </ReactModal>
   );

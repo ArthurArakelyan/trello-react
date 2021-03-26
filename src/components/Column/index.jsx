@@ -5,7 +5,8 @@ import {
   addCardAction,
   changeColumnNameAction,
   dropColumnAction,
-  columnDragStartAction
+  columnDragStartAction,
+  changeColumnsActiveLabels
 } from '../../store/columns/actions';
 
 import useFormCollapse from "../../hooks/useFormCollapse";
@@ -16,7 +17,7 @@ const Column = ({column, modalOpen}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
-  const columns = useSelector(state => state.columnsReducer.columns);
+  const {columns, columnsActiveLabels} = useSelector(state => state.columnsReducer);
 
   const [nameFormCollapse, setNameFormCollapse] = useState(false);
   const [nameValue, setNameValue] = useState(column.value);
@@ -95,6 +96,31 @@ const Column = ({column, modalOpen}) => {
                 className={styles.column__card}
                 onClick={() => modalOpen(column.id, card.id)}
               >
+                {!!card.labels.length &&
+                <div className={styles.column__card_labels}>
+                  {card.labels.map(label => {
+                    return (
+                      <div
+                        key={label.id}
+                        className={`${styles.column__card_label} ${columnsActiveLabels ? styles.active : ''}`}
+                        title={label.value}
+                        style={{backgroundColor: label.color}}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          dispatch(changeColumnsActiveLabels());
+                        }}
+                      >
+                        {columnsActiveLabels &&
+                        <span>
+                          {label.value.length > 21 ? `${label.value.slice(0, 21)}...` : label.value}
+                        </span>
+                        }
+                      </div>
+                    )
+                  })}
+                </div>
+                }
+
                 <span>{card.value}</span>
 
                 {card.description || card.comments.length ?

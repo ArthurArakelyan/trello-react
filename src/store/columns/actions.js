@@ -9,7 +9,12 @@ import {
   DELETE_COMMENT,
   DROP_COLUMN,
   COLUMN_DRAG_START,
-  EDIT_COMMENT
+  EDIT_COMMENT,
+  ACTIVE_LABEL,
+  CHANGE_LABEL,
+  DELETE_LABEL,
+  CHANGE_COLUMNS_ACTIVE_LABELS,
+  CREATE_LABEL
 } from './actionTypes';
 
 export function addColumnAction(value) {
@@ -98,5 +103,39 @@ export function editCommentAction(id, value) {
       id,
       value
     }
+  }
+}
+
+export function activeLabelAction(label) {
+  return {
+    type: ACTIVE_LABEL,
+    payload: label
+  }
+}
+
+export function changeLabelAction(label) {
+  return {
+    type: CHANGE_LABEL,
+    payload: label
+  }
+}
+
+export function deleteLabelAction(id) {
+  return {
+    type: DELETE_LABEL,
+    payload: id
+  }
+}
+
+export function changeColumnsActiveLabels() {
+  return {
+    type: CHANGE_COLUMNS_ACTIVE_LABELS
+  }
+}
+
+export function createLabelAction(label) {
+  return {
+    type: CREATE_LABEL,
+    payload: label
   }
 }

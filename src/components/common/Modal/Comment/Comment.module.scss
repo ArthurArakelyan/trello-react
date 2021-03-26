@@ -35,6 +35,10 @@
   margin-left: 5px;
   font-weight: 500;
   color: #5e6c84;
+
+  span:nth-child(2) {
+    margin-left: 4px;
+  }
 }
 .modal__card_comment_value {
   padding: 12px;

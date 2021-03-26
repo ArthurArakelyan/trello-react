@@ -1,0 +1,70 @@
+.popover {
+  position: absolute;
+  top: 0;
+  overflow: auto;
+  background-color: white;
+  box-shadow: 0 12px 24px -6px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
+  width: 300px;
+  border-radius: 3px;
+  z-index: 1500;
+}
+.popover__wrapper {
+  width: 90%;
+  margin: 0 auto;
+}
+.popover__content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 20px;
+  flex-direction: column;
+}
+.popover__body {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+.popover__header {
+  width: 100%;
+  position: relative;
+  padding: 15px 0 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px rgba(9,30,66,.13) solid;
+}
+.popover__header_close {
+  background-color: transparent;
+  color: #172b4d;
+  padding: 0;
+  position: absolute;
+  opacity: 0.8;
+  right: 1%;
+  font-size: 16px;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+.popover__header_heading {
+  color: #172b4d;
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  font-size: 14px;
+}
+.popover__header_back {
+  position: absolute;
+  font-size: 18px;
+  left: 0;
+  padding: 0;
+  color: #172b4d;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,49 @@
+.popover__labels_label {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  margin-top: 7px;
+
+  & > span {
+    width: 11%;
+    border-radius: 3px;
+    color: #42526e;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(9,30,66,.08);
+    }
+
+    &:active {
+      background-color: rgba(9,30,66,.13);
+    }
+  }
+}
+.popover__labels_label_color {
+  position: relative;
+  width: 87%;
+  height: 32px;
+  border-radius: 3px;
+  transition: box-shadow .1s ease-in-out;
+  cursor: pointer;
+}
+.popover__labels_label_active {
+  position: absolute;
+  right: 5%;
+  top: 30%;
+  color: white;
+  font-size: 10px;
+}
+.popover__labels_label_value {
+  position: absolute;
+  left: 5%;
+  top: 30%;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+}

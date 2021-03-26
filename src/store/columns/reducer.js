@@ -12,7 +12,12 @@ import {
   DELETE_COMMENT,
   DROP_COLUMN,
   COLUMN_DRAG_START,
-  EDIT_COMMENT
+  EDIT_COMMENT,
+  ACTIVE_LABEL,
+  CHANGE_LABEL,
+  DELETE_LABEL,
+  CHANGE_COLUMNS_ACTIVE_LABELS,
+  CREATE_LABEL
 } from './actionTypes';
 
 const initialState = {
@@ -21,6 +26,15 @@ const initialState = {
     { value: 'Doing', id: nanoid(), cardsArray: [] },
     { value: 'Done', id: nanoid(), cardsArray: [] }
   ],
+  labels: [
+    {id: nanoid(), value: '', color: '#61bd4f'},
+    {id: nanoid(), value: '', color: '#f2d600'},
+    {id: nanoid(), value: '', color: '#ff9f1a'},
+    {id: nanoid(), value: '', color: '#eb5a46'},
+    {id: nanoid(), value: '', color: '#c377e0'},
+    {id: nanoid(), value: '', color: '#0079bf'}
+  ],
+  columnsActiveLabels: false,
   editingColumn: {
     column: null,
     card: null
@@ -50,7 +64,9 @@ const columnsReducer = (state = initialState, action = {}) => {
                 value: action.payload.value,
                 id: nanoid(),
                 description: '',
-                comments: []
+                comments: [],
+                // labels: state.labels,
+                labels: []
               }]
             }
           }
@@ -146,7 +162,9 @@ const columnsReducer = (state = initialState, action = {}) => {
                       id: nanoid(),
                       value: action.payload,
                       time: moment().format('MMMM Do YYYY, h:mm a'),
-                      fullTime: moment().format()
+                      fullTime: moment().format(),
+                      changed: false,
+                      changedTime: null
                     }]
                   }
                 }
@@ -219,10 +237,16 @@ const columnsReducer = (state = initialState, action = {}) => {
                     ...card,
                     comments: card.comments.map(comment => {
                       if(comment.id === action.payload.id) {
-                        return {
-                          ...comment,
-                          value: action.payload.value
+                        if(comment.value !== action.payload.value) {
+                          return {
+                            ...comment,
+                            value: action.payload.value,
+                            changed: true,
+                            changedTime: moment().format()
+                          }
                         }
+
+                        return comment;
                       }
 
                       return comment;
@@ -237,6 +261,85 @@ const columnsReducer = (state = initialState, action = {}) => {
 
           return column;
         })
+      }
+    }
+    case ACTIVE_LABEL: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  const label = card.labels.find(label => label.id === action.payload.id);
+
+                  if(label) {
+                    return {
+                      ...card,
+                      labels: card.labels.filter(label => label.id !== action.payload.id)
+                    }
+                  }
+
+                  return {
+                    ...card,
+                    labels: [...card.labels, action.payload]
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case CHANGE_LABEL: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          return {
+            ...column,
+            cardsArray: column.cardsArray.map(card => {
+              return {
+                ...card,
+                labels: card.labels.map(label => label.id === action.payload.id ? action.payload : label)
+              }
+            })
+          }
+        }),
+        labels: state.labels.map(label => label.id === action.payload.id ? action.payload : label)
+      }
+    }
+    case DELETE_LABEL: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          return {
+            ...column,
+            cardsArray: column.cardsArray.map(card => {
+              return {
+                ...card,
+                labels: card.labels.filter(label => label.id !== action.payload)
+              }
+            })
+          }
+        }),
+        labels: state.labels.filter(label => label.id !== action.payload)
+      }
+    }
+    case CHANGE_COLUMNS_ACTIVE_LABELS: {
+      return {
+        ...state,
+        columnsActiveLabels: !state.columnsActiveLabels
+      }
+    }
+    case CREATE_LABEL: {
+      return {
+        ...state,
+        labels: [...state.labels, action.payload]
       }
     }
     default: {
