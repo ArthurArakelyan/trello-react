@@ -7,11 +7,14 @@ import colors from "../../constants/colors";
 
 import styles from './Menu.module.scss';
 
-const Menu = ({menuCollapse, menuOpen, menuClose}) => {
+const Menu = ({menuCollapse, menuOpen, menuClose, menuRef}) => {
   const dispatch = useDispatch();
 
   return (
-    <div className={`${styles.menu} ${menuOpen ? styles.open : ''} ${menuClose ? styles.hide : ''}`}>
+    <div
+      ref={menuRef}
+      className={`${styles.menu} ${menuOpen ? styles.open : ''} ${menuClose ? styles.hide : ''}`}
+    >
       <div className={styles.menu__wrapper}>
         <div className={styles.menu__content}>
           <div className={styles.menu__header}> 

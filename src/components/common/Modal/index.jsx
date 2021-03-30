@@ -9,7 +9,10 @@ import {
   addCommentAction,
   changeLabelAction,
   deleteLabelAction,
-  createLabelAction
+  createLabelAction,
+  addCardCoverAction,
+  changeCardCoverTypeAction,
+  clearCardCoverAction
 } from '../../../store/columns/actions';
 
 import Comment from "./Comment";
@@ -17,8 +20,10 @@ import Popover from "../Popover";
 import Label from "./Label";
 
 import labelColors from "../../../constants/labelColors";
+import coverColors from "../../../constants/coverColors";
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
+import useOutsideClick from "../../../hooks/useOutsideClick";
 
 import './styles.scss';
 import styles from './Modal.module.scss';
@@ -50,11 +55,12 @@ const Modal = ({modalIsOpen, modalClose}) => {
     color: ''
   });
 
-  const [newLabel, setNewLabel] = useState({
+  const initialNewLabel = {
     id: nanoid(),
     value: '',
     color: '#61bd4f'
-  });
+  }
+  const [newLabel, setNewLabel] = useState(initialNewLabel);
 
   useEffect(() => {
     if(!modalIsOpen) {
@@ -73,9 +79,24 @@ const Modal = ({modalIsOpen, modalClose}) => {
 
   const cardDescriptionFormSubmit = (e) => {
     e.preventDefault();
-    dispatch(changeCardDescriptionAction(descriptionValue));
-    formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+
+    if(descriptionValue.trim() || descriptionValue === '') {
+      dispatch(changeCardDescriptionAction(descriptionValue));
+      formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+    }
   }
+
+  const cardNameRef = useOutsideClick(cardNameFormSubmit);
+  const cardDescriptionRef = useOutsideClick(() => {
+    formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+  });
+  const commentRef = useOutsideClick(() => {
+    if(commentFormCollapse && !commentValue.trim()) {
+      setCommentFormCollapse(value => !value);
+      setCommentValue('');
+    }
+  });
+  const popoverRef = useOutsideClick(() => setPopoverType(null));
 
   const popover = () => {
     const closePopover = () => setPopoverType(null);
@@ -86,8 +107,9 @@ const Modal = ({modalIsOpen, modalClose}) => {
           <Popover
             heading="Метки"
             close={closePopover}
+            popoverRef={popoverRef}
           >
-            <h4 className={styles.popover__label_heading}>Метки</h4>
+            <h4 className={`${styles.popover__subheading} ${styles.popover__labels_subheading}`}>Метки</h4>
             <ul className={styles.popover__labels}>
               {labels.map(label => {
                 return <Label
@@ -116,9 +138,10 @@ const Modal = ({modalIsOpen, modalClose}) => {
             heading="Изменение метки"
             close={closePopover}
             back={() => setPopoverType('label')}
+            popoverRef={popoverRef}
           >
             <div className={styles.popover__label_editing_name_section}>
-              <h4>Название</h4>
+              <h4 className={styles.popover__subheading}>Название</h4>
               <input
                 type="text"
                 value={editingLabel.value}
@@ -184,6 +207,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
             heading="Создание метки"
             close={closePopover}
             back={() => setPopoverType('label')}
+            popoverRef={popoverRef}
           >
             <div className={styles.popover__label_editing_name_section}>
               <h4>Название</h4>
@@ -228,10 +252,93 @@ const Modal = ({modalIsOpen, modalClose}) => {
                 onClick={() => {
                   dispatch(createLabelAction(newLabel));
                   setPopoverType('label');
+                  setNewLabel(initialNewLabel);
                 }}
               >
                 Создать
               </button>
+            </div>
+          </Popover>
+        );
+      }
+      case 'cover': {
+        const defaultColor = '#5e6c84';
+
+        return (
+          <Popover
+            heading="Обложка"
+            close={closePopover}
+            popoverRef={popoverRef}
+          >
+            <h4 className={`${styles.popover__subheading} ${styles.popover__cover_subheading}`}>Размер</h4>
+            <div className={styles.popover__cover_types}>
+              <div
+                className={`${styles.popover__cover_type} ${card?.cover.color && card?.cover.type === 1 ? styles.active : ''}`}
+                style={{cursor: card?.cover.color ? 'pointer' : 'default'}}
+                onClick={() => card?.cover.color ? dispatch(changeCardCoverTypeAction(1)) : {}}
+              >
+                <div
+                  className={styles.type1__header}
+                  style={{
+                    backgroundColor: card?.cover.color ? card?.cover.color : defaultColor,
+                    opacity: card?.cover.color ? '1' : '0.3'
+                  }}
+                />
+
+                <div className={styles.type1__body}>
+                  <div className={styles.type1__text1} style={{opacity: card?.cover.color ? '1' : '0.3'}} />
+                  <div className={styles.type1__text2} style={{opacity: card?.cover.color ? '1' : '0.3'}} />
+
+                  <div className={styles.type1__footer}>
+                    <div style={{opacity: card?.cover.color ? '1' : '0.3'}} />
+                    <div style={{opacity: card?.cover.color ? '1' : '0.3'}} />
+                    <div className={styles.type1__button} style={{opacity: card?.cover.color ? '1' : '0.3'}} />
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`${styles.popover__cover_type} ${card?.cover.color && card?.cover.type === 2 ? styles.active : ''}`}
+                style={{cursor: card?.cover.color ? 'pointer' : 'default'}}
+                onClick={() => card?.cover.color ? dispatch(changeCardCoverTypeAction(2)) : {}}
+              >
+                <div style={{
+                    backgroundColor: card?.cover.color ? card?.cover.color : defaultColor,
+                    opacity: card?.cover.color ? '1' : '0.3'
+                  }}>
+                  <div className={styles.type2__body}>
+                    <div
+                      className={styles.type2_text1}
+                      style={{backgroundColor: card?.cover.color ? '#5e6c84' : '#fff'}}
+                    />
+                    <div
+                      className={styles.type2_text2}
+                      style={{backgroundColor: card?.cover.color ? '#5e6c84' : '#fff'}}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {card?.cover.color &&
+            <button
+              className={styles.popover__cover_clear}
+              onClick={() => dispatch(clearCardCoverAction())}
+            >
+              Убрать обложку
+            </button>
+            }
+
+            <h4 className={`${styles.popover__subheading} ${styles.popover__labels_subheading}`}>Цвета</h4>
+            <div className={styles.popover__cover_colors}>
+              {coverColors.map(color => {
+                return <div
+                  key={color}
+                  className={`${styles.popover__cover_color} ${card?.cover.color === color ? styles.active : ''}`}
+                  style={{backgroundColor: color}}
+                  onClick={() => dispatch(addCardCoverAction(color))}
+                />
+              })}
             </div>
           </Popover>
         );
@@ -263,7 +370,8 @@ const Modal = ({modalIsOpen, modalClose}) => {
             overflow: 'none',
             display: 'flex',
             alignItems: 'flex-start',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            inset: '0'
           },
           overlay: {
             zIndex: '1000',
@@ -272,6 +380,13 @@ const Modal = ({modalIsOpen, modalClose}) => {
         }
       }
     >
+      <span
+        className={styles.modal__close}
+        onClick={modalClose}
+      >
+        <i className="fas fa-times" />
+      </span>
+
       <div className={styles.modal__card_infos}>
         <div className={styles.modal__card_info}>
           <span className={styles.modal__card_info_icon}>
@@ -282,6 +397,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
               <form
                 onSubmit={cardNameFormSubmit}
                 className={styles.modal__card_info_details_card_name_form}
+                ref={cardNameRef}
               >
                 <input
                   type='text'
@@ -354,6 +470,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
               <form
                 className={styles.modal__card_info_details_add}
                 onSubmit={cardDescriptionFormSubmit}
+                ref={cardDescriptionRef}
               >
                 <textarea
                   placeholder='Добавить более подробное описание...'
@@ -395,7 +512,9 @@ const Modal = ({modalIsOpen, modalClose}) => {
                 alt="Avatar"
               />
             </div>
-            <div className={`${styles.modal__card_info_actions_comment_container} ${!commentFormCollapse ? styles.hide : ''}`}
+            <div
+              className={`${styles.modal__card_info_actions_comment_container} ${!commentFormCollapse ? styles.hide : ''}`}
+              ref={commentRef}
             >
               <textarea
                 placeholder='Напишите комментарий...'
@@ -408,7 +527,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
                 onClick={() => {
                   if(commentValue.trim()) {
                     dispatch(addCommentAction(commentValue));
-                    formCollapse(setCommentFormCollapse, setCommentValue, '');
+                    formCollapse(setCommentFormCollapse, setCommentValue);
                   }
                 }}
               >
@@ -448,7 +567,10 @@ const Modal = ({modalIsOpen, modalClose}) => {
             <i className="fas fa-paperclip" />
             <p>Вложение</p>
           </button>
-          <button className={styles.modal__card_upgrade_button}>
+          <button
+            onClick={() => setPopoverType('cover')}
+            className={styles.modal__card_upgrade_button}
+          >
             <i className="far fa-credit-card" />
             <p>Обложка</p>
           </button>

@@ -2,16 +2,16 @@
 
 .ReactModal__Content {
   opacity: 0;
-  transform: scale(0.6);
+  transform: translateY(47px) scale(0.6);
   transition: opacity .3s ease-in-out, transform .3s ease-in-out;
 }
 .ReactModal__Content--after-open {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(47px) scale(1);
 }
 .ReactModal__Content--before-close {
   opacity: 0;
-  transform: scale(0.6);
+  transform: translateY(47px) scale(0.6);
 }
 
 /* overlay */

@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 
 import Button from "../common/Button";
 
+import Logo from './logo.gif';
+
 import styles from './Header.module.scss';
 
 const Header = () => {
@@ -35,7 +37,7 @@ const Header = () => {
           <div className={`${styles.header__section} ${styles.header__section_logo}`}>
             <Link className={styles.header__logo} to='/'>
               <img
-                src="https://a.trellocdn.com/prgb/dist/images/header-logo-2x.01ef898811a879595cea.png"
+                src={Logo}
                 alt="Logo"
               />
             </Link>

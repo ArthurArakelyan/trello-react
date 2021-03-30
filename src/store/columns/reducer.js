@@ -17,7 +17,10 @@ import {
   CHANGE_LABEL,
   DELETE_LABEL,
   CHANGE_COLUMNS_ACTIVE_LABELS,
-  CREATE_LABEL
+  CREATE_LABEL,
+  ADD_CARD_COVER,
+  CHANGE_CARD_COVER_TYPE,
+  CLEAR_CARD_COVER
 } from './actionTypes';
 
 const initialState = {
@@ -65,8 +68,11 @@ const columnsReducer = (state = initialState, action = {}) => {
                 id: nanoid(),
                 description: '',
                 comments: [],
-                // labels: state.labels,
-                labels: []
+                labels: [],
+                cover: {
+                  type: 1,
+                  color: null
+                }
               }]
             }
           }
@@ -340,6 +346,85 @@ const columnsReducer = (state = initialState, action = {}) => {
       return {
         ...state,
         labels: [...state.labels, action.payload]
+      }
+    }
+    case ADD_CARD_COVER: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          return {
+            ...column,
+            cardsArray: column.cardsArray.map(card => {
+              if(card.id === state.editingColumn.card) {
+                if(card.cover.color === action.payload) {
+                  return {
+                    ...card,
+                    cover: {
+                      ...card.cover,
+                      color: null
+                    }
+                  }
+                }
+
+                return {
+                  ...card,
+                  cover: {
+                    ...card.cover,
+                    color: action.payload
+                  }
+                }
+              }
+
+              return card;
+            })
+          }
+        })
+      }
+    }
+    case CHANGE_CARD_COVER_TYPE: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          return {
+            ...column,
+            cardsArray: column.cardsArray.map(card => {
+              if(card.id === state.editingColumn.card) {
+                return {
+                  ...card,
+                  cover: {
+                    ...card.cover,
+                    type: action.payload
+                  }
+                }
+              }
+
+              return card;
+            })
+          }
+        })
+      }
+    }
+    case CLEAR_CARD_COVER: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          return {
+            ...column,
+            cardsArray: column.cardsArray.map(card => {
+              if(card.id === state.editingColumn.card) {
+                return {
+                  ...card,
+                  cover: {
+                    ...card.cover,
+                    color: null
+                  }
+                }
+              }
+
+              return card;
+            })
+          }
+        })
       }
     }
     default: {

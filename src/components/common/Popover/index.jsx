@@ -2,9 +2,9 @@ import React from 'react';
 
 import styles from './Popover.module.scss'
 
-const Popover = ({heading, children, back, close}) => {
+const Popover = ({heading, children, back, close, popoverRef}) => {
   return (
-    <div className={styles.popover}>
+    <div className={styles.popover} ref={popoverRef}>
       <div className={styles.popover__wrapper}>
         <div className={styles.popover__content}>
           <div className={styles.popover__header}>

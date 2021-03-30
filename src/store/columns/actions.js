@@ -14,7 +14,10 @@ import {
   CHANGE_LABEL,
   DELETE_LABEL,
   CHANGE_COLUMNS_ACTIVE_LABELS,
-  CREATE_LABEL
+  CREATE_LABEL,
+  ADD_CARD_COVER,
+  CHANGE_CARD_COVER_TYPE,
+  CLEAR_CARD_COVER
 } from './actionTypes';
 
 export function addColumnAction(value) {
@@ -137,5 +140,25 @@ export function createLabelAction(label) {
   return {
     type: CREATE_LABEL,
     payload: label
+  }
+}
+
+export function addCardCoverAction(color) {
+  return {
+    type: ADD_CARD_COVER,
+    payload: color
+  }
+}
+
+export function changeCardCoverTypeAction(type) {
+  return {
+    type: CHANGE_CARD_COVER_TYPE,
+    payload: type
+  }
+}
+
+export function clearCardCoverAction() {
+  return {
+    type: CLEAR_CARD_COVER
   }
 }

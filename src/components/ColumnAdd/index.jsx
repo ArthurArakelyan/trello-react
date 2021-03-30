@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import {addColumnAction} from '../../store/columns/actions';
 
 import useFormCollapse from "../../hooks/useFormCollapse";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 import Button from "../common/Button";
 
@@ -25,10 +26,12 @@ const ColumnAdd = () => {
     }
   }
 
+  const ref = useOutsideClick(() => formCollapse(setFormCollapsed, setValue));
+
   if(formCollapsed) {
     return (
       <div className={styles.column__add}>
-        <form className={styles.column__add_form} onSubmit={formSubmit}>
+        <form ref={ref} className={styles.column__add_form} onSubmit={formSubmit}>
           <input
             type="text"
             className={styles.column__add_input}

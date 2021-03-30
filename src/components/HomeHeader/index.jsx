@@ -40,25 +40,15 @@ const HomeHeader = ({menuCollapse}) => {
         <Button>
           <p>{board.value}</p>
 
-          <span className={styles.subscribe__type}>Business</span>
+          <span className={styles.subscribe__type}>Free</span>
         </Button>
 
         <div className={styles.divider} />
 
         <Button className={`button ${styles.home__header__action_board_type}`}>
-          <i className="fas fa-user-friends" />
+          <i className="fas fa-lock" />
 
-          <span>Командная</span>
-        </Button>
-
-        <div className={styles.divider} />
-
-        <Button className={`button ${styles.home__header_action_avatar}`}>
-          <img src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/50.png" alt="Avatar" />
-        </Button>
-
-        <Button>
-          Пригласить
+          <span>Приватная</span>
         </Button>
       </div>
 

@@ -11,6 +11,8 @@ import {
 
 import useFormCollapse from "../../hooks/useFormCollapse";
 
+import useOutsideClick from "../../hooks/useOutsideClick";
+
 import styles from './Column.module.scss';
 
 const Column = ({column, modalOpen}) => {
@@ -43,17 +45,15 @@ const Column = ({column, modalOpen}) => {
     }
   }
 
+  const cardFormRef = useOutsideClick(() => formCollapse(setCardFormCollapse, setCardValue));
+  const nameFormRef = useOutsideClick(nameFormSubmit);
+
   return (
     <div
       className={styles.column}
       draggable={true}
-      onDragStart={function() {
-        const droppedColumn = columns.findIndex(col => col.id === column.id);
-        dispatch(columnDragStartAction(droppedColumn));
-      }}
-      onDragOver={function(e) {
-        e.preventDefault();
-      }}
+      onDragStart={() => dispatch(columnDragStartAction(columns.findIndex(col => col.id === column.id)))}
+      onDragOver={(e) => e.preventDefault()}
       onDrop={function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -63,7 +63,11 @@ const Column = ({column, modalOpen}) => {
     >
       <div className={styles.column__header}>
         {nameFormCollapse ?
-          <form className={styles.column__header_form} onSubmit={nameFormSubmit}>
+          <form
+            ref={nameFormRef}
+            className={styles.column__header_form}
+            onSubmit={nameFormSubmit}
+          >
             <input
               type="text"
               value={nameValue}
@@ -93,52 +97,60 @@ const Column = ({column, modalOpen}) => {
             return (
               <button
                 key={card.id}
-                className={styles.column__card}
+                className={
+                  `${styles.column__card} ${card.cover.color && card.cover.type === 1 ? styles.cover : ''}`
+                }
                 onClick={() => modalOpen(column.id, card.id)}
               >
-                {!!card.labels.length &&
-                <div className={styles.column__card_labels}>
-                  {card.labels.map(label => {
-                    return (
-                      <div
-                        key={label.id}
-                        className={`${styles.column__card_label} ${columnsActiveLabels ? styles.active : ''}`}
-                        title={label.value}
-                        style={{backgroundColor: label.color}}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          dispatch(changeColumnsActiveLabels());
-                        }}
-                      >
-                        {columnsActiveLabels &&
-                        <span>
+                {card.cover.color && card.cover.type === 1 && <div
+                  className={styles.column__card_cover}
+                  style={{backgroundColor: card.cover.color}}
+                />}
+                <div className={styles.column__card_content}>
+                  {!!card.labels.length &&
+                  <div className={styles.column__card_labels}>
+                    {card.labels.map(label => {
+                      return (
+                        <div
+                          key={label.id}
+                          className={`${styles.column__card_label} ${columnsActiveLabels ? styles.active : ''}`}
+                          title={label.value}
+                          style={{backgroundColor: label.color}}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            dispatch(changeColumnsActiveLabels());
+                          }}
+                        >
+                          {columnsActiveLabels &&
+                          <span>
                           {label.value.length > 21 ? `${label.value.slice(0, 21)}...` : label.value}
                         </span>
-                        }
-                      </div>
-                    )
-                  })}
-                </div>
-                }
+                          }
+                        </div>
+                      )
+                    })}
+                  </div>
+                  }
 
-                <span>{card.value}</span>
+                  <span>{card.value}</span>
 
-                {card.description || card.comments.length ?
-                  <div className={styles.column__card_badges}>
-                    {card.description &&
+                  {card.description || card.comments.length ?
+                    <div className={styles.column__card_badges}>
+                      {card.description &&
                       <span title="Эта карточка с описанием." className={styles.column__card_badge}>
                         <i className="fas fa-align-left" />
                       </span>
-                    }
-                    {!!card.comments.length &&
+                      }
+                      {!!card.comments.length &&
                       <span title="Комментарии" className={styles.column__card_badge}>
                         <i className="far fa-comment" />
                         <span style={{marginLeft: '4px'}}>{card.comments.length}</span>
                       </span>
-                    }
-                  </div>
-                  : null
-                }
+                      }
+                    </div>
+                    : null
+                  }
+                </div>
               </button>
             )
           })}
@@ -147,7 +159,11 @@ const Column = ({column, modalOpen}) => {
 
       <div className={styles.column__cards_creating}>
         {cardFormCollapse ?
-          <form className={styles.column__cards_form} onSubmit={cardFormSubmit}>
+          <form
+            ref={cardFormRef}
+            className={styles.column__cards_form}
+            onSubmit={cardFormSubmit}
+          >
             <textarea
               value={cardValue}
               onChange={(e) => setCardValue(e.target.value)}

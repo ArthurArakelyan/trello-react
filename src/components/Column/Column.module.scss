@@ -46,7 +46,7 @@
   border-radius: 3px;
   color: #6b778c;
   outline: none;
-  transition: background-color .3s ease-in-out;
+  transition: background-color .2s ease-in-out;
 
   &:hover {
     background-color: rgba(9,30,66,.08);
@@ -84,29 +84,45 @@
 .column__card {
   width: 100%;
   background-color: white;
-  padding: 8px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.582);
   transition: background-color .2s ease-in-out;
-  border: none;
+  padding: 0;
   border-radius: 3px;
-  outline: none;
 
   &:not(:nth-child(1)) {
     margin-top: 8px;
   }
 
   &:hover {
-    cursor: pointer;
     background-color: hsla(0,0%,100%,.3);
   }
 
   &:active {
     background-color: hsla(0,0%,100%,.1);
   }
+
+  &.cover {
+    border-radius: 0 0 3px 3px;
+  }
+}
+.column__card_content {
+  box-sizing: border-box;
+  width: 99%;
+  padding: 8px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.column__card_cover {
+  border-radius: 3px 3px 0 0;
+  width: 100%;
+  height: 32px;
 }
 
 .column__cards_creating {
@@ -223,7 +239,7 @@
   }
 }
 .column__card_labels {
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   width: 95%;
   display: flex;
   align-items: flex-start;

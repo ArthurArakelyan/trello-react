@@ -6,6 +6,7 @@ import moment from "moment";
 import {deleteCommentAction, editCommentAction} from "../../../../store/columns/actions";
 
 import useFormCollapse from "../../../../hooks/useFormCollapse";
+import useOutsideClick from "../../../../hooks/useOutsideClick";
 
 import styles from './Comment.module.scss';
 
@@ -23,6 +24,8 @@ const Comment = ({comment}) => {
       formCollapse(setCommentEditingCollapse, setCommentValue, value);
     }
   }
+
+  const ref = useOutsideClick(() => formCollapse(setCommentEditingCollapse, setCommentValue, value));
 
   return (
     <div className={styles.modal__card_info_actions_comment_comment} key={comment.id}>
@@ -45,7 +48,7 @@ const Comment = ({comment}) => {
         {!commentEditingCollapse && <p className={styles.modal__card_comment_value}>{value}</p>}
 
         {commentEditingCollapse ?
-          <div className={styles.modal__card_comment_edit}>
+          <div className={styles.modal__card_comment_edit} ref={ref}>
             <textarea
               value={commentValue}
               onChange={(e) => setCommentValue(e.target.value)}
