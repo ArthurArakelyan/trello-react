@@ -1,0 +1,103 @@
+.modal__card_checklist {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-top: 25px;
+}
+.modal__card_checklist_container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.modal__card_checklist_header_icon {
+  height: 100%;
+}
+.modal__card_checklist_header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .modal__card_detail_heading {
+    cursor: pointer;
+  }
+}
+.modal__card_checklist_header_delete {
+  padding: 6px 12px;
+  background-color: rgba(9,30,66,.04);
+  line-height: 20px;
+  transition: background-color .1s ease-in-out, color .1s ease-in-out;
+
+  &:hover {
+    background-color: rgba(9,30,66,.08);
+  }
+
+  &:active {
+    background-color: #e4f0f6;
+    color: #0079bf;
+  }
+}
+.modal__card_checklist_progress {
+  margin-top: 12px;
+}
+.modal__card_checklist_progress_percentage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5e6c84;
+  font-size: 11px;
+  width: 32px;
+}
+.modal__card_checklist_progress_bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(9,30,66,.08);
+  position: relative;
+
+  div {
+    height: 100%;
+    border-radius: inherit;
+    background-color: #5ba4cf;
+    transition: width .2s ease-in-out, background-color .1s ease-in-out;
+
+    &.completed {
+      background-color: #61bd4f;
+    }
+  }
+}
+.modal__card_checklist_add_item {
+  margin-top: 8px;
+  padding: 6px 12px;
+  line-height: 20px;
+  background-color: rgba(9,30,66,.04);
+  transition: background-color .1s ease-in-out, color .1s ease-in-out;
+
+  &:hover {
+    background-color: rgba(9,30,66,.08);
+  }
+
+  &:active {
+    background-color: #e4f0f6;
+    color: #0079bf;
+  }
+}
+.modal__card_checklist_textarea {
+  box-shadow: inset 0 0 0 2px #0079bf;
+  padding: 8px 12px 9px 12px !important;
+  line-height: 20px;
+}
+.modal__card_checklist_items {
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

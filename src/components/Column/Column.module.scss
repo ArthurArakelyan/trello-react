@@ -214,20 +214,22 @@
 }
 .column__cards_close {
   font-size: 22px;
-  color: #6b778c;
+  color: #42526e;
   margin-left: 5px;
-  transition: color .3s ease-in-out;
+  transition: color .2s ease-in-out;
 
   &:hover {
-    color: black;
+    color: #172b4d;
   }
 }
 .column__card_badges {
   margin-top: 10px;
+  width: 100%;
   color: rgb(107, 119, 140);
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  flex-wrap: wrap;
 }
 .column__card_badge {
   font-size: 12px !important;

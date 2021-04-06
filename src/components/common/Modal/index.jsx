@@ -12,12 +12,14 @@ import {
   createLabelAction,
   addCardCoverAction,
   changeCardCoverTypeAction,
-  clearCardCoverAction
+  clearCardCoverAction,
+  addCheckListAction
 } from '../../../store/columns/actions';
 
 import Comment from "./Comment";
 import Popover from "../Popover";
 import Label from "./Label";
+import CheckList from "./CheckList";
 
 import labelColors from "../../../constants/labelColors";
 import coverColors from "../../../constants/coverColors";
@@ -62,6 +64,8 @@ const Modal = ({modalIsOpen, modalClose}) => {
   }
   const [newLabel, setNewLabel] = useState(initialNewLabel);
 
+  const [checkListValue, setCheckListValue] = useState('Чек-лист');
+
   useEffect(() => {
     if(!modalIsOpen) {
       setPopoverType(null);
@@ -83,6 +87,25 @@ const Modal = ({modalIsOpen, modalClose}) => {
     if(descriptionValue.trim() || descriptionValue === '') {
       dispatch(changeCardDescriptionAction(descriptionValue));
       formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+    }
+  }
+
+  const cardCommentsFormSubmit = (e) => {
+    e.preventDefault();
+
+    if(commentValue.trim()) {
+      dispatch(addCommentAction(commentValue));
+      formCollapse(setCommentFormCollapse, setCommentValue);
+    }
+  }
+
+  const checkListFormSubmit = (e) => {
+    e.preventDefault();
+
+    if(checkListValue.trim()) {
+      dispatch(addCheckListAction(checkListValue));
+      setCheckListValue('Чек-лист');
+      setPopoverType(null);
     }
   }
 
@@ -343,6 +366,34 @@ const Modal = ({modalIsOpen, modalClose}) => {
           </Popover>
         );
       }
+      case 'checkList': {
+        return (
+          <Popover
+            heading="Добавление списка задач"
+            close={closePopover}
+            popoverRef={popoverRef}
+          >
+            <form
+              className={`${styles.popover__label_editing_name_section} ${styles.popover__checkList_form}`}
+              onSubmit={checkListFormSubmit}
+            >
+              <label htmlFor="checkList" className={styles.popover__subheading}>
+                Название
+              </label>
+              <input
+                id="checkList"
+                type="text"
+                autoFocus
+                value={checkListValue}
+                onChange={(e) => setCheckListValue(e.target.value)}
+              />
+              <button>
+                Добавить
+              </button>
+            </form>
+          </Popover>
+        );
+      }
       default: {
         return null;
       }
@@ -359,11 +410,11 @@ const Modal = ({modalIsOpen, modalClose}) => {
         {
           content: {
             position: 'relative',
-            width: '750px',
+            width: '760px',
             borderRadius: '3px',
             height: 'fit-content',
             margin: '0 auto 80px auto',
-            padding: '20px 10px',
+            padding: '20px 0',
             border: 'none',
             backgroundColor: '#EBECF0',
             zIndex: '1000',
@@ -387,16 +438,18 @@ const Modal = ({modalIsOpen, modalClose}) => {
         <i className="fas fa-times" />
       </span>
 
-      <div className={styles.modal__card_infos}>
-        <div className={styles.modal__card_info}>
-          <span className={styles.modal__card_info_icon}>
+      <div className={styles.modal__card_details}>
+        <div className={styles.modal__card_detail}>
+          <div className={styles.modal__card_detail_icon}>
             <i className="far fa-credit-card" />
-          </span>
-          <div className={styles.modal__card_info_details}>
-            {cardNameFormCollapse ?
+          </div>
+
+          <div className={styles.modal__card_detail_content}>
+            <div className={styles.modal__card_detail_header}>
+              {cardNameFormCollapse ?
               <form
                 onSubmit={cardNameFormSubmit}
-                className={styles.modal__card_info_details_card_name_form}
+                className={styles.modal__card_name_detail_form}
                 ref={cardNameRef}
               >
                 <input
@@ -408,31 +461,36 @@ const Modal = ({modalIsOpen, modalClose}) => {
               </form>
               :
               <p
-                className={styles.modal__card_info_details_card_name}
+                className={`${styles.modal__card_detail_heading} ${styles.modal__card_name_detail_heading}`}
                 onClick={() => formCollapse(setCardNameFormCollapse, setCardNameValue, card?.value)}
               >
                 {card?.value}
               </p>
-            }
+              }
+            </div>
 
-            <span>в колонке {column?.value}</span>
+            <div className={styles.modal__card_detail_main}>
+              <span className={styles.modal__card_name_detail_column_name}>
+                в колонке {column?.value}
+              </span>
+            </div>
 
             {!!card?.labels.length &&
-            <div className={styles.modal__card_info_details_labels}>
-              <h5 className={styles.modal__card_info_details_labels_heading}>
+            <div className={styles.modal__card_labels}>
+              <p className={styles.modal__card_labels_heading}>
                 МЕТКИ
-              </h5>
-              <div className={styles.modal__card_info_details_labels_container}>
+              </p>
+              <div className={styles.modal__card_labels_container}>
                 {card?.labels.map(label => {
                   return (
                     <div
                       key={label.id}
-                      className={styles.modal__card_info_details_labels_label}
+                      className={styles.modal__card_label}
                       style={{backgroundColor: label.color}}
                       title={label.value}
                     >
                       {label.value &&
-                      <p className={styles.modal__card_info_details_labels_label_value}>
+                      <p className={styles.modal__card_label_value}>
                         {label.value.length > 42 ? `${label.value.slice(0, 42)}...` : label.value}
                       </p>
                       }
@@ -445,16 +503,21 @@ const Modal = ({modalIsOpen, modalClose}) => {
           </div>
         </div>
 
-        <div className={styles.modal__card_info}>
-          <span className={styles.modal__card_info_icon}>
-            <i className="fas fa-align-justify" />
-          </span>
-          <div className={styles.modal__card_info_details}>
-            <p>Описание</p>
 
-            {card?.description && !descriptionFormCollapse ?
+        <div className={styles.modal__card_detail}>
+          <div className={styles.modal__card_detail_icon}>
+            <i className="fas fa-align-justify" />
+          </div>
+
+          <div className={styles.modal__card_detail_content}>
+            <div className={styles.modal__card_detail_header}>
+              <p className={styles.modal__card_detail_heading}>Описание</p>
+            </div>
+
+            <div className={styles.modal__card_detail_main}>
+              {card?.description && !descriptionFormCollapse ?
               <p
-                className={styles.modal__card_info_details_description}
+                className={styles.modal__card_description_details}
                 onClick={() => formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description)}
               >
                 {card?.description}
@@ -463,12 +526,12 @@ const Modal = ({modalIsOpen, modalClose}) => {
               <button
                 type="button"
                 onClick={() => formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description)}
-                className={styles.modal__card_info_details_button}
+                className={styles.modal__card_description_details_button}
               >
                 Добавить более подробное описание...
               </button> :
               <form
-                className={styles.modal__card_info_details_add}
+                className={styles.modal__card_description_details_form}
                 onSubmit={cardDescriptionFormSubmit}
                 ref={cardDescriptionRef}
               >
@@ -478,63 +541,73 @@ const Modal = ({modalIsOpen, modalClose}) => {
                   onChange={(e) => setDescriptionValue(e.target.value)}
                   autoFocus
                 />
-                <div className={styles.modal__card_info_details_add_actions}>
-                  <button className={styles.modal__card_info_details_add_actions_save}>
+                <div className={styles.modal__card_description_details_form_actions}>
+                  <button className={styles.modal__card_description_details_form_actions_save}>
                     Сохранить
                   </button>
                   <button
                     type='button'
-                    className={styles.modal__card_info_details_add_actions_close}
-                    onClick={() => formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description)}
+                    className={styles.modal__card_description_details_form_actions_close}
+                    onClick={() => {
+                      formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+                    }}
                   >
                     <i className="fas fa-times" />
                   </button>
                 </div>
               </form>
-            }
+              }
+            </div>
           </div>
         </div>
 
-        <div className={`${styles.modal__card_info} ${styles.modal__card_info_actions}`}>
-          <div className={styles.modal__card_info_icon_and_details}>
-            <span className={styles.modal__card_info_icon}>
-              <i className="fas fa-align-left" />
-            </span>
-            <div className={styles.modal__card_info_details}>
-              <p>Действия</p>
+        {!!card?.checklist.length &&
+        <div className={styles.modal__card_checklists}>
+          {card?.checklist.map(list => {
+            return <CheckList key={list.id} list={list} />
+          })}
+        </div>
+        }
+
+        <div className={styles.modal__card_comments}>
+          <div className={styles.modal__card_comments_details_container}>
+            <div className={styles.modal__card_section}>
+              <span className={styles.modal__card_detail_icon}>
+                <i className="fas fa-align-left" />
+              </span>
+              <p className={styles.modal__card_detail_heading}>Действия</p>
             </div>
           </div>
 
-          <div className={styles.modal__card_info_actions_comment}>
-            <div className={styles.modal__card_info_actions_comment_avatar_container}>
-              <img
-                src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png"
-                alt="Avatar"
-              />
-            </div>
-            <div
-              className={`${styles.modal__card_info_actions_comment_container} ${!commentFormCollapse ? styles.hide : ''}`}
-              ref={commentRef}
-            >
-              <textarea
-                placeholder='Напишите комментарий...'
-                value={commentValue}
-                onClick={() => (setCommentFormCollapse(true))}
-                onChange={(e) => setCommentValue(e.target.value)}
-              />
-              <button
-                className={`${styles.modal__card_info_actions_comment_save} ${!commentValue.trim() ? styles.disabled : ''}`}
-                onClick={() => {
-                  if(commentValue.trim()) {
-                    dispatch(addCommentAction(commentValue));
-                    formCollapse(setCommentFormCollapse, setCommentValue);
-                  }
-                }}
+          <div className={styles.modal__card_comments_details_container}>
+            <div className={styles.modal__card_section}>
+              <div className={styles.modal__card_comments_avatar}>
+                <img
+                  src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png"
+                  alt="Avatar"
+                />
+              </div>
+
+              <form
+                className={`${styles.modal__card_comments_create_form} ${!commentFormCollapse ? styles.hide : ''}`}
+                ref={commentRef}
+                onSubmit={cardCommentsFormSubmit}
               >
-                Сохранить
-              </button>
+                <textarea
+                  placeholder='Напишите комментарий...'
+                  value={commentValue}
+                  onClick={() => (setCommentFormCollapse(true))}
+                  onChange={(e) => setCommentValue(e.target.value)}
+                />
+                <button
+                  className={`${styles.modal__card_comments_create_save} ${!commentValue.trim() ? styles.disabled : ''}`}
+                >
+                  Сохранить
+                </button>
+              </form>
             </div>
           </div>
+
           {card?.comments.map(comment => {
             return <Comment key={comment.id} comment={comment} />
           })}
@@ -555,7 +628,10 @@ const Modal = ({modalIsOpen, modalClose}) => {
             <i className="fas fa-tag" />
             <p>Метки</p>
           </button>
-          <button className={styles.modal__card_upgrade_button}>
+          <button
+            onClick={() => setPopoverType('checkList')}
+            className={styles.modal__card_upgrade_button}
+          >
             <i className="far fa-check-square" />
             <p>Чек-лист</p>
           </button>

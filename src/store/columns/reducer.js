@@ -20,7 +20,12 @@ import {
   CREATE_LABEL,
   ADD_CARD_COVER,
   CHANGE_CARD_COVER_TYPE,
-  CLEAR_CARD_COVER
+  CLEAR_CARD_COVER,
+  ADD_CHECK_LIST,
+  DELETE_CHECK_LIST,
+  ADD_CHECK_LIST_ITEM,
+  DELETE_CHECK_LIST_ITEM,
+  COMPLETE_CHECK_LIST_ITEM
 } from './actionTypes';
 
 const initialState = {
@@ -72,7 +77,8 @@ const columnsReducer = (state = initialState, action = {}) => {
                 cover: {
                   type: 1,
                   color: null
-                }
+                },
+                checklist: []
               }]
             }
           }
@@ -424,6 +430,170 @@ const columnsReducer = (state = initialState, action = {}) => {
               return card;
             })
           }
+        })
+      }
+    }
+    case ADD_CHECK_LIST: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    checklist: [...card.checklist, {
+                      id: nanoid(),
+                      value: action.payload,
+                      items: []
+                    }]
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case DELETE_CHECK_LIST: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    checklist: card.checklist.filter(card => card.id !== action.payload)
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case ADD_CHECK_LIST_ITEM: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    checklist: card.checklist.map(list => {
+                      if(list.id === action.payload.id) {
+                        return {
+                          ...list,
+                          items: [...list.items, {
+                            id: nanoid(),
+                            value: action.payload.value,
+                            completed: false
+                          }]
+                        }
+                      }
+
+                      return list;
+                    })
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case COMPLETE_CHECK_LIST_ITEM: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    checklist: card.checklist.map(list => {
+                      if(list.id === action.payload.checklistId) {
+                        return {
+                          ...list,
+                          items: list.items.map(item => {
+                            if(item.id === action.payload.id) {
+                              return {
+                                ...item,
+                                completed: !item.completed
+                              }
+                            }
+
+                            return item;
+                          })
+                        }
+                      }
+
+                      return list;
+                    })
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case DELETE_CHECK_LIST_ITEM: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    checklist: card.checklist.map(list => {
+                      if(list.id === action.payload.checklistId) {
+                        return {
+                          ...list,
+                          items: list.items.filter(item => item.id !== action.payload.id)
+                        }
+                      }
+
+                      return list;
+                    })
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
         })
       }
     }

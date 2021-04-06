@@ -9,6 +9,7 @@ import useFormCollapse from "../../../../hooks/useFormCollapse";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
 
 import styles from './Comment.module.scss';
+import modalStyles from '../Modal.module.scss';
 
 const Comment = ({comment}) => {
   const {time, fullTime, value, changed, changedTime} = comment;
@@ -28,61 +29,64 @@ const Comment = ({comment}) => {
   const ref = useOutsideClick(() => formCollapse(setCommentEditingCollapse, setCommentValue, value));
 
   return (
-    <div className={styles.modal__card_info_actions_comment_comment} key={comment.id}>
-      <div className={styles.modal__card_info_actions_comment_comment_avatar_section}>
-        <img src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png" alt="Avatar"/>
-      </div>
-      <div className={styles.modal__card_info_actions_comment_comment_info_section}>
-        <div className={styles.modal__card_comment_time}>
-          <p className={styles.modal__card_comment_time_username}>
-            user
-          </p>
-          <div title={time} className={styles.modal__card_comment_created_time}>
-            <span>{moment(fullTime).fromNow()}</span>
-            {changed &&
-            <span title={changedTime ? moment(changedTime).fromNow() : ''}>(изменён)</span>
-            }
-          </div>
+    <div className={modalStyles.modal__card_comments_details_container}>
+      <div className={modalStyles.modal__card_section}>
+        <div className={modalStyles.modal__card_comments_avatar}>
+          <img
+            src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png"
+            alt="Avatar"
+          />
         </div>
 
-        {!commentEditingCollapse && <p className={styles.modal__card_comment_value}>{value}</p>}
-
-        {commentEditingCollapse ?
-          <div className={styles.modal__card_comment_edit} ref={ref}>
-            <textarea
-              value={commentValue}
-              onChange={(e) => setCommentValue(e.target.value)}
-              autoFocus
-            />
-            <div className={styles.modal__card_comment_edit_actions}>
-              <button
-                onClick={commentSave}
-                className={styles.modal__card_comment_edit_save}
-              >
-                Сохранить
-              </button>
-              <button
-                onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}
-                className={styles.modal__card_comment_edit_close}
-              >
-                <i className="fas fa-times" />
-              </button>
+        <div className={styles.comment}>
+          <div className={styles.comment__time}>
+            <p className={styles.comment__time_username}>
+              user
+            </p>
+            <div title={time} className={styles.comment__created_time}>
+              <span>{moment(fullTime).fromNow()}</span>
+              {changed &&
+              <span title={changedTime ? moment(changedTime).fromNow() : ''}>(изменён)</span>
+              }
             </div>
           </div>
-          :
-          <div className={styles.modal__card_comment_actions}>
-            <button
-              onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}
-            >
-              Изменить
-            </button>
-            <span>-</span>
-            <button
-              onClick={() => dispatch(deleteCommentAction(comment.id))}
-            >
-              Удалить
-            </button>
-          </div>}
+
+          {!commentEditingCollapse && <p className={styles.comment__value}>{value}</p>}
+
+          {commentEditingCollapse ?
+            <div className={styles.comment__edit} ref={ref}>
+              <textarea
+                value={commentValue}
+                onChange={(e) => setCommentValue(e.target.value)}
+                autoFocus
+              />
+              <div className={styles.comment__edit_actions}>
+                <button
+                  onClick={commentSave}
+                  className={styles.comment__edit_save}
+                >
+                  Сохранить
+                </button>
+                <button
+                  onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}
+                  className={styles.comment__edit_close}
+                >
+                  <i className="fas fa-times" />
+                </button>
+              </div>
+            </div>
+            :
+            <div className={styles.comment__actions}>
+              <button onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}>
+                Изменить
+              </button>
+              <span>-</span>
+              <button onClick={() => dispatch(deleteCommentAction(comment.id))}>
+                Удалить
+              </button>
+            </div>
+          }
+        </div>
       </div>
     </div>
   );

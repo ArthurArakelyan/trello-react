@@ -17,7 +17,12 @@ import {
   CREATE_LABEL,
   ADD_CARD_COVER,
   CHANGE_CARD_COVER_TYPE,
-  CLEAR_CARD_COVER
+  CLEAR_CARD_COVER,
+  ADD_CHECK_LIST,
+  DELETE_CHECK_LIST,
+  ADD_CHECK_LIST_ITEM,
+  DELETE_CHECK_LIST_ITEM,
+  COMPLETE_CHECK_LIST_ITEM
 } from './actionTypes';
 
 export function addColumnAction(value) {
@@ -160,5 +165,49 @@ export function changeCardCoverTypeAction(type) {
 export function clearCardCoverAction() {
   return {
     type: CLEAR_CARD_COVER
+  }
+}
+
+export function addCheckListAction(value) {
+  return {
+    type: ADD_CHECK_LIST,
+    payload: value
+  }
+}
+
+export function deleteCheckListAction(id) {
+  return {
+    type: DELETE_CHECK_LIST,
+    payload: id
+  }
+}
+
+export function addCheckListItemAction(value, id) {
+  return {
+    type: ADD_CHECK_LIST_ITEM,
+    payload: {
+      value,
+      id
+    }
+  }
+}
+
+export function deleteCheckListItemAction(checklistId, id) {
+  return {
+    type: DELETE_CHECK_LIST_ITEM,
+    payload: {
+      checklistId,
+      id
+    }
+  }
+}
+
+export function completeCheckListItemAction(checklistId, id) {
+  return {
+    type: COMPLETE_CHECK_LIST_ITEM,
+    payload: {
+      checklistId,
+      id
+    }
   }
 }

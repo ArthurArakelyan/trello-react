@@ -134,7 +134,7 @@ const Column = ({column, modalOpen}) => {
 
                   <span>{card.value}</span>
 
-                  {card.description || card.comments.length ?
+                  {card.description || card.comments.length || card.checklist.length ?
                     <div className={styles.column__card_badges}>
                       {card.description &&
                       <span title="Эта карточка с описанием." className={styles.column__card_badge}>
@@ -145,6 +145,19 @@ const Column = ({column, modalOpen}) => {
                       <span title="Комментарии" className={styles.column__card_badge}>
                         <i className="far fa-comment" />
                         <span style={{marginLeft: '4px'}}>{card.comments.length}</span>
+                      </span>
+                      }
+                      {!!card.checklist.length && card.checklist.map(list => list.items.length) &&
+                      <span title="Элементы списка задач" className={styles.column__card_badge}>
+                        <i className="far fa-check-square" />
+                        <span style={{marginLeft: '4px'}}>
+                          {card.checklist.map(list => {
+                            return list.items.filter(item => item.completed).length;
+                          }).reduce((sum, current) => sum + current, 0)}
+                          /
+                          {card.checklist.map(list => list.items.length)
+                            .reduce((sum, current) => sum + current, 0)}
+                        </span>
                       </span>
                       }
                     </div>
