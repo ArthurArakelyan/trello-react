@@ -94,6 +94,9 @@ const Column = ({column, modalOpen}) => {
       {!!column.cardsArray.length &&
         <div className={styles.column__cards}>
           {column.cardsArray.map(card => {
+            const isChecklistItems = card.checklist.map(list => list.items.length)
+              .reduce((sum, current) => sum + current, 0);
+
             return (
               <button
                 key={card.id}
@@ -134,7 +137,7 @@ const Column = ({column, modalOpen}) => {
 
                   <span>{card.value}</span>
 
-                  {card.description || card.comments.length || card.checklist.length ?
+                  {card.description || card.comments.length || isChecklistItems ?
                     <div className={styles.column__card_badges}>
                       {card.description &&
                       <span title="Эта карточка с описанием." className={styles.column__card_badge}>
@@ -147,7 +150,7 @@ const Column = ({column, modalOpen}) => {
                         <span style={{marginLeft: '4px'}}>{card.comments.length}</span>
                       </span>
                       }
-                      {!!card.checklist.length && card.checklist.map(list => list.items.length) &&
+                      {!!card.checklist.length && isChecklistItems ?
                       <span title="Элементы списка задач" className={styles.column__card_badge}>
                         <i className="far fa-check-square" />
                         <span style={{marginLeft: '4px'}}>
@@ -158,7 +161,7 @@ const Column = ({column, modalOpen}) => {
                           {card.checklist.map(list => list.items.length)
                             .reduce((sum, current) => sum + current, 0)}
                         </span>
-                      </span>
+                      </span> : null
                       }
                     </div>
                     : null

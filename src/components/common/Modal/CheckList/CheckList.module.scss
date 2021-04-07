@@ -14,6 +14,10 @@
 }
 .modal__card_checklist_header_icon {
   height: 100%;
+
+  &.editing {
+    height: auto;
+  }
 }
 .modal__card_checklist_header {
   width: 100%;
@@ -21,9 +25,13 @@
   align-items: center;
   justify-content: space-between;
 
-  .modal__card_detail_heading {
+  p {
     cursor: pointer;
   }
+}
+.modal__card_checklist_heading {
+  width: 75%;
+  line-break: anywhere;
 }
 .modal__card_checklist_header_delete {
   padding: 6px 12px;
@@ -38,6 +46,29 @@
   &:active {
     background-color: #e4f0f6;
     color: #0079bf;
+  }
+}
+.modal__card_checklist_form {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  textarea {
+    resize: none;
+    border-radius: 3px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    box-sizing: border-box;
+    outline: none;
+    color: #172b4d;
+    padding: 8px 12px;
+    background: rgba(9,30,66,.04);
+    border-color: rgba(9,30,66,.13);
+    box-shadow: inset 0 0 0 2px #dfe1e6;
   }
 }
 .modal__card_checklist_progress {

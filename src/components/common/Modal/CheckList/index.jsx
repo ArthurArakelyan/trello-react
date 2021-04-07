@@ -1,7 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {useDispatch} from "react-redux";
 
-import {deleteCheckListAction, addCheckListItemAction} from "../../../../store/columns/actions";
+import {
+  deleteCheckListAction,
+  addCheckListItemAction,
+  changeCheckListAction
+} from "../../../../store/columns/actions";
 
 import CheckListItem from "../CheckListItem";
 
@@ -15,8 +19,11 @@ const CheckList = ({list}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
-  const [formCollapsed, setFormCollapsed] = useState(false);
-  const [value, setValue] = useState('');
+  const [itemFormCollapsed, setItemFormCollapsed] = useState(false);
+  const [itemValue, setItemValue] = useState('');
+
+  const [editingFormCollapsed, setEditingFormCollapsed] = useState(false);
+  const [editingValue, setEditingValue] = useState(list.value);
 
   const completedItems = list.items.filter(item => item.completed).length;
   let percentage = 0;
@@ -24,35 +31,89 @@ const CheckList = ({list}) => {
     percentage = Math.round((completedItems / list.items.length) * 100);
   }
 
-  const formSubmit = (e) => {
+  const itemFormRef = useOutsideClick(() => formCollapse(setItemFormCollapsed, setItemValue));
+  const itemTextareaRef = useRef(null);
+  const editingFormRef = useOutsideClick(() =>
+    formCollapse(setEditingFormCollapsed, setEditingValue, list.value)
+  );
+
+  useEffect(() => {
+    if(itemValue === '' && itemTextareaRef.current) {
+      itemTextareaRef.current.focus();
+    }
+  }, [itemValue]);
+
+  const itemFormSubmit = (e) => {
     e.preventDefault();
 
-    if(value.trim()) {
-      dispatch(addCheckListItemAction(value, list.id));
-      formCollapse(setFormCollapsed, setValue);
+    if(itemValue.trim()) {
+      dispatch(addCheckListItemAction(itemValue, list.id));
+      setItemValue('');
+    } else {
+      if(itemTextareaRef.current) {
+        itemTextareaRef.current.focus();
+      }
     }
   }
 
-  const ref = useOutsideClick(() => formCollapse(setFormCollapsed, setValue));
+  const editingFormSubmit = (e) => {
+    e.preventDefault();
+
+    if(editingValue.trim()) {
+      dispatch(changeCheckListAction(list.id, editingValue));
+      formCollapse(setEditingFormCollapsed, setEditingValue, list.value)
+    }
+  }
 
   return (
     <div className={styles.modal__card_checklist}>
       <div className={styles.modal__card_checklist_container}>
         <div className={modalStyles.modal__card_section}>
-          <div className={`${modalStyles.modal__card_detail_icon} ${styles.modal__card_checklist_header_icon}`}>
+          <div className={`${modalStyles.modal__card_detail_icon} ${styles.modal__card_checklist_header_icon} ${editingFormCollapsed ? styles.editing : ''}`}>
             <i className="far fa-check-square" />
           </div>
-          <div className={styles.modal__card_checklist_header}>
-            <p className={styles.modal__card_detail_heading}>
-              {list.value}
-            </p>
-            <button
-              className={styles.modal__card_checklist_header_delete}
-              onClick={() => dispatch(deleteCheckListAction(list.id))}
+          {!editingFormCollapsed ?
+            <div className={styles.modal__card_checklist_header}>
+              <p
+                className={`${modalStyles.modal__card_detail_heading} ${styles.modal__card_checklist_heading}`}
+                onClick={() => formCollapse(setEditingFormCollapsed, setEditingValue, list.value)}
+              >
+                {list.value}
+              </p>
+              <button
+                className={styles.modal__card_checklist_header_delete}
+                onClick={() => dispatch(deleteCheckListAction(list.id))}
+              >
+                Удалить
+              </button>
+            </div>
+            :
+            <form
+              className={styles.modal__card_checklist_form}
+              onSubmit={editingFormSubmit}
+              ref={editingFormRef}
             >
-              Удалить
-            </button>
-          </div>
+              <textarea
+                placeholder='Добавить более подробное описание...'
+                value={editingValue}
+                onChange={(e) => setEditingValue(e.target.value)}
+                autoFocus
+              />
+
+              <div className={modalStyles.modal__card_description_details_form_actions}>
+                <button className={modalStyles.modal__card_description_details_form_actions_save}>
+                  Сохранить
+                </button>
+                <button
+                  type='button'
+                  className={modalStyles.modal__card_description_details_form_actions_close}
+                  onClick={() => formCollapse(setEditingFormCollapsed, setEditingValue, list.value)}
+                >
+                  <i className="fas fa-times" />
+                </button>
+              </div>
+            </form>
+          }
         </div>
       </div>
 
@@ -80,17 +141,18 @@ const CheckList = ({list}) => {
 
       <div className={styles.modal__card_checklist_container}>
         <div className={modalStyles.modal__card_section}>
-          {formCollapsed ?
+          {itemFormCollapsed ?
             <form
               className={modalStyles.modal__card_description_details_form}
-              onSubmit={formSubmit}
-              ref={ref}
+              onSubmit={itemFormSubmit}
+              ref={itemFormRef}
             >
               <textarea
                 placeholder='Добавить более подробное описание...'
                 className={styles.modal__card_checklist_textarea}
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
+                value={itemValue}
+                onChange={(e) => setItemValue(e.target.value)}
+                ref={itemTextareaRef}
                 autoFocus
               />
               <div className={modalStyles.modal__card_description_details_form_actions}>
@@ -100,7 +162,7 @@ const CheckList = ({list}) => {
                 <button
                   type='button'
                   className={modalStyles.modal__card_description_details_form_actions_close}
-                  onClick={() => formCollapse(setFormCollapsed, setValue)}
+                  onClick={() => formCollapse(setItemFormCollapsed, setItemValue)}
                 >
                   <i className="fas fa-times" />
                 </button>
@@ -109,7 +171,7 @@ const CheckList = ({list}) => {
             :
             <button
               className={styles.modal__card_checklist_add_item}
-              onClick={() => formCollapse(setFormCollapsed, setValue)}
+              onClick={() => formCollapse(setItemFormCollapsed, setItemValue)}
             >
               Добавить элемент
             </button>
