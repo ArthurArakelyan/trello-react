@@ -4,7 +4,9 @@ import {useDispatch} from "react-redux";
 import {
   completeCheckListItemAction,
   deleteCheckListItemAction,
-  changeCheckListItemAction
+  changeCheckListItemAction,
+  checkListItemDragStartAction,
+  checkListItemDropAction
 } from '../../../../store/columns/actions';
 
 import useFormCollapse from "../../../../hooks/useFormCollapse";
@@ -13,9 +15,10 @@ import useOutsideClick from "../../../../hooks/useOutsideClick";
 import styles from './CheckListItem.module.scss';
 import modalStyles from "../Modal.module.scss";
 
-const CheckListItem = ({item, checklistId}) => {
+const CheckListItem = ({item, checklist}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
+  const {id: checklistId, items} = checklist;
 
   const [formCollapsed, setFormCollapsed] = useState(false);
   const [value, setValue] = useState(item.value);
@@ -41,14 +44,26 @@ const CheckListItem = ({item, checklistId}) => {
   }
 
   return (
-    <div className={`${modalStyles.modal__card_checklist_container} ${styles.item}`}>
+    <div
+      className={`${modalStyles.modal__card_checklist_container} ${styles.item}`}
+      draggable={true}
+      onDragStart={() =>
+        dispatch(checkListItemDragStartAction(items.findIndex(i => i.id === item.id)))
+      }
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const droppedItem = items.findIndex(i => i.id === item.id);
+        dispatch(checkListItemDropAction(checklistId, droppedItem));
+      }}
+    >
       <div className={modalStyles.modal__card_section}>
-        <div className={styles.item__checkbox}>
-          <input
-            type="checkbox"
-            checked={item.completed}
-            onChange={() => dispatch(completeCheckListItemAction(checklistId, item.id))}
-          />
+        <div
+          className={`${styles.item__checkbox} ${item.completed ? styles.completed : ''}`}
+          onClick={() => dispatch(completeCheckListItemAction(checklistId, item.id))}
+        >
+          {item.completed && <span />}
         </div>
 
         {!formCollapsed ?

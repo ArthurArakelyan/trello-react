@@ -54,7 +54,7 @@ const Column = ({column, modalOpen}) => {
       draggable={true}
       onDragStart={() => dispatch(columnDragStartAction(columns.findIndex(col => col.id === column.id)))}
       onDragOver={(e) => e.preventDefault()}
-      onDrop={function(e) {
+      onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();
         const droppedColumn = columns.findIndex(col => col.id === column.id);

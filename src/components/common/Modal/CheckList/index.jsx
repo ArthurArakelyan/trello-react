@@ -134,7 +134,7 @@ const CheckList = ({list}) => {
       {!!list.items.length &&
         <div className={styles.modal__card_checklist_items}>
           {list.items.map(item => {
-            return <CheckListItem key={item.id} checklistId={list.id} item={item} />
+            return <CheckListItem key={item.id} checklist={list} item={item} />
           })}
         </div>
       }

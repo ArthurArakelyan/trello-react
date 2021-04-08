@@ -24,7 +24,9 @@ import {
   ADD_CHECK_LIST_ITEM,
   DELETE_CHECK_LIST_ITEM,
   COMPLETE_CHECK_LIST_ITEM,
-  CHANGE_CHECK_LIST_ITEM
+  CHANGE_CHECK_LIST_ITEM,
+  CHECK_LIST_ITEM_DRAG_START,
+  CHECK_LIST_ITEM_DROP
 } from './actionTypes';
 
 export function addColumnAction(value) {
@@ -231,6 +233,23 @@ export function changeCheckListItemAction(checklistId, id, value) {
       checklistId,
       id,
       value
+    }
+  }
+}
+
+export function checkListItemDragStartAction(index) {
+  return {
+    type: CHECK_LIST_ITEM_DRAG_START,
+    payload: index
+  }
+}
+
+export function checkListItemDropAction(checklistId, index) {
+  return {
+    type: CHECK_LIST_ITEM_DROP,
+    payload: {
+      checklistId,
+      index
     }
   }
 }

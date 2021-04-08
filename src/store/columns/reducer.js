@@ -27,7 +27,9 @@ import {
   ADD_CHECK_LIST_ITEM,
   DELETE_CHECK_LIST_ITEM,
   COMPLETE_CHECK_LIST_ITEM,
-  CHANGE_CHECK_LIST_ITEM
+  CHANGE_CHECK_LIST_ITEM,
+  CHECK_LIST_ITEM_DRAG_START,
+  CHECK_LIST_ITEM_DROP
 } from './actionTypes';
 
 const initialState = {
@@ -52,6 +54,14 @@ const initialState = {
 }
 
 const columnsReducer = (state = initialState, action = {}) => {
+  const move = (array, oldIndex, newIndex) => {
+    if(newIndex >= array.length) {
+      newIndex = array.length - 1;
+    }
+    array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+    return array;
+  }
+
   switch(action.type) {
     case ADD_COLUMN: {
       return {
@@ -223,14 +233,6 @@ const columnsReducer = (state = initialState, action = {}) => {
       }
     }
     case DROP_COLUMN: {
-      const move = (array, oldIndex, newIndex) => {
-        if(newIndex >= array.length) {
-          newIndex = array.length - 1;
-        }
-        array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
-        return array;
-      }
-
       const newColumns = move(state.columns, state.draggedColumn, action.payload).map(col => col);
 
       return {
@@ -657,6 +659,51 @@ const columnsReducer = (state = initialState, action = {}) => {
 
                             return item;
                           })
+                        }
+                      }
+
+                      return list;
+                    })
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case CHECK_LIST_ITEM_DRAG_START: {
+      return {
+        ...state,
+        draggedChecklistItem: action.payload
+      }
+    }
+    case CHECK_LIST_ITEM_DROP: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    checklist: card.checklist.map(list => {
+                      if(list.id === action.payload.checklistId) {
+                        const items = move(
+                          list.items,
+                          state.draggedChecklistItem,
+                          action.payload.index
+                        );
+
+                        return {
+                          ...list,
+                          items
                         }
                       }
 
