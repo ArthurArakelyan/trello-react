@@ -237,19 +237,24 @@ export function changeCheckListItemAction(checklistId, id, value) {
   }
 }
 
-export function checkListItemDragStartAction(index) {
+export function checkListItemDragStartAction(checklist, index, item) {
   return {
     type: CHECK_LIST_ITEM_DRAG_START,
-    payload: index
+    payload: {
+      checklist,
+      index,
+      item
+    }
   }
 }
 
-export function checkListItemDropAction(checklistId, index) {
+export function checkListItemDropAction(checklistId, index, item) {
   return {
     type: CHECK_LIST_ITEM_DROP,
     payload: {
       checklistId,
-      index
+      index,
+      item
     }
   }
 }

@@ -48,14 +48,14 @@ const CheckListItem = ({item, checklist}) => {
       className={`${modalStyles.modal__card_checklist_container} ${styles.item}`}
       draggable={true}
       onDragStart={() =>
-        dispatch(checkListItemDragStartAction(items.findIndex(i => i.id === item.id)))
+        dispatch(checkListItemDragStartAction(checklist, items.findIndex(i => i.id === item.id), item))
       }
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();
         const droppedItem = items.findIndex(i => i.id === item.id);
-        dispatch(checkListItemDropAction(checklistId, droppedItem));
+        dispatch(checkListItemDropAction(checklistId, droppedItem, item));
       }}
     >
       <div className={modalStyles.modal__card_section}>

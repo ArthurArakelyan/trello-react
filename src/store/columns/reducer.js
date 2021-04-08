@@ -694,10 +694,32 @@ const columnsReducer = (state = initialState, action = {}) => {
                   return {
                     ...card,
                     checklist: card.checklist.map(list => {
+                      if(state.draggedChecklistItem.checklist.id !== action.payload.checklistId) {
+                        if(list.id === action.payload.checklistId) {
+                          const drop = (array, index) => {
+                            index += 1;
+                            array.splice(index, 0, state.draggedChecklistItem.item);
+                            return array;
+                          }
+
+                          const items = drop(list.items, action.payload.index);
+
+                          return {
+                            ...list,
+                            items
+                          }
+                        }
+
+                        return {
+                          ...list,
+                          items: list.items.filter(item => item.id !== state.draggedChecklistItem.item.id)
+                        }
+                      }
+
                       if(list.id === action.payload.checklistId) {
                         const items = move(
                           list.items,
-                          state.draggedChecklistItem,
+                          state.draggedChecklistItem.index,
                           action.payload.index
                         );
 
