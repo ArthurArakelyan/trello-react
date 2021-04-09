@@ -5,10 +5,18 @@ import Header from './components/Header';
 import Home from "./components/Home";
 
 const App = () => {
-  const color = useSelector(state => state.boardReducer.color);
+  const {color, image, selected} = useSelector(state => state.boardReducer);
 
   return (
-    <div className="App" style={{backgroundColor: color}}>
+    <div className="App" style={
+      selected === 'color' ? {
+        backgroundColor: color
+      } : image && selected === 'image' ? {
+        backgroundImage: `url(${image})`
+      } : {
+        backgroundColor: color
+      }
+    }>
       <Header />
 
       <main>

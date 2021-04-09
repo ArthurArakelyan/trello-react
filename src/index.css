@@ -81,5 +81,7 @@ button {
 /* App */
 
 .App {
-  transition: background-color, .2s ease-in-out;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }

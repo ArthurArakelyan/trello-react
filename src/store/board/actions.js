@@ -1,4 +1,10 @@
-import {BOARD_LIKE, CHANGE_COLOR} from './actionTypes';
+import {
+  BOARD_LIKE,
+  CHANGE_COLOR,
+  IMAGE_UPLOAD,
+  SELECT_IMAGE,
+  DELETE_IMAGE
+} from './actionTypes';
 
 export function boardLikeAction() {
   return {
@@ -10,5 +16,24 @@ export function changeColorAction(color) {
   return {
     type: CHANGE_COLOR,
     payload: color
+  }
+}
+
+export function uploadImageAction(img) {
+  return {
+    type: IMAGE_UPLOAD,
+    payload: img
+  }
+}
+
+export function selectImageAction() {
+  return {
+    type: SELECT_IMAGE
+  }
+}
+
+export function deleteImageAction() {
+  return {
+    type: DELETE_IMAGE
   }
 }
