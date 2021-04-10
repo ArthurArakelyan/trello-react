@@ -1,5 +1,6 @@
 export const ADD_COLUMN = 'ADD_COLUMN';
 export const ADD_CARD = 'ADD_CARD';
+export const DELETE_CARD = 'DELETE_CARD';
 
 export const EDITING_COLUMN = 'EDITING_COLUMN';
 export const CHANGE_COLUMN_NAME = 'CHANGE_COLUMN_NAME';

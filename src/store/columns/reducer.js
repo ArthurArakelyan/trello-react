@@ -4,6 +4,7 @@ import moment from 'moment';
 import {
   ADD_COLUMN,
   ADD_CARD,
+  DELETE_CARD,
   CHANGE_COLUMN_NAME,
   CHANGE_CARD_NAME,
   EDITING_COLUMN,
@@ -92,6 +93,21 @@ const columnsReducer = (state = initialState, action = {}) => {
                 },
                 checklist: []
               }]
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case DELETE_CARD: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.filter(card => card.id !== action.payload)
             }
           }
 

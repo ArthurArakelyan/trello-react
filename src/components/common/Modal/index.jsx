@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {nanoid} from "nanoid";
 
 import {
+  deleteCardAction,
   changeCardNameAction,
   changeCardDescriptionAction,
   addCommentAction,
@@ -107,6 +108,13 @@ const Modal = ({modalIsOpen, modalClose}) => {
       setCheckListValue('Чек-лист');
       setPopoverType(null);
     }
+  }
+
+  const cardDelete = () => {
+    modalClose();
+    setTimeout(() => {
+      dispatch(deleteCardAction(card?.id));
+    }, 300);
   }
 
   const cardNameRef = useOutsideClick(cardNameFormSubmit);
@@ -649,6 +657,17 @@ const Modal = ({modalIsOpen, modalClose}) => {
           >
             <i className="far fa-credit-card" />
             <p>Обложка</p>
+          </button>
+        </div>
+
+        <div className={styles.modal__card_actions}>
+          <h5 className={styles.modal__card_upgrade_heading}>Действия</h5>
+          <button
+            className={styles.modal__card_upgrade_button}
+            onClick={cardDelete}
+          >
+            <i className="far fa-trash-alt" />
+            <p>Удалить</p>
           </button>
         </div>
 

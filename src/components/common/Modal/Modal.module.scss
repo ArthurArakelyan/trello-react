@@ -365,6 +365,14 @@
   justify-content: center;
   flex-direction: column;
 }
+.modal__card_actions {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
 .modal__card_upgrade_heading {
   text-transform: uppercase;
   color: #5e6c84;

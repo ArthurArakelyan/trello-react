@@ -1,6 +1,7 @@
 import {
   ADD_COLUMN,
   ADD_CARD,
+  DELETE_CARD,
   CHANGE_COLUMN_NAME,
   CHANGE_CARD_NAME,
   EDITING_COLUMN,
@@ -43,6 +44,13 @@ export function addCardAction(id, value) {
       id,
       value
     }
+  }
+}
+
+export function deleteCardAction(id) {
+  return {
+    type: DELETE_CARD,
+    payload: id
   }
 }
 
