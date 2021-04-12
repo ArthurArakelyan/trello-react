@@ -10,6 +10,7 @@ import {
 import CheckListItem from "../CheckListItem";
 
 import useFormCollapse from "../../../../hooks/useFormCollapse";
+import useFormCollapseWithTextarea from "../../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
 
 import modalStyles from '../Modal.module.scss';
@@ -18,12 +19,13 @@ import styles from './CheckList.module.scss';
 const CheckList = ({list}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
+  const formCollapseWithTextarea = useFormCollapseWithTextarea();
 
   const [itemFormCollapsed, setItemFormCollapsed] = useState(false);
   const [itemValue, setItemValue] = useState('');
 
   const [editingFormCollapsed, setEditingFormCollapsed] = useState(false);
-  const [editingValue, setEditingValue] = useState(list.value);
+  const [editingValue, setEditingValue] = useState('');
 
   const completedItems = list.items.filter(item => item.completed).length;
   let percentage = 0;
@@ -34,7 +36,7 @@ const CheckList = ({list}) => {
   const itemFormRef = useOutsideClick(() => formCollapse(setItemFormCollapsed, setItemValue));
   const itemTextareaRef = useRef(null);
   const editingFormRef = useOutsideClick(() =>
-    formCollapse(setEditingFormCollapsed, setEditingValue, list.value)
+    formCollapseWithTextarea(setEditingFormCollapsed, setEditingValue, list.value, false)
   );
 
   useEffect(() => {
@@ -76,7 +78,7 @@ const CheckList = ({list}) => {
             <div className={styles.modal__card_checklist_header}>
               <p
                 className={`${modalStyles.modal__card_detail_heading} ${styles.modal__card_checklist_heading}`}
-                onClick={() => formCollapse(setEditingFormCollapsed, setEditingValue, list.value)}
+                onClick={() => formCollapseWithTextarea(setEditingFormCollapsed, setEditingValue, list.value, true)}
               >
                 {list.value}
               </p>
@@ -107,7 +109,7 @@ const CheckList = ({list}) => {
                 <button
                   type='button'
                   className={modalStyles.modal__card_description_details_form_actions_close}
-                  onClick={() => formCollapse(setEditingFormCollapsed, setEditingValue, list.value)}
+                  onClick={() => formCollapseWithTextarea(setEditingFormCollapsed, setEditingValue, list.value, false)}
                 >
                   <i className="fas fa-times" />
                 </button>

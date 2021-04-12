@@ -9,7 +9,7 @@ import {
   checkListItemDropAction
 } from '../../../../store/columns/actions';
 
-import useFormCollapse from "../../../../hooks/useFormCollapse";
+import useFormCollapseWithTextarea from "../../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
 
 import styles from './CheckListItem.module.scss';
@@ -17,15 +17,14 @@ import modalStyles from "../Modal.module.scss";
 
 const CheckListItem = ({item, checklist}) => {
   const dispatch = useDispatch();
-  const formCollapse = useFormCollapse();
+  const formCollapse = useFormCollapseWithTextarea();
+
   const {id: checklistId, items} = checklist;
 
   const [formCollapsed, setFormCollapsed] = useState(false);
-  const [value, setValue] = useState(item.value);
+  const [value, setValue] = useState('');
 
-  const defaultFormCollapse = () => formCollapse(setFormCollapsed, setValue, item.value);
-
-  const ref = useOutsideClick(defaultFormCollapse);
+  const ref = useOutsideClick(() => formCollapse(setFormCollapsed, setValue, item.value, false));
   const textareaRef = useRef(null);
 
   const formSubmit = (e) => {
@@ -33,7 +32,7 @@ const CheckListItem = ({item, checklist}) => {
 
     if(value.trim()) {
       dispatch(changeCheckListItemAction(checklistId, item.id, value));
-      defaultFormCollapse();
+      formCollapse(setFormCollapsed, setValue, item.value, false);
     } else if(value === '') {
       dispatch(deleteCheckListItemAction(checklistId, item.id));
     } else {
@@ -70,7 +69,7 @@ const CheckListItem = ({item, checklist}) => {
           <div className={styles.item__content}>
             <span
               className={styles.item__name}
-              onClick={defaultFormCollapse}
+              onClick={() => formCollapse(setFormCollapsed, setValue, item.value, true)}
               style={{
                 textDecoration: item.completed ? 'line-through' : '',
                 color: item.completed ? '#5e6c84' : '#172b4d'
@@ -107,7 +106,7 @@ const CheckListItem = ({item, checklist}) => {
               <button
                 type='button'
                 className={modalStyles.modal__card_description_details_form_actions_close}
-                onClick={defaultFormCollapse}
+                onClick={() => formCollapse(setFormCollapsed, setValue, item.value, false)}
               >
                 <i className="fas fa-times" />
               </button>

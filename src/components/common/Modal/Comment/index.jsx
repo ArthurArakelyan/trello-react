@@ -17,16 +17,16 @@ const Comment = ({comment}) => {
   const formCollapse = useFormCollapse();
 
   const [commentEditingCollapse, setCommentEditingCollapse] = useState(false);
-  const [commentValue, setCommentValue] = useState(value);
+  const [commentValue, setCommentValue] = useState('');
 
   const commentSave = () => {
     if(commentValue.trim()) {
       dispatch(editCommentAction(comment.id, commentValue));
-      formCollapse(setCommentEditingCollapse, setCommentValue, value);
+      formCollapse(setCommentEditingCollapse, setCommentValue);
     }
   }
 
-  const ref = useOutsideClick(() => formCollapse(setCommentEditingCollapse, setCommentValue, value));
+  const ref = useOutsideClick(() => formCollapse(setCommentEditingCollapse, setCommentValue));
 
   return (
     <div className={modalStyles.modal__card_comments_details_container}>
@@ -58,6 +58,7 @@ const Comment = ({comment}) => {
               <textarea
                 value={commentValue}
                 onChange={(e) => setCommentValue(e.target.value)}
+                onFocus={() => setCommentValue(value)}
                 autoFocus
               />
               <div className={styles.comment__edit_actions}>
@@ -68,7 +69,7 @@ const Comment = ({comment}) => {
                   Сохранить
                 </button>
                 <button
-                  onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}
+                  onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue)}
                   className={styles.comment__edit_close}
                 >
                   <i className="fas fa-times" />
@@ -77,7 +78,7 @@ const Comment = ({comment}) => {
             </div>
             :
             <div className={styles.comment__actions}>
-              <button onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue, value)}>
+              <button onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue)}>
                 Изменить
               </button>
               <span>-</span>

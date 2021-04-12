@@ -26,6 +26,7 @@ import labelColors from "../../../constants/labelColors";
 import coverColors from "../../../constants/coverColors";
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
+import useFormCollapseWithTextarea from "../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 
 import './styles.scss';
@@ -36,6 +37,7 @@ ReactModal.setAppElement('#root');
 const Modal = ({modalIsOpen, modalClose}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
+  const formCollapseWithTextarea = useFormCollapseWithTextarea();
 
   const {columns, editingColumn, labels} = useSelector(state => state.columnsReducer);
   const column = columns.find(column => column.id === editingColumn.column);
@@ -45,7 +47,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const [cardNameValue, setCardNameValue] = useState(card?.value);
 
   const [descriptionFormCollapse, setDescriptionFormCollapse] = useState(false);
-  const [descriptionValue, setDescriptionValue] = useState(card?.description);
+  const [descriptionValue, setDescriptionValue] = useState('');
 
   const [commentFormCollapse, setCommentFormCollapse] = useState(false);
   const [commentValue, setCommentValue] = useState('');
@@ -87,7 +89,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
 
     if(descriptionValue.trim() || descriptionValue === '') {
       dispatch(changeCardDescriptionAction(descriptionValue));
-      formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+      formCollapse(setDescriptionFormCollapse, setDescriptionValue);
     }
   }
 
@@ -118,9 +120,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
   }
 
   const cardNameRef = useOutsideClick(cardNameFormSubmit);
-  const cardDescriptionRef = useOutsideClick(() => {
-    formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
-  });
+  const cardDescriptionRef = useOutsideClick(cardDescriptionFormSubmit);
   const commentRef = useOutsideClick(() => {
     if(commentFormCollapse && !commentValue.trim()) {
       setCommentFormCollapse(value => !value);
@@ -526,14 +526,14 @@ const Modal = ({modalIsOpen, modalClose}) => {
               {card?.description && !descriptionFormCollapse ?
               <p
                 className={styles.modal__card_description_details}
-                onClick={() => formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description)}
+                onClick={() => formCollapseWithTextarea(setDescriptionFormCollapse, setDescriptionValue, card?.description, true)}
               >
                 {card?.description}
               </p> :
               !card?.description && !descriptionFormCollapse ?
               <button
                 type="button"
-                onClick={() => formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description)}
+                onClick={() => formCollapseWithTextarea(setDescriptionFormCollapse, setDescriptionValue, card?.description, true)}
                 className={styles.modal__card_description_details_button}
               >
                 Добавить более подробное описание...
@@ -557,7 +557,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
                     type='button'
                     className={styles.modal__card_description_details_form_actions_close}
                     onClick={() => {
-                      formCollapse(setDescriptionFormCollapse, setDescriptionValue, card?.description);
+                      formCollapse(setDescriptionFormCollapse, setDescriptionValue);
                     }}
                   >
                     <i className="fas fa-times" />
