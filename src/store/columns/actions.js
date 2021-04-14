@@ -10,6 +10,10 @@ import {
   DELETE_COMMENT,
   DROP_COLUMN,
   COLUMN_DRAG_START,
+  COLUMN_DRAG_END,
+  CARD_DRAG_START,
+  CARD_DRAG_END,
+  CARD_DROP,
   EDIT_COMMENT,
   ACTIVE_LABEL,
   CHANGE_LABEL,
@@ -109,10 +113,45 @@ export function columnDragStartAction(index) {
   }
 }
 
+export function columnDragEndAction() {
+  return {
+    type: COLUMN_DRAG_END
+  }
+}
+
 export function dropColumnAction(index) {
   return {
     type: DROP_COLUMN,
     payload: index
+  }
+}
+
+export function cardDragStartAction(index, card, column) {
+  return {
+    type: CARD_DRAG_START,
+    payload: {
+      index,
+      card,
+      column
+    }
+  }
+}
+
+export function cardDragEndAction() {
+  return {
+    type: CARD_DRAG_END
+  }
+}
+
+export function cardDropAction(index, card, column, columnIndex) {
+  return {
+    type: CARD_DROP,
+    payload: {
+      index,
+      card,
+      column,
+      columnIndex
+    }
   }
 }
 

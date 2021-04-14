@@ -13,6 +13,10 @@ import {
   DELETE_COMMENT,
   DROP_COLUMN,
   COLUMN_DRAG_START,
+  COLUMN_DRAG_END,
+  CARD_DRAG_START,
+  CARD_DRAG_END,
+  CARD_DROP,
   EDIT_COMMENT,
   ACTIVE_LABEL,
   CHANGE_LABEL,
@@ -51,7 +55,9 @@ const initialState = {
   editingColumn: {
     column: null,
     card: null
-  }
+  },
+  draggedColumn: null,
+  draggedCard: null
 }
 
 const columnsReducer = (state = initialState, action = {}) => {
@@ -245,16 +251,98 @@ const columnsReducer = (state = initialState, action = {}) => {
     case COLUMN_DRAG_START: {
       return {
         ...state,
-        draggedColumn: action.payload
+        draggedColumn: {
+          index: action.payload
+        }
+      }
+    }
+    case COLUMN_DRAG_END: {
+      return {
+        ...state,
+        draggedColumn: null
       }
     }
     case DROP_COLUMN: {
-      const newColumns = move(state.columns, state.draggedColumn, action.payload).map(col => col);
+      const columns = move(state.columns, state.draggedColumn.index, action.payload).map(col => col);
 
       return {
         ...state,
-        columns: newColumns
+        columns,
+        draggedColumn: null,
+        draggedCard: null
       }
+    }
+    case CARD_DRAG_START: {
+      return {
+        ...state,
+        draggedCard: action.payload
+      }
+    }
+    case CARD_DRAG_END: {
+      return {
+        ...state,
+        draggedCard: null
+      }
+    }
+    case CARD_DROP: {
+      if(state.draggedCard) {
+        return {
+          ...state,
+          columns: state.columns.map(column => {
+            if(state.draggedCard.column.id !== action.payload.column.id) {
+              if(column.id === action.payload.column.id) {
+                const drop = (array, index) => {
+                  index += 1;
+                  array.splice(index, 0, state.draggedCard.card);
+                  return array;
+                }
+
+                const cards = drop(column.cardsArray, action.payload.index);
+
+                return {
+                  ...column,
+                  cardsArray: cards
+                }
+              }
+
+              return {
+                ...column,
+                cardsArray: column.cardsArray.filter(card => card.id !== state.draggedCard.card.id)
+              }
+            }
+
+            if(column.id === action.payload.column.id) {
+              const cards = move(
+                column.cardsArray,
+                state.draggedCard.index,
+                action.payload.index
+              );
+
+              return {
+                ...column,
+                cardsArray: cards
+              }
+            }
+
+            return column;
+          }),
+          draggedColumn: null,
+          draggedCard: null
+        }
+      } else if(state.draggedColumn) {
+        return {
+          ...state,
+          columns: move(state.columns, state.draggedColumn.index, action.payload.columnIndex).map(col => col),
+          draggedColumn: null,
+          draggedCard: null
+        }
+      }
+
+      return {
+        ...state,
+        draggedColumn: null,
+        draggedCard: null
+      };
     }
     case EDIT_COMMENT: {
       return {

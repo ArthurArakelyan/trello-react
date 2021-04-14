@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
+import Card from "../Card";
+
 import {
   addCardAction,
   changeColumnNameAction,
   dropColumnAction,
   columnDragStartAction,
-  changeColumnsActiveLabels
+  columnDragEndAction
 } from '../../store/columns/actions';
 
 import useFormCollapse from "../../hooks/useFormCollapse";
-
 import useOutsideClick from "../../hooks/useOutsideClick";
 
 import styles from './Column.module.scss';
@@ -19,7 +20,7 @@ const Column = ({column, modalOpen}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
-  const {columns, columnsActiveLabels} = useSelector(state => state.columnsReducer);
+  const {columns, draggedCard} = useSelector(state => state.columnsReducer);
 
   const [nameFormCollapse, setNameFormCollapse] = useState(false);
   const [nameValue, setNameValue] = useState(column.value);
@@ -53,12 +54,15 @@ const Column = ({column, modalOpen}) => {
       className={styles.column}
       draggable={true}
       onDragStart={() => dispatch(columnDragStartAction(columns.findIndex(col => col.id === column.id)))}
+      onDragEnd={() => dispatch(columnDragEndAction())}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        const droppedColumn = columns.findIndex(col => col.id === column.id);
-        dispatch(dropColumnAction(droppedColumn));
+        if(!draggedCard) {
+          const droppedColumn = columns.findIndex(col => col.id === column.id);
+          dispatch(dropColumnAction(droppedColumn));
+        }
       }}
     >
       <div className={styles.column__header}>
@@ -94,81 +98,12 @@ const Column = ({column, modalOpen}) => {
       {!!column.cardsArray.length &&
         <div className={styles.column__cards}>
           {column.cardsArray.map(card => {
-            const isChecklistItems = card.checklist.map(list => list.items.length)
-              .reduce((sum, current) => sum + current, 0);
-
-            return (
-              <button
-                key={card.id}
-                className={
-                  `${styles.column__card} ${card.cover.color && card.cover.type === 1 ? styles.cover : ''}`
-                }
-                onClick={() => modalOpen(column.id, card.id)}
-              >
-                {card.cover.color && card.cover.type === 1 && <div
-                  className={styles.column__card_cover}
-                  style={{backgroundColor: card.cover.color}}
-                />}
-                <div className={styles.column__card_content}>
-                  {!!card.labels.length &&
-                  <div className={styles.column__card_labels}>
-                    {card.labels.map(label => {
-                      return (
-                        <div
-                          key={label.id}
-                          className={`${styles.column__card_label} ${columnsActiveLabels ? styles.active : ''}`}
-                          title={label.value}
-                          style={{backgroundColor: label.color}}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            dispatch(changeColumnsActiveLabels());
-                          }}
-                        >
-                          {columnsActiveLabels &&
-                          <span>
-                          {label.value.length > 21 ? `${label.value.slice(0, 21)}...` : label.value}
-                        </span>
-                          }
-                        </div>
-                      )
-                    })}
-                  </div>
-                  }
-
-                  <span>{card.value}</span>
-
-                  {card.description || card.comments.length || isChecklistItems ?
-                    <div className={styles.column__card_badges}>
-                      {card.description &&
-                      <span title="Эта карточка с описанием." className={styles.column__card_badge}>
-                        <i className="fas fa-align-left" />
-                      </span>
-                      }
-                      {!!card.comments.length &&
-                      <span title="Комментарии" className={styles.column__card_badge}>
-                        <i className="far fa-comment" />
-                        <span style={{marginLeft: '4px'}}>{card.comments.length}</span>
-                      </span>
-                      }
-                      {!!card.checklist.length && isChecklistItems ?
-                      <span title="Элементы списка задач" className={styles.column__card_badge}>
-                        <i className="far fa-check-square" />
-                        <span style={{marginLeft: '4px'}}>
-                          {card.checklist.map(list => {
-                            return list.items.filter(item => item.completed).length;
-                          }).reduce((sum, current) => sum + current, 0)}
-                          /
-                          {card.checklist.map(list => list.items.length)
-                            .reduce((sum, current) => sum + current, 0)}
-                        </span>
-                      </span> : null
-                      }
-                    </div>
-                    : null
-                  }
-                </div>
-              </button>
-            )
+            return <Card
+              key={card.id}
+              card={card}
+              column={column}
+              modalOpen={modalOpen}
+            />
           })}
         </div>
       }
