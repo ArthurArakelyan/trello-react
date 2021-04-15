@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 
-import {boardLikeAction} from '../../store/board/actions';
+import {boardLikeAction, changeBoardNameAction} from '../../store/board/actions';
 
+import ContentEditable from "react-contenteditable";
 import Button from "../common/Button";
 
 import styles from './HomeHeader.module.scss';
@@ -10,6 +11,8 @@ import styles from './HomeHeader.module.scss';
 const HomeHeader = ({menuCollapse}) => {
   const dispatch = useDispatch();
   const board = useSelector(state => state.boardReducer);
+
+  const ref = useRef(null);
 
   return (
     <div className={styles.home__header}>
@@ -26,7 +29,28 @@ const HomeHeader = ({menuCollapse}) => {
           </svg>
         </Button>
 
-        <h1 className={styles.board__name}>{board.value}</h1>
+        <ContentEditable
+          innerRef={ref}
+          html={board.value}
+          disabled={false}
+          onChange={(e) => {
+            if(board.value.length <= 40) {
+              dispatch(changeBoardNameAction(e.target.value));
+            }
+          }}
+          onKeyPress={(e) => {
+            if(e.key === 'Enter') {
+              e.preventDefault();
+            }
+            if(ref.current) {
+              if(e.key === 'Enter') {
+                ref.current.blur();
+              }
+            }
+          }}
+          className={styles.board__name}
+          tagName="h1"
+        />
 
         <Button
           onClick={() => dispatch(boardLikeAction())}

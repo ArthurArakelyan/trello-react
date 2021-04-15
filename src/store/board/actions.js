@@ -1,10 +1,18 @@
 import {
+  CHANGE_BOARD_NAME,
   BOARD_LIKE,
   CHANGE_COLOR,
   IMAGE_UPLOAD,
   SELECT_IMAGE,
   DELETE_IMAGE
 } from './actionTypes';
+
+export function changeBoardNameAction(value) {
+  return {
+    type: CHANGE_BOARD_NAME,
+    payload: value
+  }
+}
 
 export function boardLikeAction() {
   return {

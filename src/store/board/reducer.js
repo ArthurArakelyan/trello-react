@@ -1,4 +1,5 @@
 import {
+  CHANGE_BOARD_NAME,
   BOARD_LIKE,
   CHANGE_COLOR,
   IMAGE_UPLOAD,
@@ -16,6 +17,12 @@ const initialState = {
 
 const boardReducer = (state = initialState, action = {}) => {
   switch(action.type) {
+    case CHANGE_BOARD_NAME: {
+      return {
+        ...state,
+        value: action.payload.length <= 40 ? action.payload : state.value
+      }
+    }
     case BOARD_LIKE: {
       return {
         ...state,
