@@ -292,7 +292,6 @@ const columnsReducer = (state = initialState, action = {}) => {
             if(state.draggedCard.column.id !== action.payload.column.id) {
               if(column.id === action.payload.column.id) {
                 const drop = (array, index) => {
-                  index += 1;
                   array.splice(index, 0, state.draggedCard.card);
                   return array;
                 }
@@ -801,7 +800,6 @@ const columnsReducer = (state = initialState, action = {}) => {
                       if(state.draggedChecklistItem.checklist.id !== action.payload.checklistId) {
                         if(list.id === action.payload.checklistId) {
                           const drop = (array, index) => {
-                            index += 1;
                             array.splice(index, 0, state.draggedChecklistItem.item);
                             return array;
                           }

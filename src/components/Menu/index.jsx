@@ -92,7 +92,7 @@ const Menu = ({menuCollapse, menuOpen, menuClose, menuRef}) => {
           <div
             key={color}
             className={styles.menu__color}
-            style={{backgroundColor: color}}
+            style={{background: color}}
             onClick={() => dispatch(changeColorAction(color))}
           />
         )

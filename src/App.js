@@ -10,11 +10,11 @@ const App = () => {
   return (
     <div className="App" style={
       selected === 'color' ? {
-        backgroundColor: color
+        background: color
       } : image && selected === 'image' ? {
         backgroundImage: `url(${image})`
       } : {
-        backgroundColor: color
+        background: color
       }
     }>
       <Header />
