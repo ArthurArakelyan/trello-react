@@ -287,9 +287,10 @@
 
   &.hide {
     height: 20px;
+    cursor: pointer;
   }
 
-  &.hide textarea:hover {
+  &.hide textarea {
     cursor: pointer;
   }
 
@@ -393,6 +394,7 @@
   outline: none;
   border-radius: 3px;
   border: none;
+  transition: background-color 85ms ease-in-out, color 85ms ease-in-out;
 
   p {
     margin-left: 10px;

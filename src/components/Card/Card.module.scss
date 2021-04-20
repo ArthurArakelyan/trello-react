@@ -21,6 +21,14 @@
   &.cover {
     border-radius: 0 0 3px 3px;
   }
+
+  &.full__cover {
+    transition: opacity .2s ease-in-out;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
 }
 .column__card_content {
   box-sizing: border-box;
@@ -30,6 +38,11 @@
   align-items: flex-start;
   justify-content: flex-start;
   flex-direction: column;
+}
+.column__card_name {
+  width: 100%;
+  text-align: left;
+  line-break: anywhere;
 }
 
 .column__card_cover {
@@ -97,4 +110,10 @@
     min-width: 56px;
     height: 16px;
   }
+}
+.column__card_type2_name {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  transition: color .2s ease-in-out;
 }

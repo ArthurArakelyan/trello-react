@@ -600,11 +600,18 @@ const Modal = ({modalIsOpen, modalClose}) => {
                 className={`${styles.modal__card_comments_create_form} ${!commentFormCollapse ? styles.hide : ''}`}
                 ref={commentRef}
                 onSubmit={cardCommentsFormSubmit}
+                onClick={() => {
+                  if(!commentFormCollapse) {
+                    setCommentFormCollapse(true);
+                    if(commentRef.current) {
+                      commentRef.current.firstChild.focus();
+                    }
+                  }
+                }}
               >
                 <textarea
                   placeholder='Напишите комментарий...'
                   value={commentValue}
-                  onClick={() => (setCommentFormCollapse(true))}
                   onChange={(e) => setCommentValue(e.target.value)}
                 />
                 <button

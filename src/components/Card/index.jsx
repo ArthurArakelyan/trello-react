@@ -18,6 +18,40 @@ const Card = ({card, column, modalOpen}) => {
   const isChecklistItems = card.checklist.map(list => list.items.length)
     .reduce((sum, current) => sum + current, 0);
 
+  if(card.cover.type === 2) {
+    return (
+      <button
+        key={card.id}
+        className={`${styles.column__card} ${styles.full__cover}`}
+        style={{backgroundColor: card.cover.color}}
+        onClick={() => modalOpen(column.id, card.id)}
+        draggable={true}
+        onDragStart={() => {
+          const dragged = column.cardsArray.findIndex(c => c.id === card.id);
+          dispatch(cardDragStartAction(dragged, card, column));
+        }}
+        onDragEnd={() => dispatch(cardDragEndAction())}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const dropped = column.cardsArray.findIndex(c => c.id === card.id);
+          const droppedColumn = columns.findIndex(col => col.id === column.id);
+          dispatch(cardDropAction(dropped, card, column, droppedColumn));
+        }}
+      >
+        <div className={styles.column__card_content}>
+          <span
+            className={`${styles.column__card_type2_name} ${styles.column__card_name}`}
+            style={{color: card.cover.color === '#172b4d' ? '#fff' : '#172b4d'}}
+          >
+            {card.value}
+          </span>
+        </div>
+      </button>
+    );
+  }
+
   return (
     <button
       key={card.id}
@@ -69,7 +103,7 @@ const Card = ({card, column, modalOpen}) => {
         </div>
         }
 
-        <span>{card.value}</span>
+        <span className={styles.column__card_name}>{card.value}</span>
 
         {card.description || card.comments.length || isChecklistItems ?
           <div className={styles.column__card_badges}>
