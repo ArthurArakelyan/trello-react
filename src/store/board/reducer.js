@@ -20,7 +20,7 @@ const boardReducer = (state = initialState, action = {}) => {
     case CHANGE_BOARD_NAME: {
       return {
         ...state,
-        value: action.payload.length <= 40 ? action.payload : state.value
+        value: action.payload.length <= 30 ? action.payload : state.value
       }
     }
     case BOARD_LIKE: {

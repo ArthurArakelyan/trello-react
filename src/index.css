@@ -39,7 +39,6 @@ blockquote, q {
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
-  content: none;
 }
 table {
   border-collapse: collapse;
@@ -66,12 +65,12 @@ button {
 /* scrollbar */
 
 ::-webkit-scrollbar {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
 }
 ::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color:hsla(0,0%,0%,.15);
+  background-color: hsla(0,0%,0%,.15);
 }
 ::-webkit-scrollbar-thumb {
   background-color: hsla(0,0%,100%,.4);

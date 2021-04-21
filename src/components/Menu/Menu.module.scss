@@ -176,6 +176,96 @@
   }
 }
 
+@media only screen and (max-width: 1000px) {
+  .menu {
+    right: -38%;
+
+    &.hide {
+      right: -38%;
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .menu {
+    right: -43%;
+
+    &.hide {
+      right: -43%;
+    }
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .menu {
+    right: -50%;
+
+    &.hide {
+      right: -50%;
+    }
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .menu {
+    right: -55%;
+
+    &.hide {
+      right: -55%;
+    }
+  }
+}
+
+@media only screen and (max-width: 632px) {
+  .menu {
+    right: -62%;
+
+    &.hide {
+      right: -62%;
+    }
+  }
+}
+
+@media only screen and (max-width: 562px) {
+  .menu {
+    right: -70%;
+
+    &.hide {
+      right: -70%;
+    }
+  }
+}
+
+@media only screen and (max-width: 506px) {
+  .menu {
+    right: -80%;
+
+    &.hide {
+      right: -80%;
+    }
+  }
+}
+
+@media only screen and (max-width: 462px) {
+  .menu {
+    right: -90%;
+
+    &.hide {
+      right: -90%;
+    }
+  }
+}
+
+@media only screen and (max-width: 392px) {
+  .menu {
+    right: -100%;
+
+    &.hide {
+      right: -100%;
+    }
+  }
+}
+
 @media only screen and (max-width: 350px) {
   .menu {
     width: 100%;

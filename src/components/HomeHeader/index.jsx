@@ -1,18 +1,33 @@
-import React, {useRef} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 
 import {boardLikeAction, changeBoardNameAction} from '../../store/board/actions';
 
-import ContentEditable from "react-contenteditable";
 import Button from "../common/Button";
+
+import useFormCollapse from "../../hooks/useFormCollapse";
+import useOutsideClick from "../../hooks/useOutsideClick";
 
 import styles from './HomeHeader.module.scss';
 
 const HomeHeader = ({menuCollapse}) => {
   const dispatch = useDispatch();
+  const formCollapse = useFormCollapse();
+
   const board = useSelector(state => state.boardReducer);
 
-  const ref = useRef(null);
+  const [nameEditing, setNameEditing] = useState(false);
+  const [nameValue, setNameValue] = useState(board.value);
+
+  const nameSubmit = (e) => {
+    e.preventDefault();
+    if(nameValue.trim() && nameValue.length <= 30) {
+      dispatch(changeBoardNameAction(nameValue));
+      formCollapse(setNameEditing, setNameValue, board.value);
+    }
+  }
+
+  const ref = useOutsideClick(nameSubmit);
 
   return (
     <div className={styles.home__header}>
@@ -29,42 +44,33 @@ const HomeHeader = ({menuCollapse}) => {
           </svg>
         </Button>
 
-        <ContentEditable
-          innerRef={ref}
-          html={board.value}
-          disabled={false}
-          onChange={(e) => {
-            if(board.value.length <= 40) {
-              dispatch(changeBoardNameAction(e.target.value));
-            }
-          }}
-          onKeyPress={(e) => {
-            if(e.key === 'Enter') {
-              e.preventDefault();
-            }
-            if(ref.current) {
-              if(e.key === 'Enter') {
-                ref.current.blur();
-              }
-            }
-          }}
-          className={styles.board__name}
-          tagName="h1"
-        />
+        {nameEditing ?
+          <form className={styles.board__name_form} onSubmit={nameSubmit}>
+            <input
+              type="text"
+              value={nameValue}
+              title={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
+              minLength={0}
+              maxLength={30}
+              ref={ref}
+              autoFocus
+            />
+          </form>
+          :
+          <h1
+            className={styles.board__name}
+            onClick={() => formCollapse(setNameEditing, setNameValue, board.value)}
+          >
+            {board.value}
+          </h1>
+        }
 
         <Button
           onClick={() => dispatch(boardLikeAction())}
           className={`button ${styles.header__action_star}`}
         >
           {board.liked ? <i className="fas fa-star" /> : <i className="far fa-star" />}
-        </Button>
-
-        <div className={styles.divider} />
-
-        <Button>
-          <p>{board.value}</p>
-
-          <span className={styles.subscribe__type}>Free</span>
         </Button>
 
         <div className={styles.divider} />

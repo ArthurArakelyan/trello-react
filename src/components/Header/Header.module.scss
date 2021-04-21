@@ -40,6 +40,7 @@
 }
 .header__links_boards {
   margin-left: 10px;
+  margin-right: 2px;
   font-weight: 700;
 }
 
@@ -51,9 +52,45 @@
     margin: 0 5px;
   }
 }
+.header__account_button {
+  padding: 0 6px;
+}
 .header__avatar {
   width: 32px;
   height: 32px;
   margin-left: 5px;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 750px) {
+  .header__links_boards,
+  .header__account_info_button {
+    display: none;
+  }
+  .header__section_account {
+    button:first-child {
+      margin-right: 5px;
+    }
+  }
+}
+
+@media only screen and (max-width: 472px) {
+  .header__section_links {
+    width: 35%;
+  }
+}
+
+@media only screen and (max-width: 410px) {
+  .header__section_links {
+    width: 31%;
+  }
+  .header__section_account {
+    width: fit-content;
+  }
+}
+
+@media only screen and (max-width: 376px) {
+  .header__section_links {
+    width: fit-content;
+  }
 }

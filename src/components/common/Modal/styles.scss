@@ -26,3 +26,21 @@
 .ReactModal__Overlay--before-close {
   background-color: rgba(0, 0, 0, 0) !important;
 }
+
+@media only screen and (max-width: 784px) {
+  .ReactModal__Content {
+    width: 98% !important;
+  }
+  .ReactModal__Overlay {
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  .ReactModal__Content {
+    flex-direction: column;
+  }
+}

@@ -4,7 +4,7 @@
   justify-content: center;
   flex-direction: column;
   border-radius: 3px;
-  width: 272px;
+  width: 260px;
   margin: 0 4px;
   background-color: #EBECF0;
   padding: 6px;
@@ -38,6 +38,7 @@
 
 .column__header_extras_section {
   position: relative;
+  align-self: flex-start;
 }
 .column__header_extras {
   padding: 8px;

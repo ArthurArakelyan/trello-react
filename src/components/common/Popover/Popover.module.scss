@@ -68,3 +68,12 @@
     opacity: 1;
   }
 }
+
+@media only screen and (max-width: 740px) {
+  .popover {
+    position: absolute;
+    top: -45%;
+    right: 0;
+    overflow: auto;
+  }
+}
