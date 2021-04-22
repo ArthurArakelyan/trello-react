@@ -10,7 +10,7 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 
 import styles from './HomeHeader.module.scss';
 
-const HomeHeader = ({menuCollapse}) => {
+const HomeHeader = ({menuCollapse, menuIsOpen, menuClose}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
@@ -23,6 +23,8 @@ const HomeHeader = ({menuCollapse}) => {
     e.preventDefault();
     if(nameValue.trim() && nameValue.length <= 30) {
       dispatch(changeBoardNameAction(nameValue));
+      formCollapse(setNameEditing, setNameValue, board.value);
+    } else {
       formCollapse(setNameEditing, setNameValue, board.value);
     }
   }
@@ -49,7 +51,6 @@ const HomeHeader = ({menuCollapse}) => {
             <input
               type="text"
               value={nameValue}
-              title={nameValue}
               onChange={(e) => setNameValue(e.target.value)}
               minLength={0}
               maxLength={30}
@@ -91,7 +92,11 @@ const HomeHeader = ({menuCollapse}) => {
 
         <Button
           className={`button ${styles.home__header_menu_menu}`}
-          onClick={menuCollapse}
+          onClick={() => {
+            if(!menuIsOpen && !menuClose) {
+              menuCollapse();
+            }
+          }}
         >
           <i className="fas fa-ellipsis-h" />
 

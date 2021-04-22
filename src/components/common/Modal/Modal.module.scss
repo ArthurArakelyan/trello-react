@@ -201,7 +201,8 @@
   textarea {
     box-sizing: border-box;
     width: 100%;
-    padding: 10px 10px 60px;
+    padding: 8px 12px;
+    height: 92px;
     outline: none;
     resize: none;
     border-radius: 3px;
@@ -306,7 +307,12 @@
     resize: none;
     border: none;
     outline: none;
-    padding: 0;
+    padding: 0 8px 0 0;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
   }
 }
 .modal__card_comments_create_save {

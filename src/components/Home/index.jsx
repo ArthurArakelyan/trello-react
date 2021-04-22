@@ -16,7 +16,10 @@ const Home = () => {
   const closeMenu = () => {
     setMenuOpen(false);
     setMenuClose(true);
-    setTimeout(() => setMenuIsOpen(value => !value), 300);
+    setTimeout(() => {
+      setMenuIsOpen(value => !value);
+      setMenuClose(false);
+    }, 300);
   }
 
   const menuRef = useOutsideClick(closeMenu);
@@ -24,16 +27,12 @@ const Home = () => {
   const menuCollapse = () => {
     if(menuIsOpen && menuOpen) {
       closeMenu();
-    } else if(!menuIsOpen) {
+    } else if(!menuIsOpen && !menuClose) {
       setTimeout(() => {
         setMenuClose(false);
         setMenuOpen(true);
       }, 10);
       setMenuIsOpen(value => !value);
-    } else {
-      setMenuOpen(false);
-      setMenuClose(false);
-      setMenuIsOpen(false);
     }
   }
 
@@ -41,7 +40,11 @@ const Home = () => {
     <div className={styles.home}>
       <div className="wrapper">
         <div className={styles.home__content}>
-          <HomeHeader menuCollapse={menuCollapse} />
+          <HomeHeader
+            menuCollapse={menuCollapse}
+            menuIsOpen={menuIsOpen}
+            menuClose={menuClose}
+          />
           <Columns />
           {menuIsOpen && <Menu
             menuCollapse={menuCollapse}

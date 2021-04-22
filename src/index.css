@@ -77,6 +77,11 @@ button {
   border-radius: 5px;
 }
 
+textarea::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
 /* App */
 
 .App {

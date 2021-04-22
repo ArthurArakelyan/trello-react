@@ -18,10 +18,6 @@
     background-color: hsla(0,0%,100%,.3);
   }
 
-  &.cover {
-    border-radius: 0 0 3px 3px;
-  }
-
   &.full__cover {
     transition: opacity .2s ease-in-out;
 
@@ -32,8 +28,8 @@
 }
 .column__card_content {
   box-sizing: border-box;
-  width: 99%;
-  padding: 8px;
+  width: 100%;
+  padding: 6px 8px 2px 8px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -43,6 +39,9 @@
   width: 100%;
   text-align: left;
   line-break: anywhere;
+  margin-bottom: 4px;
+  color: #172b4d;
+  line-height: 20px;
 }
 
 .column__card_cover {
@@ -52,7 +51,6 @@
 }
 
 .column__card_badges {
-  margin-top: 10px;
   width: 100%;
   color: rgb(107, 119, 140);
   display: flex;
@@ -61,17 +59,24 @@
   flex-wrap: wrap;
 }
 .column__card_badge {
-  font-size: 12px !important;
-  margin-left: 2px;
-  margin-bottom: 2px;
+  font-size: 12px;
+  padding: 5px 4px;
+  margin-bottom: 4px;
 
   &:not(:nth-child(1)) {
-    margin-left: 15px;
+    margin-left: 4px;
+  }
+
+  &.completed {
+    color: #fff;
+    background-color: #61bd4f;
+    border-radius: 3px;
+    padding: 5px 6px;
   }
 }
 .column__card_labels {
   margin-bottom: 4px;
-  width: 95%;
+  width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -105,9 +110,9 @@
   }
 
   &.active {
-    max-width: 205px;
+    max-width: 198px;
     padding: 0 7px;
-    min-width: 56px;
+    min-width: 42px;
     height: 16px;
   }
 }

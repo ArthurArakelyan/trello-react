@@ -15,8 +15,12 @@ const Card = ({card, column, modalOpen}) => {
 
   const {columnsActiveLabels, columns} = useSelector(state => state.columnsReducer);
 
-  const isChecklistItems = card.checklist.map(list => list.items.length)
+  const allCheckListItems = card.checklist.map(list => list.items.length)
     .reduce((sum, current) => sum + current, 0);
+
+  const completedCheckListItems = card.checklist.map(list => {
+    return list.items.filter(item => item.completed).length;
+  }).reduce((sum, current) => sum + current, 0);
 
   if(card.cover.type === 2) {
     return (
@@ -55,7 +59,7 @@ const Card = ({card, column, modalOpen}) => {
   return (
     <button
       key={card.id}
-      className={`${styles.column__card} ${card.cover.color && card.cover.type === 1 ? styles.cover : ''}`}
+      className={styles.column__card}
       onClick={() => modalOpen(column.id, card.id)}
       draggable={true}
       onDragStart={() => {
@@ -105,7 +109,7 @@ const Card = ({card, column, modalOpen}) => {
 
         <span className={styles.column__card_name}>{card.value}</span>
 
-        {card.description || card.comments.length || isChecklistItems ?
+        {card.description || card.comments.length || allCheckListItems ?
           <div className={styles.column__card_badges}>
             {card.description &&
             <span title="Эта карточка с описанием." className={styles.column__card_badge}>
@@ -118,16 +122,18 @@ const Card = ({card, column, modalOpen}) => {
               <span style={{marginLeft: '4px'}}>{card.comments.length}</span>
             </span>
             }
-            {!!card.checklist.length && isChecklistItems ?
-              <span title="Элементы списка задач" className={styles.column__card_badge}>
+            {!!card.checklist.length && allCheckListItems ?
+              <span
+                title="Элементы списка задач"
+                className={
+                  `${styles.column__card_badge} ${completedCheckListItems === allCheckListItems ? styles.completed : ''}`
+                }
+              >
                 <i className="far fa-check-square" />
                 <span style={{marginLeft: '4px'}}>
-                  {card.checklist.map(list => {
-                    return list.items.filter(item => item.completed).length;
-                  }).reduce((sum, current) => sum + current, 0)}
+                  {completedCheckListItems}
                   /
-                  {card.checklist.map(list => list.items.length)
-                    .reduce((sum, current) => sum + current, 0)}
+                  {allCheckListItems}
                 </span>
               </span> : null
             }
