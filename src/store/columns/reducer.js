@@ -17,6 +17,7 @@ import {
   CARD_DRAG_START,
   CARD_DRAG_END,
   CARD_DROP,
+  CARD_DROP_ON_EMPTY_COLUMN,
   EDIT_COMMENT,
   ACTIVE_LABEL,
   CHANGE_LABEL,
@@ -342,6 +343,26 @@ const columnsReducer = (state = initialState, action = {}) => {
         draggedColumn: null,
         draggedCard: null
       };
+    }
+    case CARD_DROP_ON_EMPTY_COLUMN: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === action.payload.id) {
+            return {
+              ...column,
+              cardsArray: [...column.cardsArray, state.draggedCard.card]
+            }
+          }
+
+          return {
+            ...column,
+            cardsArray: column.cardsArray.filter(card => card.id !== state.draggedCard.card.id)
+          }
+        }),
+        draggedColumn: null,
+        draggedCard: null
+      }
     }
     case EDIT_COMMENT: {
       return {

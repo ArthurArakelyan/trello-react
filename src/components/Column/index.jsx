@@ -8,7 +8,8 @@ import {
   changeColumnNameAction,
   dropColumnAction,
   columnDragStartAction,
-  columnDragEndAction
+  columnDragEndAction,
+  cardDropOnEmptyColumnAction
 } from '../../store/columns/actions';
 
 import useFormCollapse from "../../hooks/useFormCollapse";
@@ -62,6 +63,11 @@ const Column = ({column, modalOpen}) => {
         if(!draggedCard) {
           const droppedColumn = columns.findIndex(col => col.id === column.id);
           dispatch(dropColumnAction(droppedColumn));
+        } else {
+          const droppedColumn = columns.find(col => col.id === column.id);
+          if(droppedColumn.cardsArray.length === 0) {
+            dispatch(cardDropOnEmptyColumnAction(droppedColumn));
+          }
         }
       }}
     >

@@ -14,6 +14,7 @@ import {
   CARD_DRAG_START,
   CARD_DRAG_END,
   CARD_DROP,
+  CARD_DROP_ON_EMPTY_COLUMN,
   EDIT_COMMENT,
   ACTIVE_LABEL,
   CHANGE_LABEL,
@@ -152,6 +153,13 @@ export function cardDropAction(index, card, column, columnIndex) {
       column,
       columnIndex
     }
+  }
+}
+
+export function cardDropOnEmptyColumnAction(column) {
+  return {
+    type: CARD_DROP_ON_EMPTY_COLUMN,
+    payload: column
   }
 }
 

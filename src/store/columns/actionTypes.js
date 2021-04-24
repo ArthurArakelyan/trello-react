@@ -14,6 +14,7 @@ export const DROP_COLUMN = 'DROP_COLUMN';
 export const CARD_DRAG_START = 'CARD_DRAG_START';
 export const CARD_DRAG_END = 'CARD_DRAG_END';
 export const CARD_DROP = 'CARD_DROP';
+export const CARD_DROP_ON_EMPTY_COLUMN = 'CARD_DROP_ON_EMPTY_COLUMN';
 
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
