@@ -4,7 +4,8 @@ import {useDispatch} from "react-redux";
 import {
   deleteCheckListAction,
   addCheckListItemAction,
-  changeCheckListAction
+  changeCheckListAction,
+  toggleCompletedCheckListItems
 } from "../../../../store/columns/actions";
 
 import CheckListItem from "../CheckListItem";
@@ -82,12 +83,21 @@ const CheckList = ({list}) => {
               >
                 {list.value}
               </p>
-              <button
-                className={styles.modal__card_checklist_header_delete}
-                onClick={() => dispatch(deleteCheckListAction(list.id))}
-              >
-                Удалить
-              </button>
+              <div className={styles.modal__card_checklist_actions}>
+                {!!completedItems &&
+                  <button
+                    className={styles.modal__card_checklist_header_hide}
+                    onClick={() => dispatch(toggleCompletedCheckListItems(list.id))}
+                  >
+                    {list.hide ? `Показать отмеченные элементы (${completedItems})` : 'Скрывать отмеченные пункты'}
+                  </button>
+                }
+                <button
+                  onClick={() => dispatch(deleteCheckListAction(list.id))}
+                >
+                  Удалить
+                </button>
+              </div>
             </div>
             :
             <form
@@ -138,6 +148,17 @@ const CheckList = ({list}) => {
           {list.items.map(item => {
             return <CheckListItem key={item.id} checklist={list} item={item} />
           })}
+          {completedItems === list.items.length && list.hide ?
+            <div className={styles.modal__card_checklist_container}>
+              <div className={modalStyles.modal__card_section}>
+                <div className={styles.modal__card_checklist_header}>
+                  <p className={styles.modal__card_checklist_completed_message}>Отмечены все элементы!</p>
+                </div>
+              </div>
+            </div>
+            :
+            null
+          }
         </div>
       }
 

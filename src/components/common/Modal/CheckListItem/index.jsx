@@ -42,6 +42,10 @@ const CheckListItem = ({item, checklist}) => {
     }
   }
 
+  if(checklist.hide && item.completed) {
+    return null;
+  }
+
   return (
     <div
       className={`${modalStyles.modal__card_checklist_container} ${styles.item}`}

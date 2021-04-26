@@ -30,6 +30,7 @@ import {
   ADD_CHECK_LIST,
   CHANGE_CHECK_LIST,
   DELETE_CHECK_LIST,
+  TOGGLE_COMPLETED_CHECK_LIST_ITEMS,
   ADD_CHECK_LIST_ITEM,
   DELETE_CHECK_LIST_ITEM,
   COMPLETE_CHECK_LIST_ITEM,
@@ -575,6 +576,7 @@ const columnsReducer = (state = initialState, action = {}) => {
                     checklist: [...card.checklist, {
                       id: nanoid(),
                       value: action.payload,
+                      hide: false,
                       items: []
                     }]
                   }
@@ -634,6 +636,39 @@ const columnsReducer = (state = initialState, action = {}) => {
                   return {
                     ...card,
                     checklist: card.checklist.filter(card => card.id !== action.payload)
+                  }
+                }
+
+                return card;
+              })
+            }
+          }
+
+          return column;
+        })
+      }
+    }
+    case TOGGLE_COMPLETED_CHECK_LIST_ITEMS: {
+      return {
+        ...state,
+        columns: state.columns.map(column => {
+          if(column.id === state.editingColumn.column) {
+            return {
+              ...column,
+              cardsArray: column.cardsArray.map(card => {
+                if(card.id === state.editingColumn.card) {
+                  return {
+                    ...card,
+                    checklist: card.checklist.map(list => {
+                      if(list.id === action.payload) {
+                        return {
+                          ...list,
+                          hide: !list.hide
+                        }
+                      }
+
+                      return list;
+                    })
                   }
                 }
 

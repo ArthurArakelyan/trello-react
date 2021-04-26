@@ -24,29 +24,42 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
 
   p {
     cursor: pointer;
   }
 }
 .modal__card_checklist_heading {
-  width: 75%;
   line-break: anywhere;
-}
-.modal__card_checklist_header_delete {
-  padding: 6px 12px;
-  background-color: rgba(9,30,66,.04);
   line-height: 20px;
+  margin: 6px 0;
+}
+.modal__card_checklist_actions {
+  display: flex;
+  align-items: flex-start;
   align-self: flex-start;
-  transition: background-color .1s ease-in-out, color .1s ease-in-out;
+  justify-content: flex-end;
+  margin-left: auto;
 
-  &:hover {
-    background-color: rgba(9,30,66,.08);
+  button {
+    padding: 6px 12px;
+    background-color: rgba(9,30,66,.04);
+    line-height: 20px;
+    transition: background-color .1s ease-in-out, color .1s ease-in-out;
+
+    &:hover {
+      background-color: rgba(9,30,66,.08);
+    }
+
+    &:active {
+      background-color: #e4f0f6;
+      color: #0079bf;
+    }
   }
 
-  &:active {
-    background-color: #e4f0f6;
-    color: #0079bf;
+  .modal__card_checklist_header_hide {
+    margin-right: 8px;
   }
 }
 .modal__card_checklist_form {
@@ -132,4 +145,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.modal__card_checklist_completed_message {
+  color: #5e6c84;
+  line-height: 20px;
 }

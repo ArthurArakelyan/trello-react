@@ -27,6 +27,7 @@ import {
   ADD_CHECK_LIST,
   CHANGE_CHECK_LIST,
   DELETE_CHECK_LIST,
+  TOGGLE_COMPLETED_CHECK_LIST_ITEMS,
   ADD_CHECK_LIST_ITEM,
   DELETE_CHECK_LIST_ITEM,
   COMPLETE_CHECK_LIST_ITEM,
@@ -247,6 +248,13 @@ export function changeCheckListAction(id, value) {
 export function deleteCheckListAction(id) {
   return {
     type: DELETE_CHECK_LIST,
+    payload: id
+  }
+}
+
+export function toggleCompletedCheckListItems(id) {
+  return {
+    type: TOGGLE_COMPLETED_CHECK_LIST_ITEMS,
     payload: id
   }
 }
