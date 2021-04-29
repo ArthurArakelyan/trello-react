@@ -1,0 +1,33 @@
+.popover__labels {
+  margin-top: 5px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+}
+.popover__labels_subheading {
+  color: #5e6c84;
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 16px;
+}
+.popover__label_create_button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  background-color: rgba(9,30,66,.04);
+  color: #172b4d;
+  margin-top: 15px;
+
+  &:hover {
+    background-color: rgba(9,30,66,.08);
+  }
+
+  &:active {
+    color: #0079bf;
+    background-color: #e4f0f6;
+  }
+}

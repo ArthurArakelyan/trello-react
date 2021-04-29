@@ -1,29 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import ReactModal from 'react-modal';
 import {useDispatch, useSelector} from "react-redux";
-import {nanoid} from "nanoid";
 
 import {
   deleteCardAction,
   changeCardNameAction,
   changeCardDescriptionAction,
-  addCommentAction,
-  changeLabelAction,
-  deleteLabelAction,
-  createLabelAction,
-  addCardCoverAction,
-  changeCardCoverTypeAction,
-  clearCardCoverAction,
-  addCheckListAction
+  addCommentAction
 } from '../../../store/columns/actions';
 
 import Comment from "./Comment";
-import Popover from "../Popover";
-import Label from "./Label";
 import CheckList from "./CheckList";
-
-import labelColors from "../../../constants/labelColors";
-import coverColors from "../../../constants/coverColors";
+import ModalPopover from './popovers/index';
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
 import useFormCollapseWithTextarea from "../../../hooks/useFormCollapseWithTextarea";
@@ -39,7 +27,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const formCollapse = useFormCollapse();
   const formCollapseWithTextarea = useFormCollapseWithTextarea();
 
-  const {columns, editingColumn, labels} = useSelector(state => state.columnsReducer);
+  const {columns, editingColumn} = useSelector(state => state.columnsReducer);
   const column = columns.find(column => column.id === editingColumn.column);
   const card = column?.cardsArray.find(card => card.id === editingColumn.card);
 
@@ -53,21 +41,6 @@ const Modal = ({modalIsOpen, modalClose}) => {
   const [commentValue, setCommentValue] = useState('');
 
   const [popoverType, setPopoverType] = useState(null);
-
-  const [editingLabel, setEditingLabel] = useState({
-    id: null,
-    value: '',
-    color: ''
-  });
-
-  const initialNewLabel = {
-    id: nanoid(),
-    value: '',
-    color: '#61bd4f'
-  }
-  const [newLabel, setNewLabel] = useState(initialNewLabel);
-
-  const [checkListValue, setCheckListValue] = useState('Чек-лист');
 
   useEffect(() => {
     if(!modalIsOpen) {
@@ -102,16 +75,6 @@ const Modal = ({modalIsOpen, modalClose}) => {
     }
   }
 
-  const checkListFormSubmit = (e) => {
-    e.preventDefault();
-
-    if(checkListValue.trim()) {
-      dispatch(addCheckListAction(checkListValue));
-      setCheckListValue('Чек-лист');
-      setPopoverType(null);
-    }
-  }
-
   const cardDelete = () => {
     modalClose();
     setTimeout(() => {
@@ -128,285 +91,6 @@ const Modal = ({modalIsOpen, modalClose}) => {
     }
   });
   const popoverRef = useOutsideClick(() => setPopoverType(null));
-
-  const popover = () => {
-    const closePopover = () => setPopoverType(null);
-
-    switch(popoverType) {
-      case 'label': {
-        return (
-          <Popover
-            heading="Метки"
-            close={closePopover}
-            popoverRef={popoverRef}
-          >
-            <h4 className={`${styles.popover__subheading} ${styles.popover__labels_subheading}`}>Метки</h4>
-            <ul className={styles.popover__labels}>
-              {labels.map(label => {
-                return <Label
-                  key={label.id}
-                  label={label}
-                  card={card}
-                  onEdit={(label) => {
-                    setPopoverType('editingLabel');
-                    setEditingLabel(label);
-                  }}
-                />;
-              })}
-            </ul>
-            <button
-              className={styles.popover__label_create_button}
-              onClick={() => setPopoverType('creatingLabel')}
-            >
-              Создать новую метку
-            </button>
-          </Popover>
-        );
-      }
-      case 'editingLabel': {
-        return (
-          <Popover
-            heading="Изменение метки"
-            close={closePopover}
-            back={() => setPopoverType('label')}
-            popoverRef={popoverRef}
-          >
-            <div className={styles.popover__label_editing_name_section}>
-              <h4 className={styles.popover__subheading}>Название</h4>
-              <input
-                type="text"
-                value={editingLabel.value}
-                onChange={(e) => setEditingLabel(label => ({
-                  ...label,
-                  value: e.target.value
-                }))}
-              />
-            </div>
-
-            <div className={styles.popover__label_editing_color_section}>
-              <h5>Цвета</h5>
-              <div className={styles.popover__label_editing_colors}>
-                {labelColors.map(color => {
-                  return (
-                    <div
-                      key={color}
-                      className={styles.popover__label_editing_color}
-                      style={{backgroundColor: color}}
-                      onClick={() => setEditingLabel(label => ({
-                        ...label,
-                        color
-                      }))}
-                    >
-                      {editingLabel.color === color &&
-                      <span className={styles.popover__label_editing_color_active}>
-                        <i className="fas fa-check" />
-                      </span>
-                      }
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            <div className={styles.popover__label_editing_actions}>
-              <button
-                className={styles.popover__label_editing_actions_save}
-                onClick={() => {
-                  dispatch(changeLabelAction(editingLabel));
-                  setPopoverType('label');
-                }}
-              >
-                Сохранить
-              </button>
-
-              <button
-                className={styles.popover__label_editing_actions_delete}
-                onClick={() => {
-                  dispatch(deleteLabelAction(editingLabel.id));
-                  setPopoverType('label');
-                }}
-              >
-                Удалить
-              </button>
-            </div>
-          </Popover>
-        );
-      }
-      case 'creatingLabel': {
-        return (
-          <Popover
-            heading="Создание метки"
-            close={closePopover}
-            back={() => setPopoverType('label')}
-            popoverRef={popoverRef}
-          >
-            <div className={styles.popover__label_editing_name_section}>
-              <h4>Название</h4>
-              <input
-                type="text"
-                value={newLabel.value}
-                onChange={(e) => setNewLabel(label => ({
-                  ...label,
-                  value: e.target.value
-                }))}
-              />
-            </div>
-
-            <div className={styles.popover__label_editing_color_section}>
-              <h5>Цвета</h5>
-              <div className={styles.popover__label_editing_colors}>
-                {labelColors.map(color => {
-                  return (
-                    <div
-                      key={color}
-                      className={styles.popover__label_editing_color}
-                      style={{backgroundColor: color}}
-                      onClick={() => setNewLabel(label => ({
-                        ...label,
-                        color
-                      }))}
-                    >
-                      {newLabel.color === color &&
-                      <span className={styles.popover__label_editing_color_active}>
-                        <i className="fas fa-check" />
-                      </span>
-                      }
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-
-            <div className={styles.popover__label_editing_actions}>
-              <button
-                className={styles.popover__label_editing_actions_save}
-                onClick={() => {
-                  dispatch(createLabelAction(newLabel));
-                  setPopoverType('label');
-                  setNewLabel(initialNewLabel);
-                }}
-              >
-                Создать
-              </button>
-            </div>
-          </Popover>
-        );
-      }
-      case 'cover': {
-        const defaultColor = '#5e6c84';
-
-        return (
-          <Popover
-            heading="Обложка"
-            close={closePopover}
-            popoverRef={popoverRef}
-          >
-            <h4 className={`${styles.popover__subheading} ${styles.popover__cover_subheading}`}>Размер</h4>
-            <div className={styles.popover__cover_types}>
-              <div
-                className={`${styles.popover__cover_type} ${card?.cover.color && card?.cover.type === 1 ? styles.active : ''}`}
-                style={{cursor: card?.cover.color ? 'pointer' : 'default'}}
-                onClick={() => card?.cover.color ? dispatch(changeCardCoverTypeAction(1)) : {}}
-              >
-                <div
-                  className={styles.type1__header}
-                  style={{
-                    backgroundColor: card?.cover.color ? card?.cover.color : defaultColor,
-                    opacity: card?.cover.color ? '1' : '0.3'
-                  }}
-                />
-
-                <div className={styles.type1__body}>
-                  <div className={styles.type1__text1} style={{opacity: card?.cover.color ? '1' : '0.3'}} />
-                  <div className={styles.type1__text2} style={{opacity: card?.cover.color ? '1' : '0.3'}} />
-
-                  <div className={styles.type1__footer}>
-                    <div style={{opacity: card?.cover.color ? '1' : '0.3'}} />
-                    <div style={{opacity: card?.cover.color ? '1' : '0.3'}} />
-                    <div className={styles.type1__button} style={{opacity: card?.cover.color ? '1' : '0.3'}} />
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={`${styles.popover__cover_type} ${card?.cover.color && card?.cover.type === 2 ? styles.active : ''}`}
-                style={{cursor: card?.cover.color ? 'pointer' : 'default'}}
-                onClick={() => card?.cover.color ? dispatch(changeCardCoverTypeAction(2)) : {}}
-              >
-                <div style={{
-                    backgroundColor: card?.cover.color ? card?.cover.color : defaultColor,
-                    opacity: card?.cover.color ? '1' : '0.3'
-                  }}>
-                  <div className={styles.type2__body}>
-                    <div
-                      className={styles.type2_text1}
-                      style={{backgroundColor: card?.cover.color ? '#5e6c84' : '#fff'}}
-                    />
-                    <div
-                      className={styles.type2_text2}
-                      style={{backgroundColor: card?.cover.color ? '#5e6c84' : '#fff'}}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {card?.cover.color &&
-            <button
-              className={styles.popover__cover_clear}
-              onClick={() => dispatch(clearCardCoverAction())}
-            >
-              Убрать обложку
-            </button>
-            }
-
-            <h4 className={`${styles.popover__subheading} ${styles.popover__labels_subheading}`}>Цвета</h4>
-            <div className={styles.popover__cover_colors}>
-              {coverColors.map(color => {
-                return <div
-                  key={color}
-                  className={`${styles.popover__cover_color} ${card?.cover.color === color ? styles.active : ''}`}
-                  style={{backgroundColor: color}}
-                  onClick={() => dispatch(addCardCoverAction(color))}
-                />
-              })}
-            </div>
-          </Popover>
-        );
-      }
-      case 'checkList': {
-        return (
-          <Popover
-            heading="Добавление списка задач"
-            close={closePopover}
-            popoverRef={popoverRef}
-          >
-            <form
-              className={`${styles.popover__label_editing_name_section} ${styles.popover__checkList_form}`}
-              onSubmit={checkListFormSubmit}
-            >
-              <label htmlFor="checkList" className={styles.popover__subheading}>
-                Название
-              </label>
-              <input
-                id="checkList"
-                type="text"
-                autoFocus
-                value={checkListValue}
-                onChange={(e) => setCheckListValue(e.target.value)}
-              />
-              <button>
-                Добавить
-              </button>
-            </form>
-          </Popover>
-        );
-      }
-      default: {
-        return null;
-      }
-    }
-  }
 
   return (
     <ReactModal
@@ -623,9 +307,11 @@ const Modal = ({modalIsOpen, modalClose}) => {
             </div>
           </div>
 
-          {card?.comments.map(comment => {
-            return <Comment key={comment.id} comment={comment} />
-          })}
+          <div className={styles.modal__card_comments_comments}>
+            {card?.comments.map(comment => {
+              return <Comment key={comment.id} comment={comment} />;
+            })}
+          </div>
         </div>
       </div>
 
@@ -678,7 +364,12 @@ const Modal = ({modalIsOpen, modalClose}) => {
           </button>
         </div>
 
-        {popover()}
+        <ModalPopover
+          popoverType={popoverType}
+          setPopoverType={setPopoverType}
+          popoverRef={popoverRef}
+          card={card}
+        />
       </div>
     </ReactModal>
   );
