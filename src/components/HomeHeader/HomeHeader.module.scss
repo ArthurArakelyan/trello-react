@@ -88,6 +88,10 @@
 .header__action_star {
   padding: 0 8px;
 
+  &.active {
+    color: #f2d600;
+  }
+
   i {
     font-size: 14px;
   }

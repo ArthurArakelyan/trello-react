@@ -16,7 +16,7 @@
   background-color: #fafbfc;
   box-shadow: inset 0 0 0 2px #dfe1e6;
   position: absolute;
-  top: 2px;
+  top: 5px;
   left: 0;
   margin: 6px;
   display: flex;
@@ -92,6 +92,7 @@
     line-height: 20px;
     min-width: 24px;
     height: 24px;
+    color: #172b4d;
 
     &:hover {
       background-color: rgba(9,30,66,.08);

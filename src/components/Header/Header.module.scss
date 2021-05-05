@@ -35,7 +35,7 @@
   justify-content: flex-start;
 
   button:not(:last-child) {
-    margin-right: 5px;
+    margin-right: 4px;
   }
 }
 .header__links_boards {
@@ -49,7 +49,7 @@
   justify-content: flex-end;
 
   button:nth-child(2n) {
-    margin: 0 5px;
+    margin: 0 4px;
   }
 }
 .header__account_button {
@@ -69,7 +69,7 @@
   }
   .header__section_account {
     button:first-child {
-      margin-right: 5px;
+      margin-right: 4px;
     }
   }
 }

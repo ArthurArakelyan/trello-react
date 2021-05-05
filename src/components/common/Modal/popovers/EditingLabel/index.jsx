@@ -12,6 +12,13 @@ import styles from "./EditingLabel.module.scss";
 const EditingLabel = ({setPopoverType, popoverRef, editingLabel, setEditingLabel}) => {
   const dispatch = useDispatch();
 
+  const save = (e) => {
+    e.preventDefault();
+
+    dispatch(changeLabelAction(editingLabel));
+    setPopoverType('label');
+  }
+
   return (
     <Popover
       heading="Изменение метки"
@@ -19,10 +26,11 @@ const EditingLabel = ({setPopoverType, popoverRef, editingLabel, setEditingLabel
       back={() => setPopoverType('label')}
       popoverRef={popoverRef}
     >
-      <div className={styles.popover__label_editing_name_section}>
-        <h4 className={styles.popover__label_editing_subheading}>Название</h4>
+      <form className={styles.popover__label_editing_name_section} onSubmit={save}>
+        <label htmlFor="name">Название</label>
         <input
           type="text"
+          id="name"
           value={editingLabel.value}
           onChange={(e) => setEditingLabel(label => ({
             ...label,
@@ -30,7 +38,7 @@ const EditingLabel = ({setPopoverType, popoverRef, editingLabel, setEditingLabel
           }))}
           autoFocus
         />
-      </div>
+      </form>
 
       <div className={styles.popover__label_editing_color_section}>
         <h5>Цвета</h5>
@@ -60,10 +68,7 @@ const EditingLabel = ({setPopoverType, popoverRef, editingLabel, setEditingLabel
       <div className={styles.popover__label_editing_actions}>
         <button
           className={styles.popover__label_editing_actions_save}
-          onClick={() => {
-            dispatch(changeLabelAction(editingLabel));
-            setPopoverType('label');
-          }}
+          onClick={save}
         >
           Сохранить
         </button>

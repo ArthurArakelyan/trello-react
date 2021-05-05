@@ -69,9 +69,9 @@ const HomeHeader = ({menuCollapse, menuIsOpen, menuClose}) => {
 
         <Button
           onClick={() => dispatch(boardLikeAction())}
-          className={`button ${styles.header__action_star}`}
+          className={`button ${styles.header__action_star} ${board.liked ? styles.active : ''}`}
         >
-          {board.liked ? <i className="fas fa-star" /> : <i className="far fa-star" />}
+          <i className="far fa-star" />
         </Button>
 
         <div className={styles.divider} />

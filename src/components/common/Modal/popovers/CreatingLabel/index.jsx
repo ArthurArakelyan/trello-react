@@ -20,6 +20,14 @@ const CreatingLabel = ({setPopoverType, popoverRef}) => {
   }
   const [newLabel, setNewLabel] = useState(initialNewLabel);
 
+  const create = (e) => {
+    e.preventDefault();
+
+    dispatch(createLabelAction(newLabel));
+    setPopoverType('label');
+    setNewLabel(initialNewLabel);
+  }
+
   return (
     <Popover
       heading="Создание метки"
@@ -27,10 +35,11 @@ const CreatingLabel = ({setPopoverType, popoverRef}) => {
       back={() => setPopoverType('label')}
       popoverRef={popoverRef}
     >
-      <div className={styles.popover__label_editing_name_section}>
-        <h4>Название</h4>
+      <form className={styles.popover__label_editing_name_section} onSubmit={create}>
+        <label htmlFor="name">Название</label>
         <input
           type="text"
+          id="name"
           value={newLabel.value}
           onChange={(e) => setNewLabel(label => ({
             ...label,
@@ -38,7 +47,7 @@ const CreatingLabel = ({setPopoverType, popoverRef}) => {
           }))}
           autoFocus
         />
-      </div>
+      </form>
 
       <div className={styles.popover__label_editing_color_section}>
         <h5>Цвета</h5>
@@ -68,11 +77,7 @@ const CreatingLabel = ({setPopoverType, popoverRef}) => {
       <div className={styles.popover__label_editing_actions}>
         <button
           className={styles.popover__label_editing_actions_save}
-          onClick={() => {
-            dispatch(createLabelAction(newLabel));
-            setPopoverType('label');
-            setNewLabel(initialNewLabel);
-          }}
+          onClick={create}
         >
           Создать
         </button>
