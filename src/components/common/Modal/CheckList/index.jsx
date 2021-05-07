@@ -152,7 +152,9 @@ const CheckList = ({list}) => {
             <div className={styles.modal__card_checklist_container}>
               <div className={modalStyles.modal__card_section}>
                 <div className={styles.modal__card_checklist_header}>
-                  <p className={styles.modal__card_checklist_completed_message}>Отмечены все элементы!</p>
+                  <span className={styles.modal__card_checklist_completed_message}>
+                    Отмечены все элементы!
+                  </span>
                 </div>
               </div>
             </div>

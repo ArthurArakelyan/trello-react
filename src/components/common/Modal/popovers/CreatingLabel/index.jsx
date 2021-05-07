@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import {createLabelAction} from "../../../../../store/columns/actions";
 
@@ -10,12 +10,15 @@ import Popover from "../../../Popover";
 import styles from "../EditingLabel/EditingLabel.module.scss";
 import {nanoid} from "nanoid";
 
-const CreatingLabel = ({setPopoverType, popoverRef}) => {
+const CreatingLabel = ({setPopoverType, popoverRef, searchValue}) => {
   const dispatch = useDispatch();
+  const labels = useSelector(state => state.columnsReducer.labels);
+
+  const searchedLabels = labels.filter(label => label.value.includes(searchValue)).length;
 
   const initialNewLabel = {
     id: nanoid(),
-    value: '',
+    value: !searchedLabels ? searchValue : '',
     color: '#61bd4f'
   }
   const [newLabel, setNewLabel] = useState(initialNewLabel);

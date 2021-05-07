@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import Label from "./Label";
+import Labels from "./Labels";
 import EditingLabel from "./EditingLabel";
 import CreatingLabel from "./CreatingLabel";
 import Cover from "./Cover";
@@ -13,14 +13,18 @@ const ModalPopover = ({popoverType, setPopoverType, popoverRef, card}) => {
     color: ''
   });
 
+  const [searchValue, setSearchValue] = useState('');
+
   switch(popoverType) {
     case 'label': {
       return (
-        <Label
+        <Labels
           setPopoverType={setPopoverType}
           popoverRef={popoverRef}
           card={card}
           setEditingLabel={setEditingLabel}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
         />
       );
     }
@@ -39,6 +43,7 @@ const ModalPopover = ({popoverType, setPopoverType, popoverRef, card}) => {
         <CreatingLabel
           setPopoverType={setPopoverType}
           popoverRef={popoverRef}
+          searchValue={searchValue}
         />
       );
     }

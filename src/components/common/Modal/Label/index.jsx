@@ -5,12 +5,16 @@ import {activeLabelAction} from "../../../../store/columns/actions";
 
 import styles from "./Label.module.scss";
 
-const Label = ({label, card, onEdit}) => {
+const Label = ({label, card, onEdit, searchValue}) => {
   const dispatch = useDispatch();
 
   const [isLabelHover, setIsLabelHover] = useState(false);
 
   const activeLabel = card.labels.find(l => l.id === label.id);
+
+  if(!label.value.includes(searchValue)) {
+    return null;
+  }
 
   return (
     <li key={label.id} className={styles.popover__labels_label}>

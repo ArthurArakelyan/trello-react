@@ -10,6 +10,17 @@
   overflow: auto;
   transition: right .3s ease-in-out;
 
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(9,30,66,.08);
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: hsla(0,0%,0%,.15);
+  }
+
   &.open {
     right: 0;
   }
@@ -19,7 +30,7 @@
   }
 }
 .menu__wrapper {
-  width: 90%;
+  width: 92%;
   margin: 0 auto;
 }
 .menu__content {
@@ -161,7 +172,7 @@
 }
 
 .menu__color {
-  width: 45%;
+  width: 47.2%;
   height: 96px;
   border-radius: 8px;
   cursor: pointer;
