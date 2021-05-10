@@ -21,10 +21,16 @@ const Menu = ({menuCollapse, menuOpen, menuClose, menuRef}) => {
   const [menuType, setMenuType] = useState('backgroundChange');
 
   const imageUpload = (e) => {
-    if(e.target.files && e.target.files[0] && e.target.files[0].size <= 10000000) {
-      const reader = new FileReader();
-      reader.onload = (e) => dispatch(uploadImageAction(e.target.result));
-      reader.readAsDataURL(e.target.files[0]);
+    if(e.target.files && e.target.files[0]) {
+      if(e.target.files[0].size <= 5000000 && e.target.files[0].type.includes('image')) {
+        const reader = new FileReader();
+        reader.onload = (e) => dispatch(uploadImageAction(e.target.result));
+        reader.readAsDataURL(e.target.files[0]);
+      } else if(!e.target.files[0].type.includes('image')) {
+        alert('Only images');
+      } else {
+        alert('No more 5MB');
+      }
     }
   }
 
