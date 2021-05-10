@@ -426,3 +426,45 @@
     color: #0079bf;
   }
 }
+
+@media only screen and (max-width: 740px) {
+  .modal__close {
+    z-index: 2000;
+  }
+
+  .modal__card_details {
+    width: 100%;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  .modal__card_name_detail_heading {
+    width: 86%;
+  }
+  .modal__card_name_detail_form {
+    width: 86%;
+  }
+
+  /* menu */
+
+  .modal__card_upgrades_menu {
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 18px;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  .modal__card_upgrades {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .modal__card_actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .modal__card_upgrade_button {
+    width: 49%;
+  }
+}
