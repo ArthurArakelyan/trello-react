@@ -44,6 +44,7 @@ const ModalPopover = ({popoverType, setPopoverType, popoverRef, card}) => {
           setPopoverType={setPopoverType}
           popoverRef={popoverRef}
           searchValue={searchValue}
+          setSearchValue={setSearchValue}
         />
       );
     }

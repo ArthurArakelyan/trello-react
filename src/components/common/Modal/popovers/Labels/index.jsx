@@ -2,7 +2,7 @@ import React from 'react';
 import {useSelector} from "react-redux";
 
 import Popover from "../../../Popover";
-import Label from "../../Label";
+import Label from "./Label";
 
 import styles from "./Labels.module.scss";
 
@@ -17,13 +17,22 @@ const LabelPopover = ({setPopoverType, popoverRef, setEditingLabel, card, search
       close={() => setPopoverType(null)}
       popoverRef={popoverRef}
     >
-      <input
-        type="text"
-        placeholder="Поиск меток..."
-        className={styles.popover__labels_search}
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)}
-      />
+      <form
+        className={styles.popover__labels_search_form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          setPopoverType('creatingLabel');
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Поиск меток..."
+          className={styles.popover__labels_search_input}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
+          autoFocus
+        />
+      </form>
 
       <h4 className={styles.popover__labels_subheading}>Метки</h4>
       {searchedLabels ?

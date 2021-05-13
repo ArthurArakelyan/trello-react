@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
 
-import {activeLabelAction} from "../../../../store/columns/actions";
+import {activeLabelAction} from "../../../../../../store/columns/actions";
 
 import styles from "./Label.module.scss";
 
@@ -29,10 +29,7 @@ const Label = ({label, card, onEdit, searchValue}) => {
         onMouseLeave={() => setIsLabelHover(false)}
       >
         {label.value &&
-        <p
-          className={styles.popover__labels_label_value}
-          title={label.value.length > 15 ? label.value : ''}
-        >
+        <p className={styles.popover__labels_label_value}>
           {label.value.length > 15 ? `${label.value.slice(0, 15)}...` : label.value}
         </p>
         }
