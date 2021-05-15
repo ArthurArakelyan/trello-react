@@ -11,7 +11,7 @@ const initialState = {
   color: 'rgb(0, 121, 191)',
   selected: 'color',
   image: '',
-  value: 'Rate',
+  value: 'Board',
   liked: false
 }
 

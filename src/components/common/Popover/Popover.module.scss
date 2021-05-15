@@ -8,17 +8,14 @@
   border-radius: 3px;
   z-index: 1500;
 }
-.popover__wrapper {
-  width: 90%;
-  margin: 0 auto;
-}
 .popover__content {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 20px;
+  padding: 0 12px 12px 12px;
   flex-direction: column;
+  box-sizing: border-box;
 }
 .popover__body {
   width: 100%;

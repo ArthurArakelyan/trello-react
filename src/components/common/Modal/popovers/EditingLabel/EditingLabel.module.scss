@@ -25,6 +25,7 @@
     border: none;
     display: block;
     color: #172b4d;
+    line-height: 20px;
     transition: background-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
     &:hover {
@@ -93,12 +94,13 @@
 
   button {
     color: white;
-    padding: 7px 24px;
-    transition: background-color .2s ease-in-out;
+    line-height: 20px;
+    transition: background-color 85ms ease-in-out;
   }
 }
 .popover__label_editing_actions_save {
   background-color: #5aac44;
+  padding: 6px 24px;
 
   &:hover {
     background-color: #61bd4f;
@@ -110,6 +112,7 @@
 }
 .popover__label_editing_actions_delete {
   background-color: #cf513d;
+  padding: 6px 12px;
 
   &:hover {
     background-color: #eb5a46;
