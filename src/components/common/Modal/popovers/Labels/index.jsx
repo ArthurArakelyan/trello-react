@@ -9,7 +9,7 @@ import styles from "./Labels.module.scss";
 const LabelPopover = ({setPopoverType, popoverRef, setEditingLabel, card, searchValue, setSearchValue}) => {
   const labels = useSelector(state => state.columnsReducer.labels);
 
-  const searchedLabels = labels.filter(label => label.value.includes(searchValue)).length;
+  let searchedLabels = labels.filter(label => label.value.includes(searchValue === ' ' ? '' : searchValue.trim())).length;
 
   return (
     <Popover

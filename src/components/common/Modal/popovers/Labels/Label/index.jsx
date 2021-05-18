@@ -12,7 +12,7 @@ const Label = ({label, card, onEdit, searchValue}) => {
 
   const activeLabel = card.labels.find(l => l.id === label.id);
 
-  if(!label.value.includes(searchValue)) {
+  if(!label.value.includes(searchValue === ' ' ? '' : searchValue.trim())) {
     return null;
   }
 
@@ -24,6 +24,7 @@ const Label = ({label, card, onEdit, searchValue}) => {
           backgroundColor: label.color,
           boxShadow: isLabelHover ? `-8px 0 ${label.color}bb` : ''
         }}
+        title={label.value}
         onClick={() => dispatch(activeLabelAction(label))}
         onMouseEnter={() => setIsLabelHover(true)}
         onMouseLeave={() => setIsLabelHover(false)}
