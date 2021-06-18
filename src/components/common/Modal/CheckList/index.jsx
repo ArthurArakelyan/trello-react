@@ -13,6 +13,7 @@ import CheckListItem from "../CheckListItem";
 import useFormCollapse from "../../../../hooks/useFormCollapse";
 import useFormCollapseWithTextarea from "../../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
+import useEscClick from "../../../../hooks/useEscClick";
 
 import modalStyles from '../Modal.module.scss';
 import styles from './CheckList.module.scss';
@@ -21,6 +22,8 @@ const CheckList = ({list}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
   const formCollapseWithTextarea = useFormCollapseWithTextarea();
+
+  const itemTextareaRef = useRef(null);
 
   const [itemFormCollapsed, setItemFormCollapsed] = useState(false);
   const [itemValue, setItemValue] = useState('');
@@ -34,11 +37,15 @@ const CheckList = ({list}) => {
     percentage = Math.round((completedItems / list.items.length) * 100);
   }
 
-  const itemFormRef = useOutsideClick(() => formCollapse(setItemFormCollapsed, setItemValue));
-  const itemTextareaRef = useRef(null);
   const editingFormRef = useOutsideClick(() =>
     formCollapseWithTextarea(setEditingFormCollapsed, setEditingValue, list.value, false)
   );
+  useEscClick(() => {
+    formCollapseWithTextarea(setEditingFormCollapsed, setEditingValue, list.value, false)
+  }, editingFormRef);
+
+  const itemFormRef = useOutsideClick(() => formCollapse(setItemFormCollapsed, setItemValue));
+  useEscClick(() => formCollapse(setItemFormCollapsed, setItemValue), itemFormRef);
 
   useEffect(() => {
     if(itemValue === '' && itemTextareaRef.current) {

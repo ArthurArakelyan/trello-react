@@ -7,6 +7,7 @@ import {deleteCommentAction, editCommentAction} from "../../../../store/columns/
 
 import useFormCollapse from "../../../../hooks/useFormCollapse";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
+import useEscClick from "../../../../hooks/useEscClick";
 
 import styles from './Comment.module.scss';
 import modalStyles from '../Modal.module.scss';
@@ -27,6 +28,7 @@ const Comment = ({comment}) => {
   }
 
   const ref = useOutsideClick(() => formCollapse(setCommentEditingCollapse, setCommentValue));
+  useEscClick(() => formCollapse(setCommentEditingCollapse, setCommentValue), ref);
 
   return (
     <div className={modalStyles.modal__card_comments_details_container}>

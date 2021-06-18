@@ -14,6 +14,7 @@ import {
 
 import useFormCollapse from "../../hooks/useFormCollapse";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import useEscClick from "../../hooks/useEscClick";
 
 import styles from './Column.module.scss';
 
@@ -48,7 +49,10 @@ const Column = ({column, modalOpen}) => {
   }
 
   const cardFormRef = useOutsideClick(() => formCollapse(setCardFormCollapse, setCardValue));
+  useEscClick(() => formCollapse(setCardFormCollapse, setCardValue), cardFormRef);
+
   const nameFormRef = useOutsideClick(nameFormSubmit);
+  useEscClick(nameFormSubmit, nameFormRef);
 
   return (
     <div

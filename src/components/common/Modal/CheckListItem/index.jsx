@@ -11,6 +11,7 @@ import {
 
 import useFormCollapseWithTextarea from "../../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
+import useEscClick from "../../../../hooks/useEscClick";
 
 import styles from './CheckListItem.module.scss';
 import modalStyles from "../Modal.module.scss";
@@ -25,6 +26,8 @@ const CheckListItem = ({item, checklist}) => {
   const [value, setValue] = useState('');
 
   const ref = useOutsideClick(() => formCollapse(setFormCollapsed, setValue, item.value, false));
+  useEscClick(() => formCollapse(setFormCollapsed, setValue, item.value, false), ref);
+
   const textareaRef = useRef(null);
 
   const formSubmit = (e) => {

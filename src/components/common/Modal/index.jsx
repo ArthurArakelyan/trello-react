@@ -16,6 +16,7 @@ import ModalPopover from './popovers/index';
 import useFormCollapse from "../../../hooks/useFormCollapse";
 import useFormCollapseWithTextarea from "../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../hooks/useOutsideClick";
+import useEscClick from "../../../hooks/useEscClick";
 
 import './styles.scss';
 import styles from './Modal.module.scss';
@@ -83,14 +84,20 @@ const Modal = ({modalIsOpen, modalClose}) => {
   }
 
   const cardNameRef = useOutsideClick(cardNameFormSubmit);
+  useEscClick(() => formCollapse(setCardNameFormCollapse, setCardNameValue, card?.value), cardNameRef);
+
   const cardDescriptionRef = useOutsideClick(cardDescriptionFormSubmit);
+  useEscClick(() => formCollapse(setDescriptionFormCollapse, setDescriptionValue), cardDescriptionRef);
+
   const commentRef = useOutsideClick(() => {
     if(commentFormCollapse && !commentValue.trim()) {
       setCommentFormCollapse(value => !value);
       setCommentValue('');
     }
   });
+
   const popoverRef = useOutsideClick(() => setPopoverType(null));
+  useEscClick(() => setPopoverType(null), popoverRef);
 
   return (
     <ReactModal

@@ -7,6 +7,7 @@ import Button from "../common/Button";
 
 import useFormCollapse from "../../hooks/useFormCollapse";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import useEscClick from "../../hooks/useEscClick";
 
 import styles from './HomeHeader.module.scss';
 
@@ -30,6 +31,7 @@ const HomeHeader = ({menuCollapse, menuIsOpen, menuClose}) => {
   }
 
   const ref = useOutsideClick(nameSubmit);
+  useEscClick(nameSubmit, ref);
 
   return (
     <div className={styles.home__header}>

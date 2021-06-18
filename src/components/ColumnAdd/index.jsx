@@ -5,6 +5,7 @@ import {addColumnAction} from '../../store/columns/actions';
 
 import useFormCollapse from "../../hooks/useFormCollapse";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import useEscClick from "../../hooks/useEscClick";
 
 import Button from "../common/Button";
 
@@ -26,7 +27,8 @@ const ColumnAdd = () => {
     }
   }
 
-  const ref = useOutsideClick(() => formCollapse(setFormCollapsed, setValue));
+  const ref = useOutsideClick(() => setFormCollapsed(collapsed => !collapsed));
+  useEscClick(() => setFormCollapsed(collapsed => !collapsed), ref);
 
   if(formCollapsed) {
     return (
@@ -46,7 +48,7 @@ const ColumnAdd = () => {
             </button>
 
             <button
-              onClick={() => formCollapse(setFormCollapsed, setValue)}
+              onClick={() => setFormCollapsed(collapsed => !collapsed)}
               className={styles.column__add_close}
               type='button'
             >
@@ -61,7 +63,7 @@ const ColumnAdd = () => {
   return (
     <div className={styles.column__add}>
       <Button
-        onClick={() => formCollapse(setFormCollapsed, setValue)}
+        onClick={() => setFormCollapsed(collapsed => !collapsed)}
         className={`button ${styles.column__add_button}`}
       >
         <i className="fas fa-plus" />
