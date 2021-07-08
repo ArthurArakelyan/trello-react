@@ -187,6 +187,26 @@
   }
 }
 
+@media only screen and (max-width: 1200px) {
+  .menu {
+    right: -32%;
+
+    &.hide {
+      right: -32%;
+    }
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .menu {
+    right: -36%;
+
+    &.hide {
+      right: -36%;
+    }
+  }
+}
+
 @media only screen and (max-width: 1000px) {
   .menu {
     right: -38%;
@@ -203,16 +223,6 @@
 
     &.hide {
       right: -43%;
-    }
-  }
-}
-
-@media only screen and (max-width: 800px) {
-  .menu {
-    right: -50%;
-
-    &.hide {
-      right: -50%;
     }
   }
 }

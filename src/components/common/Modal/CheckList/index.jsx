@@ -10,6 +10,8 @@ import {
 
 import CheckListItem from "../CheckListItem";
 
+import Textarea from "../../Textarea";
+
 import useFormCollapse from "../../../../hooks/useFormCollapse";
 import useFormCollapseWithTextarea from "../../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
@@ -112,20 +114,20 @@ const CheckList = ({list}) => {
               onSubmit={editingFormSubmit}
               ref={editingFormRef}
             >
-              <textarea
-                placeholder='Добавить более подробное описание...'
+              <Textarea
+                enterClick={editingFormSubmit}
                 value={editingValue}
                 onChange={(e) => setEditingValue(e.target.value)}
                 autoFocus
               />
 
-              <div className={modalStyles.modal__card_description_details_form_actions}>
-                <button className={modalStyles.modal__card_description_details_form_actions_save}>
+              <div className={styles.modal__card_checklist_form_actions}>
+                <button className="form__submit">
                   Сохранить
                 </button>
                 <button
                   type='button'
-                  className={modalStyles.modal__card_description_details_form_actions_close}
+                  className="form__close"
                   onClick={() => formCollapseWithTextarea(setEditingFormCollapsed, setEditingValue, list.value, false)}
                 >
                   <i className="fas fa-times" />
@@ -179,21 +181,21 @@ const CheckList = ({list}) => {
               onSubmit={itemFormSubmit}
               ref={itemFormRef}
             >
-              <textarea
-                placeholder='Добавить более подробное описание...'
-                className={styles.modal__card_checklist_textarea}
+              <input
+                placeholder='Добавить элемент'
+                className={styles.modal__card_checklist_creating_input}
                 value={itemValue}
                 onChange={(e) => setItemValue(e.target.value)}
                 ref={itemTextareaRef}
                 autoFocus
               />
               <div className={modalStyles.modal__card_description_details_form_actions}>
-                <button className={modalStyles.modal__card_description_details_form_actions_save}>
+                <button className="form__submit">
                   Добавить
                 </button>
                 <button
                   type='button'
-                  className={modalStyles.modal__card_description_details_form_actions_close}
+                  className="form__close"
                   onClick={() => formCollapse(setItemFormCollapsed, setItemValue)}
                 >
                   <i className="fas fa-times" />

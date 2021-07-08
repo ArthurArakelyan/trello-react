@@ -3,6 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 
 import Card from "../Card";
 
+import Textarea from "../common/Textarea";
+
 import {
   addCardAction,
   changeColumnNameAction,
@@ -97,12 +99,6 @@ const Column = ({column, modalOpen}) => {
             {column.value}
           </p>
         }
-
-        <div className={styles.column__header_extras_section}>
-          <button className={styles.column__header_extras}>
-            <i className="fas fa-ellipsis-h" />
-          </button>
-        </div>
       </div>
 
       {!!column.cardsArray.length &&
@@ -125,20 +121,21 @@ const Column = ({column, modalOpen}) => {
             className={styles.column__cards_form}
             onSubmit={cardFormSubmit}
           >
-            <textarea
+            <Textarea
+              enterClick={cardFormSubmit}
               value={cardValue}
               onChange={(e) => setCardValue(e.target.value)}
               placeholder="Ввести заголовок для этой карточки"
               autoFocus
             />
             <div className={styles.column__cards_buttons}>
-              <button className={styles.column__cards_submit}>
+              <button className="form__submit">
                 Добавить карточку
               </button>
               <button
                 onClick={() => formCollapse(setCardFormCollapse, setCardValue)}
                 type="button"
-                className={styles.column__cards_close}
+                className="form__close"
               >
                 <i className="fas fa-times" />
               </button>

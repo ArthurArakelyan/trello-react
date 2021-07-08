@@ -43,13 +43,13 @@ const ColumnAdd = () => {
             autoFocus
           />
           <div className={styles.column__add_buttons}>
-            <button className={styles.column__add_submit}>
+            <button className="form__submit">
               Добавить список
             </button>
 
             <button
               onClick={() => setFormCollapsed(collapsed => !collapsed)}
-              className={styles.column__add_close}
+              className="form__close"
               type='button'
             >
               <i className='fas fa-times' />

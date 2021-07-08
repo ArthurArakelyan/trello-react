@@ -241,12 +241,12 @@ const Modal = ({modalIsOpen, modalClose}) => {
                   autoFocus
                 />
                 <div className={styles.modal__card_description_details_form_actions}>
-                  <button className={styles.modal__card_description_details_form_actions_save}>
+                  <button className="form__submit">
                     Сохранить
                   </button>
                   <button
                     type='button'
-                    className={styles.modal__card_description_details_form_actions_close}
+                    className="form__close"
                     onClick={() => {
                       formCollapse(setDescriptionFormCollapse, setDescriptionValue);
                     }}
@@ -345,7 +345,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
           </button>
           <button className={styles.modal__card_upgrade_button}>
             <i className="far fa-clock" />
-            <p>Срок</p>
+            <p>Даты</p>
           </button>
           <button className={styles.modal__card_upgrade_button}>
             <i className="fas fa-paperclip" />

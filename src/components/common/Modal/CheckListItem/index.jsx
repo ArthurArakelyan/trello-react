@@ -9,6 +9,8 @@ import {
   checkListItemDropAction
 } from '../../../../store/columns/actions';
 
+import Textarea from "../../Textarea";
+
 import useFormCollapseWithTextarea from "../../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
 import useEscClick from "../../../../hooks/useEscClick";
@@ -99,7 +101,8 @@ const CheckListItem = ({item, checklist}) => {
             onSubmit={formSubmit}
             ref={ref}
           >
-            <textarea
+            <Textarea
+              enterClick={formSubmit}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               ref={textareaRef}
@@ -107,12 +110,12 @@ const CheckListItem = ({item, checklist}) => {
             />
 
             <div className={modalStyles.modal__card_description_details_form_actions}>
-              <button className={modalStyles.modal__card_description_details_form_actions_save}>
+              <button className="form__submit">
                 Сохранить
               </button>
               <button
                 type='button'
-                className={modalStyles.modal__card_description_details_form_actions_close}
+                className="form__close"
                 onClick={() => formCollapse(setFormCollapsed, setValue, item.value, false)}
               >
                 <i className="fas fa-times" />

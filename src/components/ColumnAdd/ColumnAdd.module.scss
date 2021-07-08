@@ -8,7 +8,7 @@
   background-color: hsla(0,0%,100%,.24);
   min-height: 32px;
   height: auto;
-  padding: 12px;
+  padding: 10px 12px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@
   max-height: 82px;
   background-color: #EBECF0;
   border-radius: 3px;
-  padding: 8px;
+  padding: 5px;
 }
 .column__add_input {
   color: #172b4d;
@@ -36,48 +36,12 @@
   outline: none;
   border-radius: 3px;
   box-sizing: border-box;
+  line-height: 20px;
   width: 100%;
 }
 .column__add_buttons {
   display: flex;
-  margin-top: 5px;
+  margin-top: 4px;
   align-items: center;
   justify-content: flex-start;
-
-  button {
-    background-color: transparent;
-    border: none;
-    outline: none;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  .column__add_submit {
-    background-color: #5AAC44;
-    padding: 8px 10px;
-    color: white;
-    border-radius: 3px;
-    transition: opacity .2s ease-in-out;
-
-    &:hover {
-      opacity: 0.8;
-    }
-
-    &:active {
-      opacity: 0.7;
-    }
-  }
-
-  .column__add_close {
-    font-size: 22px;
-    color: #42526e;
-    margin-left: 5px;
-    transition: color .2s ease-in-out;
-
-    &:hover {
-      color: #172b4d;
-    }
-  }
 }

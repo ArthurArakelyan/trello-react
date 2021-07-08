@@ -41,7 +41,7 @@ const Checklist = ({setPopoverType, popoverRef}) => {
           value={checkListValue}
           onChange={(e) => setCheckListValue(e.target.value)}
         />
-        <button>
+        <button className="form__submit">
           Добавить
         </button>
       </form>

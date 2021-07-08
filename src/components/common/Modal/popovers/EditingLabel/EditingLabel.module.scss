@@ -91,28 +91,16 @@
   align-items: center;
   justify-content: space-between;
   margin-top: 10px;
-
-  button {
-    color: white;
-    line-height: 20px;
-    transition: background-color 85ms ease-in-out;
-  }
 }
 .popover__label_editing_actions_save {
-  background-color: #5aac44;
-  padding: 6px 24px;
-
-  &:hover {
-    background-color: #61bd4f;
-  }
-
-  &:active {
-    background-color: #49852e;
-  }
+  padding: 6px 24px !important;
 }
 .popover__label_editing_actions_delete {
   background-color: #cf513d;
   padding: 6px 12px;
+  color: white;
+  line-height: 20px;
+  transition: background-color 85ms ease-in-out;
 
   &:hover {
     background-color: #eb5a46;

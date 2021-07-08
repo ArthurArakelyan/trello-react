@@ -9,7 +9,7 @@ import App from './App';
 
 import rootStore from "./store/configureStore";
 
-import './index.css';
+import './index.scss';
 
 const {store, persistor} = rootStore;
 

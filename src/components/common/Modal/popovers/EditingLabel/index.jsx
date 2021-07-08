@@ -67,7 +67,7 @@ const EditingLabel = ({setPopoverType, popoverRef, editingLabel, setEditingLabel
 
       <div className={styles.popover__label_editing_actions}>
         <button
-          className={styles.popover__label_editing_actions_save}
+          className={`${styles.popover__label_editing_actions_save} form__submit`}
           onClick={save}
         >
           Сохранить

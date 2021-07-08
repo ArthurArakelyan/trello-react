@@ -66,13 +66,13 @@ const Comment = ({comment}) => {
               <div className={styles.comment__edit_actions}>
                 <button
                   onClick={commentSave}
-                  className={styles.comment__edit_save}
+                  className="form__submit"
                 >
                   Сохранить
                 </button>
                 <button
                   onClick={() => formCollapse(setCommentEditingCollapse, setCommentValue)}
-                  className={styles.comment__edit_close}
+                  className="form__close"
                 >
                   <i className="fas fa-times" />
                 </button>
