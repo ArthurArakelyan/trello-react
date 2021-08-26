@@ -14,14 +14,12 @@ import './index.scss';
 const {store, persistor} = rootStore;
 
 ReactDOM.render(
-  <React.StrictMode>
-    <PersistGate loading={null} persistor={persistor}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </Provider>
-    </PersistGate>
-  </React.StrictMode>,
+  <PersistGate loading={null} persistor={persistor}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </PersistGate>,
   document.getElementById('root')
 );
