@@ -139,7 +139,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
 
       <div className={styles.modal__card_details}>
         <div className={styles.modal__card_detail}>
-          <div className={styles.modal__card_detail_icon}>
+          <div className={`${styles.modal__card_detail_icon} ${styles.modal__card_name_detail_icon}`}>
             <i className="far fa-credit-card" />
           </div>
 
@@ -159,12 +159,12 @@ const Modal = ({modalIsOpen, modalClose}) => {
                 />
               </form>
               :
-              <p
+              <h2
                 className={`${styles.modal__card_detail_heading} ${styles.modal__card_name_detail_heading}`}
                 onClick={() => formCollapse(setCardNameFormCollapse, setCardNameValue, card?.value)}
               >
                 {card?.value}
-              </p>
+              </h2>
               }
             </div>
 

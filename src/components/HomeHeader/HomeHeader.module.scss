@@ -51,6 +51,7 @@
   justify-content: center;
   border-radius: 3px;
   background-color: hsla(0,0%,100%,.24);
+  transition: background-color 85ms ease-in-out;
   padding: 0 12px;
   font-size: 18px;
   font-weight: 700;
