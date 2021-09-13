@@ -26,6 +26,9 @@
 }
 .popover__labels_label_color {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 87%;
   height: 32px;
   border-radius: 3px;
@@ -35,15 +38,33 @@
 .popover__labels_label_active {
   position: absolute;
   right: 5%;
-  top: 30%;
   color: white;
   font-size: 10px;
+  opacity: 0;
+  user-select: none;
+  transition: opacity .1s ease-in-out;
+  transition-delay: 35ms;
+
+  &.active {
+    opacity: 1;
+    user-select: auto;
+  }
 }
 .popover__labels_label_value {
   position: absolute;
   left: 5%;
-  top: 30%;
   color: white;
   font-weight: 700;
   font-size: 14px;
+  user-select: none;
+  display: block;
+  width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: width .1s ease-in-out;
+
+  &.active {
+    width: 80%;
+  }
 }

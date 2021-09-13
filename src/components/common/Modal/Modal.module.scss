@@ -59,6 +59,7 @@
 .modal__card_detail_content {
   padding-left: 40px;
   width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -159,6 +160,7 @@
   justify-content: center;
   margin: 0 4px 4px 0;
   cursor: pointer;
+  transition: opacity 85ms ease-in-out;
 
   &:hover {
     opacity: 0.8;
@@ -172,6 +174,12 @@
   color: #fff;
   font-weight: 700;
   font-size: 14px;
+  text-align: center;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 

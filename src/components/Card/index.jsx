@@ -98,7 +98,7 @@ const Card = ({card, column, modalOpen}) => {
               >
                 {columnsActiveLabels &&
                 <span>
-                  {label.value.length > 21 ? `${label.value.slice(0, 21)}...` : label.value}
+                  {label.value}
                 </span>
                 }
               </div>

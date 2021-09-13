@@ -189,9 +189,9 @@ const Modal = ({modalIsOpen, modalClose}) => {
                       title={label.value}
                     >
                       {label.value &&
-                      <p className={styles.modal__card_label_value}>
-                        {label.value.length > 42 ? `${label.value.slice(0, 42)}...` : label.value}
-                      </p>
+                      <span className={styles.modal__card_label_value}>
+                        {label.value}
+                      </span>
                       }
                     </div>
                   )

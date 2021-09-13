@@ -30,16 +30,14 @@ const Label = ({label, card, onEdit, searchValue}) => {
         onMouseLeave={() => setIsLabelHover(false)}
       >
         {label.value &&
-        <p className={styles.popover__labels_label_value}>
-          {label.value.length > 15 ? `${label.value.slice(0, 15)}...` : label.value}
-        </p>
-        }
-
-        {activeLabel &&
-        <span className={styles.popover__labels_label_active}>
-          <i className="fas fa-check" />
+        <span className={`${styles.popover__labels_label_value} ${activeLabel ? styles.active : ''}`}>
+          {label.value}
         </span>
         }
+
+        <span className={`${styles.popover__labels_label_active} ${activeLabel ? styles.active : ''}`}>
+          <i className="fas fa-check" />
+        </span>
       </div>
       <span onClick={() => onEdit(label)}>
         <i className="fas fa-pencil-alt" />
