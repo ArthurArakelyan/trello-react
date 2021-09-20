@@ -1,0 +1,94 @@
+.menu {
+  width: 22.2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 41px;
+  padding-right: 16px;
+}
+.menu__upgrades {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.menu__actions {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
+.menu__upgrades_heading {
+  text-transform: uppercase;
+  color: #5e6c84;
+  width: 100%;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+}
+.menu__upgrades_button {
+  color: #5e6c84;
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  justify-content: flex-start;
+  padding: 6px 8px;
+  width: 100%;
+  background-color: rgba(9,30,66,.04);
+  outline: none;
+  border-radius: 3px;
+  border: none;
+  transition: background-color 85ms ease-in-out, color 85ms ease-in-out;
+
+  p {
+    margin-left: 10px;
+    line-height: 20px;
+  }
+
+  i {
+    width: 16px;
+    font-size: 13px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(9,30,66,.08);
+  }
+
+  &:active {
+    background-color: #e4f0f6;
+    color: #0079bf;
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  .menu {
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 18px;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  .menu__upgrades {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .menu__actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .menu__upgrades_button {
+    width: 49%;
+  }
+}

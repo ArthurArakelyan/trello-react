@@ -1,14 +1,15 @@
 .menu {
   position: absolute;
-  right: -29%;
+  right: 0;
   top: 0;
+  transform: translateX(350px);
   width: 350px;
   z-index: 10;
   background-color: #f4f5f7;
   box-shadow: 0 12px 24px -6px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08);
   height: 100%;
   overflow: auto;
-  transition: right .3s ease-in-out;
+  transition: transform .3s ease-in-out;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -22,11 +23,11 @@
   }
 
   &.open {
-    right: 0;
+    transform: translateX(0);
   }
 
   &.hide {
-    right: -29%;
+    transform: translateX(350px);
   }
 }
 .menu__wrapper {
@@ -184,106 +185,6 @@
 
   &:active {
     opacity: 0.6;
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .menu {
-    right: -32%;
-
-    &.hide {
-      right: -32%;
-    }
-  }
-}
-
-@media only screen and (max-width: 1100px) {
-  .menu {
-    right: -36%;
-
-    &.hide {
-      right: -36%;
-    }
-  }
-}
-
-@media only screen and (max-width: 1000px) {
-  .menu {
-    right: -38%;
-
-    &.hide {
-      right: -38%;
-    }
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  .menu {
-    right: -43%;
-
-    &.hide {
-      right: -43%;
-    }
-  }
-}
-
-@media only screen and (max-width: 800px) {
-  .menu {
-    right: -55%;
-
-    &.hide {
-      right: -55%;
-    }
-  }
-}
-
-@media only screen and (max-width: 632px) {
-  .menu {
-    right: -62%;
-
-    &.hide {
-      right: -62%;
-    }
-  }
-}
-
-@media only screen and (max-width: 562px) {
-  .menu {
-    right: -70%;
-
-    &.hide {
-      right: -70%;
-    }
-  }
-}
-
-@media only screen and (max-width: 506px) {
-  .menu {
-    right: -80%;
-
-    &.hide {
-      right: -80%;
-    }
-  }
-}
-
-@media only screen and (max-width: 462px) {
-  .menu {
-    right: -90%;
-
-    &.hide {
-      right: -90%;
-    }
-  }
-}
-
-@media only screen and (max-width: 392px) {
-  .menu {
-    right: -100%;
-
-    &.hide {
-      right: -100%;
-    }
   }
 }
 

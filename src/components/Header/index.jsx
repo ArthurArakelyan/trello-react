@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import Button from "../common/Button";
 
 import Logo from './logo.gif';
+import user from '../../assets/images/user.png';
 
 import styles from './Header.module.scss';
 
@@ -65,7 +66,7 @@ const Header = () => {
 
             <img
               className={styles.header__avatar}
-              src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/50.png"
+              src={user}
               alt="Avatar"
             />
           </div>

@@ -9,6 +9,8 @@ import useFormCollapse from "../../../../hooks/useFormCollapse";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
 import useEscClick from "../../../../hooks/useEscClick";
 
+import user from '../../../../assets/images/user.png';
+
 import styles from './Comment.module.scss';
 import modalStyles from '../Modal.module.scss';
 
@@ -35,7 +37,7 @@ const Comment = ({comment}) => {
       <div className={modalStyles.modal__card_section}>
         <div className={modalStyles.modal__card_comments_avatar}>
           <img
-            src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png"
+            src={user}
             alt="Avatar"
           />
         </div>

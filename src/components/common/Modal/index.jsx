@@ -11,12 +11,15 @@ import {
 
 import Comment from "./Comment";
 import CheckList from "./CheckList";
+import Menu from './Menu';
 import ModalPopover from './popovers/index';
 
 import useFormCollapse from "../../../hooks/useFormCollapse";
 import useFormCollapseWithTextarea from "../../../hooks/useFormCollapseWithTextarea";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import useEscClick from "../../../hooks/useEscClick";
+
+import user from '../../../assets/images/user.png';
 
 import './styles.scss';
 import styles from './Modal.module.scss';
@@ -282,7 +285,7 @@ const Modal = ({modalIsOpen, modalClose}) => {
             <div className={styles.modal__card_section}>
               <div className={styles.modal__card_comments_avatar}>
                 <img
-                  src="https://trello-members.s3.amazonaws.com/60058042b46eb66edeca586b/a96d6a3db08e0252d26932585362b287/30.png"
+                  src={user}
                   alt="Avatar"
                 />
               </div>
@@ -322,62 +325,17 @@ const Modal = ({modalIsOpen, modalClose}) => {
         </div>
       </div>
 
-      <div className={styles.modal__card_upgrades_menu}>
-        <div className={styles.modal__card_upgrades}>
-          <h5 className={styles.modal__card_upgrade_heading}>добавить на карточку</h5>
-          <button className={styles.modal__card_upgrade_button}>
-            <i className="far fa-user" />
-            <p>Участники</p>
-          </button>
-          <button
-            onClick={() => setPopoverType('label')}
-            className={styles.modal__card_upgrade_button}
-          >
-            <i className="fas fa-tag" />
-            <p>Метки</p>
-          </button>
-          <button
-            onClick={() => setPopoverType('checkList')}
-            className={styles.modal__card_upgrade_button}
-          >
-            <i className="far fa-check-square" />
-            <p>Чек-лист</p>
-          </button>
-          <button className={styles.modal__card_upgrade_button}>
-            <i className="far fa-clock" />
-            <p>Даты</p>
-          </button>
-          <button className={styles.modal__card_upgrade_button}>
-            <i className="fas fa-paperclip" />
-            <p>Вложение</p>
-          </button>
-          <button
-            onClick={() => setPopoverType('cover')}
-            className={styles.modal__card_upgrade_button}
-          >
-            <i className="far fa-credit-card" />
-            <p>Обложка</p>
-          </button>
-        </div>
-
-        <div className={styles.modal__card_actions}>
-          <h5 className={styles.modal__card_upgrade_heading}>Действия</h5>
-          <button
-            className={styles.modal__card_upgrade_button}
-            onClick={cardDelete}
-          >
-            <i className="far fa-trash-alt" />
-            <p>Удалить</p>
-          </button>
-        </div>
-
+      <Menu
+        setPopoverType={setPopoverType}
+        cardDelete={cardDelete}
+      >
         <ModalPopover
           popoverType={popoverType}
           setPopoverType={setPopoverType}
           popoverRef={popoverRef}
           card={card}
         />
-      </div>
+      </Menu>
     </ReactModal>
   );
 }
