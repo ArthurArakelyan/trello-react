@@ -11,7 +11,7 @@ import useEscClick from "../../hooks/useEscClick";
 
 import styles from './HomeHeader.module.scss';
 
-const HomeHeader = ({menuCollapse, menuIsOpen, menuClose}) => {
+const HomeHeader = ({menuCollapse}) => {
   const dispatch = useDispatch();
   const formCollapse = useFormCollapse();
 
@@ -95,9 +95,7 @@ const HomeHeader = ({menuCollapse, menuIsOpen, menuClose}) => {
         <Button
           className={`button ${styles.home__header_menu_menu}`}
           onClick={() => {
-            if(!menuIsOpen && !menuClose) {
-              menuCollapse();
-            }
+            menuCollapse();
           }}
         >
           <i className="fas fa-ellipsis-h" />

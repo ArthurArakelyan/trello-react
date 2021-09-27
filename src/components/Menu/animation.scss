@@ -1,0 +1,8 @@
+.animation {
+  transform: translateX(103%);
+  transition: transform .12s ease-in-out;
+
+  &.collapsed {
+    transform: translateX(0);
+  }
+}
