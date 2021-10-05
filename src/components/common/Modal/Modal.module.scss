@@ -310,11 +310,6 @@
     outline: none;
     padding: 0 8px 0 0;
     color: #172b4d;
-
-    &::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
   }
 }
 .modal__card_comments_create_save {
